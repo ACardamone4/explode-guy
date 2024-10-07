@@ -9,6 +9,7 @@ TagManager:
   - Killbox
   - Checkpoint
   - Bouncy
+  - Stop
   layers:
   - Default
   - TransparentFX
