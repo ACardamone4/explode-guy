@@ -420,6 +420,10 @@ public class PlayerControls : MonoBehaviour
                 _hasGrounded = true;
             }
         }
+        if (collision.gameObject.tag == "Stop")
+        {
+            StopAttack();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -514,13 +518,22 @@ public class PlayerControls : MonoBehaviour
         }
         if (moveDirection > 0)
         {
-            gameObject.transform.localScale = new Vector2(1, 1);
+            //gameObject.transform.localScale = new Vector2(1, 1);
             _lastDirection = 1;
         }
         if (moveDirection < 0)
         {
-            gameObject.transform.localScale = new Vector2(-1, 1);
+            //gameObject.transform.localScale = new Vector2(-1, 1);
             _lastDirection = -1;
+        }
+
+        if (PlayerRB.velocity.x > 0)
+        {
+            gameObject.transform.localScale = new Vector2(1, 1);
+        }
+        else if (PlayerRB.velocity.x < 0)
+        {
+            gameObject.transform.localScale = new Vector2(-1, 1);
         }
         //}
 
