@@ -60,14 +60,16 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D _baseMaterial;
 
 
-   // public GameManager GM;
+    // public GameManager GM;
 
     // public static PlayerMovement instance;
     // Start is called before the first frame update
-
+    [SerializeField] private CheckpointManager _checkpointManager;
 
     void Start()
     {
+        _checkpointManager = FindObjectOfType<CheckpointManager>();
+        transform.position = _checkpointManager.LastCheckPointPos;
         _canMove = true;
         PlayerRB.gravityScale = BaseGravity;
         _moving = false;
@@ -94,10 +96,10 @@ public class PlayerControls : MonoBehaviour
 
         MPI.currentActionMap.Enable();
 
-        jump = MPI.currentActionMap.FindAction("Jump");
+        ////jump = MPI.currentActionMap.FindAction("Jump");
 
-        jump.started += Handle_JumpAction;
-        jump.canceled += Handle_JumpActionCanceled;
+        ////jump.started += Handle_JumpAction;
+        ////jump.canceled += Handle_JumpActionCanceled;
         move.started += Handle_MoveStarted;
         move.canceled += Handle_MoveCanceled;
         restart.performed += Handle_RestartPerformed;
@@ -115,8 +117,8 @@ public class PlayerControls : MonoBehaviour
         move.canceled -= Handle_MoveCanceled;
         restart.performed -= Handle_RestartPerformed;
         quit.performed -= Handle_QuitPerformed;
-        jump.started -= Handle_JumpAction;
-        jump.canceled -= Handle_JumpActionCanceled;
+        ////jump.started -= Handle_JumpAction;
+        ////jump.canceled -= Handle_JumpActionCanceled;
 
         attack.performed -= Handle_Attack;
         //release.performed -= Handle_Release;
@@ -182,6 +184,11 @@ public class PlayerControls : MonoBehaviour
     void TryAttack()
     {
         if (_attacking == false && _hasGrounded == true)
+        {
+            _canAttack = true;
+            Attack();
+        }
+        else if (_attacking == false && _grounded == true)
         {
             _canAttack = true;
             Attack();
@@ -293,6 +300,11 @@ public class PlayerControls : MonoBehaviour
                 _hasGrounded = true;
             }*/
             PlayerRB.rotation = (0);
+        }
+
+        if (collision.gameObject.tag == "Killbox")
+        {
+            RestartGame();
         }
     }
 
