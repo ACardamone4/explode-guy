@@ -139,6 +139,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_Attack(InputAction.CallbackContext obj)
     {
+        TryAttack();
         if (_canAttack == true)
         {
             Attack();
@@ -151,6 +152,7 @@ public class PlayerControls : MonoBehaviour
 
     void Attack()
     {
+        PlayerRB.freezeRotation = false;
         PlayerShouldBeMoving = true;
         _canAttack = false;
         _attacking = true;
@@ -161,11 +163,12 @@ public class PlayerControls : MonoBehaviour
         if (moveDirection != 0)
         {
             PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
+            PlayerRB.AddTorque(_rotationAmount * moveDirection);
         } else if (moveDirection == 0)
         {
             PlayerRB.velocity = new Vector2(_explosionPower * _lastDirection, _explosionPower);
+            PlayerRB.AddTorque(_rotationAmount * _lastDirection);
         }
-        PlayerRB.AddTorque(_rotationAmount * moveDirection);
         this._collider.sharedMaterial = _bounceMaterial;
         this.PlayerRB.sharedMaterial = _baseMaterial;
         // StartCoroutine(attackDuration());
@@ -177,10 +180,11 @@ public class PlayerControls : MonoBehaviour
         this.PlayerRB.sharedMaterial = _baseMaterial;
         //this._collider.isTrigger = false;
         PlayerRB.rotation = (0);
+        PlayerRB.freezeRotation = true;
         _bouncing = false;
         _attacking = false;
         _canMove = true;
-        TryAttack();
+        //TryAttack();
         //_animator.SetBool("Attack", false);
     }
 
@@ -189,12 +193,12 @@ public class PlayerControls : MonoBehaviour
         if (_attacking == false && _hasGrounded == true)
         {
             _canAttack = true;
-            Attack();
+            //Attack();
         }
         else if (_attacking == false && _grounded == true)
         {
             _canAttack = true;
-            Attack();
+            //Attack();
         }
     }
 
@@ -333,6 +337,11 @@ public class PlayerControls : MonoBehaviour
 
         }
 
+        if (_attacking == false)
+        {
+            print("Not attacking");
+            PlayerRB.rotation = (0);
+        }
 
 
         if (InAir == true) //Makes animations show the player is moving and in the air
@@ -411,6 +420,7 @@ public class PlayerControls : MonoBehaviour
                 // CanDoubleJump = false;
                 //JumpIndicator.gameObject.SetActive(false);
                 _colliding = true;
+
             }
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
         {
@@ -418,11 +428,13 @@ public class PlayerControls : MonoBehaviour
             if (_attacking == false)
             {
                 _hasGrounded = true;
+                PlayerRB.rotation = (0);
             }
         }
         if (collision.gameObject.tag == "Stop")
         {
             StopAttack();
+            PlayerRB.rotation = (0);
         }
     }
 
@@ -442,7 +454,7 @@ public class PlayerControls : MonoBehaviour
             {
                 _hasGrounded = true;
             }
-            PlayerRB.rotation = (0);
+            
         }
     }
 
