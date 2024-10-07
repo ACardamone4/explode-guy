@@ -28,6 +28,8 @@ public class PlayerControls : MonoBehaviour
     public Vector2 GoUp;
     public Vector2 Walk;
     public bool InAir;
+    [SerializeField] private bool _canMove;
+
     //public CinemachineVirtualCamera PlayerCam;
 
     [SerializeField] private float BaseGravity;
@@ -40,6 +42,8 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float _timeAttackCooldown;
     [SerializeField] private bool _canAttack;
     [SerializeField] private bool _attacking;
+    [SerializeField] private float _explosionPower;
+    [SerializeField] private float _rotationAmount;
 
     [SerializeField] private GameObject _explosion;
     [SerializeField] private Transform _self;
@@ -51,16 +55,20 @@ public class PlayerControls : MonoBehaviour
 
     [SerializeField] private float _velocityX;
     [SerializeField] private float _velocityY;
+    [SerializeField] private Collider2D _collider;
+    [SerializeField] private PhysicsMaterial2D _bounceMaterial;
+    [SerializeField] private PhysicsMaterial2D _baseMaterial;
 
 
    // public GameManager GM;
 
-   // public static PlayerMovement instance;
+    // public static PlayerMovement instance;
     // Start is called before the first frame update
 
 
     void Start()
     {
+        _canMove = true;
         PlayerRB.gravityScale = BaseGravity;
         _moving = false;
         
@@ -127,30 +135,57 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_Attack(InputAction.CallbackContext obj)
     {
-            if (_canAttack == true)
-            {
-                _canAttack = false;
-                _attacking = true;
-                //_animator.SetBool("Attack", true);
-                StartCoroutine(attackDuration());
-            }
+        if (_canAttack == true)
+        {
+            _canAttack = false;
+            _attacking = true;
+            _canMove = false;
+            //_animator.SetBool("Attack", true);
+            GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+            PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
+            PlayerRB.AddTorque(_rotationAmount * moveDirection);
+            this._collider.sharedMaterial = _bounceMaterial;
+            this.PlayerRB.sharedMaterial = _baseMaterial;
+            // StartCoroutine(attackDuration());
+        }
+        else if (_canAttack == false)
+        {
+            this._collider.sharedMaterial = _baseMaterial;
+            this.PlayerRB.sharedMaterial = _baseMaterial;
+            //this._collider.isTrigger = false;
+            PlayerRB.rotation = (0);
+            _attacking = false;
+            _canMove = true;
+            _canAttack = true;
+            //_animator.SetBool("Attack", false);
+        }
     }
 
-    private IEnumerator attackDuration()
-    {
-        yield return new WaitForSeconds(_attackWindup);
-        GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
-        yield return new WaitForSeconds(_attackDuration);
-        StartCoroutine(attackCooldown());
-    }
+    //private IEnumerator attackDuration()
+    //{
+    //    yield return new WaitForSeconds(_attackWindup);
+    //    GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+    //    PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
+    //    PlayerRB.AddTorque(_rotationAmount * moveDirection);
+    //    this._collider.sharedMaterial = _bounceMaterial;
+    //    this.PlayerRB.sharedMaterial = _baseMaterial;
+    //    //this._collider.isTrigger = true;
+    //    yield return new WaitForSeconds(_attackDuration);
+    //    StartCoroutine(attackCooldown());
+    //}
 
-    private IEnumerator attackCooldown()
-    {
-        _attacking = false;
-        //_animator.SetBool("Attack", false);
-        yield return new WaitForSeconds(_timeAttackCooldown);
-        _canAttack = true;
-    }
+    //private IEnumerator attackCooldown()
+    //{
+    //    this._collider.sharedMaterial = _baseMaterial;
+    //    this.PlayerRB.sharedMaterial = _baseMaterial;
+    //    //this._collider.isTrigger = false;
+    //    PlayerRB.rotation = (0);
+    //    _attacking = false;
+    //    _canMove = true;
+    //    //_animator.SetBool("Attack", false);
+    //    yield return new WaitForSeconds(_timeAttackCooldown);
+    //    _canAttack = true;
+    //}
 
     private void Handle_ToMenuPerformed(InputAction.CallbackContext context)
     {
@@ -158,60 +193,75 @@ public class PlayerControls : MonoBehaviour
     }
     private void Handle_JumpAction(InputAction.CallbackContext obj)
     {
-                //Can only be active if dash isn't occuring
-                //if (DashActive == false)
+        if (_canMove == true)
+        {
+            //Checks if the player is touching the ground
+            if (coyoteTimeCounter > 0f)
+            /// if (IsColliding == true)
+            {
+                //Makes the player jump command activate
+                playerJump = true;
+                //Allows the PerformLaunch Command to be allowed.
+                PerformLaunch = true;
+                //Makes it so the double jump doesn't activate
+                //DoubleJump = false;
+            }
+            else
+            {
 
-
-                //Checks if the player is touching the ground
-                if (coyoteTimeCounter > 0f)
-                /// if (IsColliding == true)
-                {
-                    //Makes the player jump command activate
-                    playerJump = true;
-                    //Allows the PerformLaunch Command to be allowed.
-                    PerformLaunch = true;
-                    //Makes it so the double jump doesn't activate
-                    //DoubleJump = false;
-                }
-                else
-                {
-
-                    //Makes is so the player can't jump, but they are able to double jump
-                    playerJump = false;
-                    PerformLaunch = true;
-                    //if (CanDoubleJump == true)
-                    //{
-                    //    DoubleJump = true;
-                    //    //Animator.SetBool("DoubleJump", true);
-                    //}
+                //Makes is so the player can't jump, but they are able to double jump
+                playerJump = false;
+                PerformLaunch = true;
+                //if (CanDoubleJump == true)
+                //{
+                //    DoubleJump = true;
+                //    //Animator.SetBool("DoubleJump", true);
+                //}
 
 
 
-                }
-                if (playerJump == true)
-                {
-                    PlayerShouldBeMoving = true;
-                }
+            }
+            if (playerJump == true)
+            {
+                PlayerShouldBeMoving = true;
+            }
+        }
     }
     private void Handle_MoveStarted(InputAction.CallbackContext obj)
     {
+        if (_canMove == true)
+        {
             //Can only be active if dash isn't occuring
-                //Turns on the movement command
-                PlayerShouldBeMoving = true;
-                _moving = true;
-
-                //print("Handled move Started");
+            //Turns on the movement command
+            PlayerShouldBeMoving = true;
+            _moving = true;
+        }
     }
     private void Handle_MoveCanceled(InputAction.CallbackContext obj)
     {//Can only be active if dash isn't occuring
+        if (_canMove == true)
+        {
+            _moving = false;
+            //Turns off the movement command
+            PlayerShouldBeMoving = false;
+            //Turns off the movement animation
+            //Animator.SetBool("IsMoving", false);
 
-                _moving = false;
-                //Turns off the movement command
-                PlayerShouldBeMoving = false;
-                //Turns off the movement animation
-                //Animator.SetBool("IsMoving", false);
+            //print("Handled move Canceled");
+        }
+    }
 
-                //print("Handled move Canceled");
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (_attacking == true)
+        {
+            GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+        }
+
+        if (collision.gameObject.tag == "Ground")
+        {
+            PlayerRB.rotation = (0);
+        }
     }
 
     public void FixedUpdate()
@@ -240,10 +290,13 @@ public class PlayerControls : MonoBehaviour
 
         if (PlayerShouldBeMoving == true)
         {
-            print("PlayerRB Should Be Moving");
-            //Makes the player able to move, and turns on the moving animation   
-            PlayerRB.velocity = new Vector2(PlayerSpeed * moveDirection, PlayerRB.velocity.y);
-            //Animator.SetBool("IsMoving", true);
+            if (_canMove == true)
+            {
+                print("PlayerRB Should Be Moving");
+                //Makes the player able to move, and turns on the moving animation   
+                PlayerRB.velocity = new Vector2(PlayerSpeed * moveDirection, PlayerRB.velocity.y);
+                //Animator.SetBool("IsMoving", true);
+            }
 
         }
         if (PerformLaunch == true && playerJump == true)
@@ -302,9 +355,9 @@ public class PlayerControls : MonoBehaviour
                 InAir = false;
                 // CanDoubleJump = false;
                 //JumpIndicator.gameObject.SetActive(false);
-
+                _colliding = true;
             }
-            _colliding = true;
+            
         }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -388,7 +441,7 @@ public class PlayerControls : MonoBehaviour
             //Checks what direction the player should be moving(Horizontally)
             moveDirection = move.ReadValue<float>();
         }
-        else if (PlayerShouldBeMoving)
+        else if (PlayerShouldBeMoving == false)
         {
             PlayerRB.velocity = new Vector2(0, PlayerRB.velocity.y);
         }
