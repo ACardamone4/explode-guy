@@ -1,5 +1,3 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -40,6 +38,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float _attackWindup;
     [SerializeField] private float _attackDuration;
     [SerializeField] private float _timeAttackCooldown;
+    [SerializeField] private float _lastDirection;
     [SerializeField] private bool _canAttack;
     [SerializeField] private bool _attacking;
     [SerializeField] private float _explosionPower;
@@ -50,6 +49,7 @@ public class PlayerControls : MonoBehaviour
 
     [SerializeField] private bool _grounded;
     [SerializeField] private bool _moving;
+    [SerializeField] private bool _hasGrounded;
 
     //[SerializeField] private Animator _animator;
 
@@ -137,27 +137,54 @@ public class PlayerControls : MonoBehaviour
     {
         if (_canAttack == true)
         {
-            _canAttack = false;
-            _attacking = true;
-            _canMove = false;
-            //_animator.SetBool("Attack", true);
-            GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
-            PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
-            PlayerRB.AddTorque(_rotationAmount * moveDirection);
-            this._collider.sharedMaterial = _bounceMaterial;
-            this.PlayerRB.sharedMaterial = _baseMaterial;
-            // StartCoroutine(attackDuration());
+            Attack();
         }
         else if (_canAttack == false)
         {
-            this._collider.sharedMaterial = _baseMaterial;
-            this.PlayerRB.sharedMaterial = _baseMaterial;
-            //this._collider.isTrigger = false;
-            PlayerRB.rotation = (0);
-            _attacking = false;
-            _canMove = true;
+            StopAttack();
+        }
+    }
+
+    void Attack()
+    {
+        PlayerShouldBeMoving = true;
+        _canAttack = false;
+        _attacking = true;
+        _canMove = false;
+        _hasGrounded = false;
+        //_animator.SetBool("Attack", true);
+        GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+        if (moveDirection != 0)
+        {
+            PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
+        } else if (moveDirection == 0)
+        {
+            PlayerRB.velocity = new Vector2(_explosionPower * _lastDirection, _explosionPower);
+        }
+        PlayerRB.AddTorque(_rotationAmount * moveDirection);
+        this._collider.sharedMaterial = _bounceMaterial;
+        this.PlayerRB.sharedMaterial = _baseMaterial;
+        // StartCoroutine(attackDuration());
+    }
+
+    void StopAttack()
+    {
+        this._collider.sharedMaterial = _baseMaterial;
+        this.PlayerRB.sharedMaterial = _baseMaterial;
+        //this._collider.isTrigger = false;
+        PlayerRB.rotation = (0);
+        _attacking = false;
+        _canMove = true;
+        TryAttack();
+        //_animator.SetBool("Attack", false);
+    }
+
+    void TryAttack()
+    {
+        if (_attacking == false && _hasGrounded == true)
+        {
             _canAttack = true;
-            //_animator.SetBool("Attack", false);
+            Attack();
         }
     }
 
@@ -260,6 +287,11 @@ public class PlayerControls : MonoBehaviour
 
         if (collision.gameObject.tag == "Ground")
         {
+
+            /*if (_attacking == false)
+            {
+                _hasGrounded = true;
+            }*/
             PlayerRB.rotation = (0);
         }
     }
@@ -357,8 +389,15 @@ public class PlayerControls : MonoBehaviour
                 //JumpIndicator.gameObject.SetActive(false);
                 _colliding = true;
             }
+        if (collision.gameObject.tag == "Ground")
+        {
             
+            if (_attacking == false)
+            {
+                _hasGrounded = true;
+            }
         }
+    }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -372,6 +411,11 @@ public class PlayerControls : MonoBehaviour
             //CanDoubleJump = true;
             print("Left Grass");
             _grounded = false;
+            if (_attacking == false)
+            {
+                _hasGrounded = true;
+            }
+            PlayerRB.rotation = (0);
         }
     }
 
@@ -448,10 +492,12 @@ public class PlayerControls : MonoBehaviour
         if (moveDirection > 0)
         {
             gameObject.transform.localScale = new Vector2(1, 1);
+            _lastDirection = 1;
         }
         if (moveDirection < 0)
         {
             gameObject.transform.localScale = new Vector2(-1, 1);
+            _lastDirection = -1;
         }
         //}
 
