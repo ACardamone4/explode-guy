@@ -50,6 +50,8 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private bool _grounded;
     [SerializeField] private bool _moving;
     [SerializeField] private bool _hasGrounded;
+    [SerializeField] private bool _bouncing;
+    [SerializeField] private float _bouncepadBoost;
 
     //[SerializeField] private Animator _animator;
 
@@ -175,6 +177,7 @@ public class PlayerControls : MonoBehaviour
         this.PlayerRB.sharedMaterial = _baseMaterial;
         //this._collider.isTrigger = false;
         PlayerRB.rotation = (0);
+        _bouncing = false;
         _attacking = false;
         _canMove = true;
         TryAttack();
@@ -292,7 +295,7 @@ public class PlayerControls : MonoBehaviour
             GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
         }
 
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
         {
 
             /*if (_attacking == false)
@@ -305,6 +308,14 @@ public class PlayerControls : MonoBehaviour
         if (collision.gameObject.tag == "Killbox")
         {
             RestartGame();
+        }
+        if (collision.gameObject.tag == "Bouncy")
+        {
+            if (_attacking == true && _bouncing == false)
+            {
+                _bouncing = true;
+                PlayerRB.velocity = new Vector2(_explosionPower * _lastDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
+            }
         }
     }
 
@@ -382,7 +393,7 @@ public class PlayerControls : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.gameObject.tag == "Ground")//Checks if the player is touching the ground
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")//Checks if the player is touching the ground
         {
                 PlayerRB.gravityScale = BaseGravity;
                 _grounded = true;
@@ -401,7 +412,7 @@ public class PlayerControls : MonoBehaviour
                 //JumpIndicator.gameObject.SetActive(false);
                 _colliding = true;
             }
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
         {
             
             if (_attacking == false)
@@ -413,7 +424,7 @@ public class PlayerControls : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
         {//Makes the game realize the player is not touching the ground
             //print("Dont Touch Grass");
             InAir = true;
