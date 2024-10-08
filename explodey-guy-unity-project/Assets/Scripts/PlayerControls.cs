@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -98,32 +99,20 @@ public class PlayerControls : MonoBehaviour
         //release = MPI.currentActionMap.FindAction("Release");
 
         MPI.currentActionMap.Enable();
-
-        ////jump = MPI.currentActionMap.FindAction("Jump");
-
-        ////jump.started += Handle_JumpAction;
-        ////jump.canceled += Handle_JumpActionCanceled;
         move.started += Handle_MoveStarted;
         move.canceled += Handle_MoveCanceled;
         restart.performed += Handle_RestartPerformed;
         quit.performed += Handle_QuitPerformed;
         attack.performed += Handle_Attack;
-        //release.performed += Handle_Release;
-        //release.canceled += Handle_ReleaseCanceled;
-        //SC = FindObjectOfType <SpiritController>();
     }
     public void OnDestroy()
     {
-        if (MPI.currentActionMap != null)
-        {
-            print("Fuck");
-            return;
-        }
-        move.started -= Handle_MoveStarted;
-        move.canceled -= Handle_MoveCanceled;
         restart.performed -= Handle_RestartPerformed;
         quit.performed -= Handle_QuitPerformed;
         attack.performed -= Handle_Attack;
+        move.started -= Handle_MoveStarted;
+        move.canceled -= Handle_MoveCanceled;
+        
     }
 
     private void Handle_Attack(InputAction.CallbackContext obj)
@@ -499,8 +488,8 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_RestartPerformed(InputAction.CallbackContext obj)
     {//Sets the game back to the previous checkpoint
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        OnDestroy();
+         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void RestartGame()
