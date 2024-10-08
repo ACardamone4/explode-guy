@@ -57,6 +57,7 @@ public class PlayerControls : MonoBehaviour
 
     [SerializeField] private float _velocityX;
     [SerializeField] private float _velocityY;
+    [SerializeField] private float _currentDirection;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private PhysicsMaterial2D _bounceMaterial;
     [SerializeField] private PhysicsMaterial2D _baseMaterial;
@@ -318,7 +319,7 @@ public class PlayerControls : MonoBehaviour
             if (_attacking == true && _bouncing == false)
             {
                 _bouncing = true;
-                PlayerRB.velocity = new Vector2(_explosionPower * _lastDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
+                PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
             }
         }
     }
@@ -542,10 +543,12 @@ public class PlayerControls : MonoBehaviour
         if (PlayerRB.velocity.x > 0)
         {
             gameObject.transform.localScale = new Vector2(1, 1);
+            _currentDirection = 1;
         }
         else if (PlayerRB.velocity.x < 0)
         {
             gameObject.transform.localScale = new Vector2(-1, 1);
+            _currentDirection = -1;
         }
         //}
 
