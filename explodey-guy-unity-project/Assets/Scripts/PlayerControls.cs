@@ -112,30 +112,18 @@ public class PlayerControls : MonoBehaviour
         //release.canceled += Handle_ReleaseCanceled;
         //SC = FindObjectOfType <SpiritController>();
     }
-
     public void OnDestroy()
     {
-        //Remove control when OnDestroy activates
+        if (MPI.currentActionMap != null)
+        {
+            print("Fuck");
+            return;
+        }
         move.started -= Handle_MoveStarted;
         move.canceled -= Handle_MoveCanceled;
         restart.performed -= Handle_RestartPerformed;
         quit.performed -= Handle_QuitPerformed;
-        ////jump.started -= Handle_JumpAction;
-        ////jump.canceled -= Handle_JumpActionCanceled;
-
         attack.performed -= Handle_Attack;
-        //release.performed -= Handle_Release;
-        //release.canceled -= Handle_ReleaseCanceled;
-    }
-
-    private void Handle_JumpActionCanceled(InputAction.CallbackContext context)
-    {
-
-            if (PlayerRB.velocity.y > 0f)
-            {
-                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, PlayerRB.velocity.y * 0.5f);
-            }
-        
     }
 
     private void Handle_Attack(InputAction.CallbackContext obj)
@@ -203,72 +191,11 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-    //private IEnumerator attackDuration()
-    //{
-    //    yield return new WaitForSeconds(_attackWindup);
-    //    GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
-    //    PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
-    //    PlayerRB.AddTorque(_rotationAmount * moveDirection);
-    //    this._collider.sharedMaterial = _bounceMaterial;
-    //    this.PlayerRB.sharedMaterial = _baseMaterial;
-    //    //this._collider.isTrigger = true;
-    //    yield return new WaitForSeconds(_attackDuration);
-    //    StartCoroutine(attackCooldown());
-    //}
-
-    //private IEnumerator attackCooldown()
-    //{
-    //    this._collider.sharedMaterial = _baseMaterial;
-    //    this.PlayerRB.sharedMaterial = _baseMaterial;
-    //    //this._collider.isTrigger = false;
-    //    PlayerRB.rotation = (0);
-    //    _attacking = false;
-    //    _canMove = true;
-    //    //_animator.SetBool("Attack", false);
-    //    yield return new WaitForSeconds(_timeAttackCooldown);
-    //    _canAttack = true;
-    //}
-
     private void Handle_ToMenuPerformed(InputAction.CallbackContext context)
     {
         SceneManager.LoadScene("IntroCutscene");
     }
-    private void Handle_JumpAction(InputAction.CallbackContext obj)
-    {
-        if (_canMove == true)
-        {
-            //Checks if the player is touching the ground
-            if (coyoteTimeCounter > 0f)
-            /// if (IsColliding == true)
-            {
-                //Makes the player jump command activate
-                playerJump = true;
-                //Allows the PerformLaunch Command to be allowed.
-                PerformLaunch = true;
-                //Makes it so the double jump doesn't activate
-                //DoubleJump = false;
-            }
-            else
-            {
 
-                //Makes is so the player can't jump, but they are able to double jump
-                playerJump = false;
-                PerformLaunch = true;
-                //if (CanDoubleJump == true)
-                //{
-                //    DoubleJump = true;
-                //    //Animator.SetBool("DoubleJump", true);
-                //}
-
-
-
-            }
-            if (playerJump == true)
-            {
-                PlayerShouldBeMoving = true;
-            }
-        }
-    }
     private void Handle_MoveStarted(InputAction.CallbackContext obj)
     {
         if (_canMove == true)
