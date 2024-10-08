@@ -63,14 +63,44 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D _bounceMaterial;
     [SerializeField] private PhysicsMaterial2D _baseMaterial;
 
-
     // public GameManager GM;
 
     // public static PlayerMovement instance;
     // Start is called before the first frame update
     [SerializeField] private CheckpointManager _checkpointManager;
 
-    void Start()
+    private void Awake()
+    {
+        _checkpointManager = FindObjectOfType<CheckpointManager>();
+        transform.position = _checkpointManager.LastCheckPointPos;
+        _canMove = true;
+        PlayerRB.gravityScale = BaseGravity;
+        _moving = false;
+
+        playerJump = false;
+
+        //IsColliding = false;
+        _colliding = false; //Makes it so the player can't infinitely jump
+        //Grabs the player's control and body
+        PlayerRB = GetComponent<Rigidbody2D>();
+        MPI = GetComponent<PlayerInput>();
+
+        //Grabs all the player's inputs
+        move = MPI.currentActionMap.FindAction("Move");
+        restart = MPI.currentActionMap.FindAction("Restart");
+        quit = MPI.currentActionMap.FindAction("Quit");
+        attack = MPI.currentActionMap.FindAction("Attack");
+        //release = MPI.currentActionMap.FindAction("Release");
+
+        MPI.currentActionMap.Enable();
+        move.started += Handle_MoveStarted;
+        move.canceled += Handle_MoveCanceled;
+        restart.performed += Handle_RestartPerformed;
+        quit.performed += Handle_QuitPerformed;
+        attack.performed += Handle_Attack;
+    }
+
+    /*void Start()
     {
         _checkpointManager = FindObjectOfType<CheckpointManager>();
         transform.position = _checkpointManager.LastCheckPointPos;
@@ -105,13 +135,24 @@ public class PlayerControls : MonoBehaviour
         quit.performed += Handle_QuitPerformed;
         attack.performed += Handle_Attack;
     }
-    public void OnDestroy()
+    //public void OnDestroy()
+    //{
+    //    restart.performed -= Handle_RestartPerformed;
+    //    quit.performed -= Handle_QuitPerformed;
+    //    attack.performed -= Handle_Attack;
+    //    move.started -= Handle_MoveStarted;
+    //    move.canceled -= Handle_MoveCanceled;
+        
+    //}*/
+
+    public void OnDisable()
     {
+        MPI.currentActionMap.Disable();
+        move.started -= Handle_MoveStarted;
+        move.canceled -= Handle_MoveCanceled;
         restart.performed -= Handle_RestartPerformed;
         quit.performed -= Handle_QuitPerformed;
         attack.performed -= Handle_Attack;
-        move.started -= Handle_MoveStarted;
-        move.canceled -= Handle_MoveCanceled;
         
     }
 
@@ -280,38 +321,7 @@ public class PlayerControls : MonoBehaviour
             }
 
         }
-        if (PerformLaunch == true && playerJump == true)
-        {
-            //CoyoteTimer = 0;
-            //IsColliding = false;
-
-            if (transform.parent != null)
-            {
-                PlayerRB.velocity = new Vector2(transform.parent.GetComponent<Rigidbody2D>().velocity.x, JumpForce + transform.parent.GetComponent<Rigidbody2D>().velocity.y);
-                coyoteTimeCounter = 0;
-            }
-            else
-            {
-                PlayerRB.velocity = new Vector2(0, JumpForce);
-                coyoteTimeCounter = 0;
-            }
-            //print("PlayerRB should be jumpin");
-
-
-            //Launches the player upwards
-
-            //Turns off the player jump
-            playerJump = false;
-            PerformLaunch = false;
-            //Turns on the jumping animation
-            //Animator.SetBool("IsMoving", true);
-            //Animator.SetBool("OnGround", false);
-            //Animator.SetBool("InAir", true);
-            //Animator.SetBool("DoubleJump", false);
-            //Animator.SetBool("Dash", false);
-
-            InAir = true;
-        }
+        
 
     }
 
@@ -488,7 +498,6 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_RestartPerformed(InputAction.CallbackContext obj)
     {//Sets the game back to the previous checkpoint
-        OnDestroy();
          SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
