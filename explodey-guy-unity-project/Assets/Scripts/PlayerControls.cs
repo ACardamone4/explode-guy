@@ -46,6 +46,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float _rotationAmount;
 
     [SerializeField] private GameObject _explosion;
+    [SerializeField] private GameObject _bouncyExplosion;
     [SerializeField] private Transform _self;
 
     [SerializeField] private bool _grounded;
@@ -54,6 +55,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private bool _bouncing;
     [SerializeField] private float _bouncepadBoost;
 
+    [SerializeField] private GameObject _bouncyParticles;
     //[SerializeField] private Animator _animator;
 
     [SerializeField] private float _velocityX;
@@ -201,6 +203,7 @@ public class PlayerControls : MonoBehaviour
         PlayerRB.rotation = (0);
         PlayerRB.freezeRotation = true;
         _bouncing = false;
+        _bouncyParticles.SetActive(false);
         _attacking = false;
         _canMove = true;
         //TryAttack();
@@ -254,7 +257,14 @@ public class PlayerControls : MonoBehaviour
     {
         if (_attacking == true)
         {
-            GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+            if (_bouncing == true)
+            {
+                GameObject BouncyAttackInstance = Instantiate(_bouncyExplosion, _self.position, _self.rotation);
+            }
+            else
+            {
+                GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+            }
         }
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
@@ -277,6 +287,7 @@ public class PlayerControls : MonoBehaviour
             {
                 _bouncing = true;
                 PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
+                _bouncyParticles.SetActive(true);
             }
         }
     }
