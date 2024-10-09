@@ -44,6 +44,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2678306883
+    locked: 0
+  - name: CloserBG
+    uniqueID: 2436287787
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
