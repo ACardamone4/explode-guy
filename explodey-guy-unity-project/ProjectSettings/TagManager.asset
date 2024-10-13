@@ -10,6 +10,8 @@ TagManager:
   - Checkpoint
   - Bouncy
   - Stop
+  - Bomb
+  - Explosion
   layers:
   - Default
   - TransparentFX
