@@ -55,8 +55,11 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private bool _hasGrounded;
     [SerializeField] private bool _bouncing;
     [SerializeField] private float _bouncepadBoost;
+    [SerializeField] private bool _bombed;
+    [SerializeField] private float _bombBoost;
 
     [SerializeField] private GameObject _bouncyParticles;
+    [SerializeField] private GameObject _bombParticles;
     [SerializeField] private Animator _animator;
 
     [SerializeField] private float _velocityX;
@@ -187,7 +190,7 @@ public class PlayerControls : MonoBehaviour
         _canMove = false;
         _hasGrounded = false;
         //_animator.SetBool("Attack", true);
-        GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+        //GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
         if (moveDirection != 0)
         {
             PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
@@ -217,7 +220,9 @@ public class PlayerControls : MonoBehaviour
         PlayerRB.rotation = (0);
         PlayerRB.freezeRotation = true;
         _bouncing = false;
+        _bombed = false;
         _bouncyParticles.SetActive(false);
+        _bombParticles.SetActive(false);
         _attacking = false;
         _canMove = true;
         //TryAttack();
@@ -271,7 +276,7 @@ public class PlayerControls : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_attacking == true)
+        /*if (_attacking == true)
         {
             if (_bouncing == true)
             {
@@ -281,7 +286,7 @@ public class PlayerControls : MonoBehaviour
             {
                 GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
             }
-        }
+        }*/
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
         {
@@ -305,6 +310,13 @@ public class PlayerControls : MonoBehaviour
                 PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
                 _bouncyParticles.SetActive(true);
             }
+        }
+        if (collision.gameObject.tag == "Bomb")
+        {
+            Attack();
+            _bombed = true;
+            PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bombBoost, _explosionPower * _bombBoost);
+            _bombParticles.SetActive(true);
         }
     }
 
