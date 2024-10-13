@@ -42,6 +42,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float _lastDirection;
     [SerializeField] private bool _canAttack;
     [SerializeField] private bool _attacking;
+    [SerializeField] private bool _holdingMove;
     [SerializeField] private float _explosionPower;
     [SerializeField] private float _rotationAmount;
 
@@ -56,7 +57,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float _bouncepadBoost;
 
     [SerializeField] private GameObject _bouncyParticles;
-    //[SerializeField] private Animator _animator;
+    [SerializeField] private Animator _animator;
 
     [SerializeField] private float _velocityX;
     [SerializeField] private float _velocityY;
@@ -73,6 +74,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Awake()
     {
+        
         _checkpointManager = FindObjectOfType<CheckpointManager>();
         transform.position = _checkpointManager.LastCheckPointPos;
         _canMove = true;
@@ -100,6 +102,11 @@ public class PlayerControls : MonoBehaviour
         restart.performed += Handle_RestartPerformed;
         quit.performed += Handle_QuitPerformed;
         attack.performed += Handle_Attack;
+        //if (_animator == null)
+        //{
+        //    _animator.enabled = true;
+        //}
+        
     }
 
     /*void Start()
@@ -155,7 +162,7 @@ public class PlayerControls : MonoBehaviour
         restart.performed -= Handle_RestartPerformed;
         quit.performed -= Handle_QuitPerformed;
         attack.performed -= Handle_Attack;
-        
+        //_animator.enabled = false;
     }
 
     private void Handle_Attack(InputAction.CallbackContext obj)
@@ -197,6 +204,13 @@ public class PlayerControls : MonoBehaviour
 
     void StopAttack()
     {
+        if (_holdingMove == true)
+        {
+            _moving = true;
+        } else
+        {
+            _moving = false;
+        }
         this._collider.sharedMaterial = _baseMaterial;
         this.PlayerRB.sharedMaterial = _baseMaterial;
         //this._collider.isTrigger = false;
@@ -207,7 +221,7 @@ public class PlayerControls : MonoBehaviour
         _attacking = false;
         _canMove = true;
         //TryAttack();
-        //_animator.SetBool("Attack", false);
+        _animator.SetBool("Walking", false);
     }
 
     void TryAttack()
@@ -231,6 +245,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_MoveStarted(InputAction.CallbackContext obj)
     {
+        _holdingMove = true;
         if (_canMove == true)
         {
             //Can only be active if dash isn't occuring
@@ -241,6 +256,7 @@ public class PlayerControls : MonoBehaviour
     }
     private void Handle_MoveCanceled(InputAction.CallbackContext obj)
     {//Can only be active if dash isn't occuring
+        _holdingMove = false;
         if (_canMove == true)
         {
             _moving = false;
@@ -411,10 +427,12 @@ public class PlayerControls : MonoBehaviour
         //    _animator.SetBool("Walking", true);
         //} 
 
-        if (_velocityY == 0 && _moving == true)
+        if (_moving == true && _velocityY > -2)
         {
-            //_animator.SetBool("Walking", true);
-
+            if (_bouncing == false)
+            {
+                _animator.SetBool("Walking", true);
+            }
         }
 
         if (_velocityY >= 0)
@@ -422,15 +440,20 @@ public class PlayerControls : MonoBehaviour
             //_animator.SetBool("Jumping", true);
         }
 
-        if (_velocityY <= 0)
+        if (_velocityY < -2)
         {
-            //_animator.SetBool("Falling", true);
+            if (_bouncing == false)
+            {
+                _animator.SetBool("Falling", true);
+            }
+            
         }
 
-        if (_velocityY == 0)
+        if (_velocityY >= -2)
         {
+
+            _animator.SetBool("Falling", false);
             //_animator.SetBool("Jumping", false);
-            //_animator.SetBool("Falling", false);
         }
 
         _velocityX = PlayerRB.velocity.x;
@@ -441,9 +464,9 @@ public class PlayerControls : MonoBehaviour
         //    _animator.SetBool("Falling", true);
         //} 
 
-        if (PlayerRB.velocity.y != 0 || _moving == false)
+        if (PlayerRB.velocity.y < -2 || _moving == false)
         {
-            //_animator.SetBool("Walking", false);
+            _animator.SetBool("Walking", false);
         }
 
         if (_colliding == true)
