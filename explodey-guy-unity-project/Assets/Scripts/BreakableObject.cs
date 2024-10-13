@@ -21,4 +21,13 @@ public class BreakableObject : MonoBehaviour
         GameObject BrokenParticles = Instantiate(_rubble, _self.position, _self.rotation);
         Destroy(gameObject);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Explosion")
+        {
+            GameObject BrokenParticles = Instantiate(_rubble, _self.position, _self.rotation);
+            Destroy(gameObject);
+        }
+    }
 }
