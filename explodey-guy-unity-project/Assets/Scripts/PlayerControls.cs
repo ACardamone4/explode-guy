@@ -43,11 +43,15 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private bool _canAttack;
     [SerializeField] private bool _attacking;
     [SerializeField] private bool _holdingMove;
+    [SerializeField] private bool _cutscene;
+    [SerializeField] private bool _canExplode;
+    [SerializeField] private bool _dying;
     [SerializeField] private float _explosionPower;
     [SerializeField] private float _rotationAmount;
 
     [SerializeField] private GameObject _explosion;
     [SerializeField] private GameObject _bouncyExplosion;
+    [SerializeField] private GameObject _deathTransition;
     [SerializeField] private Transform _self;
 
     [SerializeField] private bool _grounded;
@@ -57,9 +61,13 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float _bouncepadBoost;
     [SerializeField] private bool _bombed;
     [SerializeField] private float _bombBoost;
+    [SerializeField] private float _slowDownSpeed;
+    [SerializeField] private float _stopAttackTimerMax;
+    [SerializeField] private float _stopAttackTimer;
 
     [SerializeField] private GameObject _bouncyParticles;
     [SerializeField] private GameObject _bombParticles;
+    [SerializeField] private GameObject _fuseParticles;
     [SerializeField] private Animator _animator;
 
     [SerializeField] private float _velocityX;
@@ -77,7 +85,10 @@ public class PlayerControls : MonoBehaviour
 
     private void Awake()
     {
-        
+        if (_canExplode == true)
+        {
+            _animator.SetBool("TNT", true);
+        }
         _checkpointManager = FindObjectOfType<CheckpointManager>();
         transform.position = _checkpointManager.LastCheckPointPos;
         _canMove = true;
@@ -112,51 +123,6 @@ public class PlayerControls : MonoBehaviour
         
     }
 
-    /*void Start()
-    {
-        _checkpointManager = FindObjectOfType<CheckpointManager>();
-        transform.position = _checkpointManager.LastCheckPointPos;
-        _canMove = true;
-        PlayerRB.gravityScale = BaseGravity;
-        _moving = false;
-        
-
-        //GM = FindObjectOfType<GameManager>();
-        //Sets the player's position to the last checkpoint they touch
-        //transform.position = GM.LastCheckPointPos;
-
-        playerJump = false;
-
-        //IsColliding = false;
-        _colliding = false; //Makes it so the player can't infinitely jump
-        //Grabs the player's control and body
-        PlayerRB = GetComponent<Rigidbody2D>();
-        MPI = GetComponent<PlayerInput>();
-
-        //Grabs all the player's inputs
-        move = MPI.currentActionMap.FindAction("Move");
-        restart = MPI.currentActionMap.FindAction("Restart");
-        quit = MPI.currentActionMap.FindAction("Quit");
-        attack = MPI.currentActionMap.FindAction("Attack");
-        //release = MPI.currentActionMap.FindAction("Release");
-
-        MPI.currentActionMap.Enable();
-        move.started += Handle_MoveStarted;
-        move.canceled += Handle_MoveCanceled;
-        restart.performed += Handle_RestartPerformed;
-        quit.performed += Handle_QuitPerformed;
-        attack.performed += Handle_Attack;
-    }
-    //public void OnDestroy()
-    //{
-    //    restart.performed -= Handle_RestartPerformed;
-    //    quit.performed -= Handle_QuitPerformed;
-    //    attack.performed -= Handle_Attack;
-    //    move.started -= Handle_MoveStarted;
-    //    move.canceled -= Handle_MoveCanceled;
-        
-    //}*/
-
     public void OnDisable()
     {
         MPI.currentActionMap.Disable();
@@ -170,19 +136,23 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_Attack(InputAction.CallbackContext obj)
     {
-        TryAttack();
-        if (_canAttack == true)
+        if (_canExplode == true && _dying == false)
         {
-            Attack();
-        }
-        else if (_canAttack == false)
-        {
-            StopAttack();
+            TryAttack();
+            if (_canAttack == true)
+            {
+                Attack();
+            }
+            else if (_canAttack == false)
+            {
+                StopAttack();
+            }
         }
     }
 
     void Attack()
     {
+        GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
         PlayerRB.freezeRotation = false;
         PlayerShouldBeMoving = true;
         _canAttack = false;
@@ -207,6 +177,7 @@ public class PlayerControls : MonoBehaviour
 
     void StopAttack()
     {
+        _stopAttackTimer = _stopAttackTimerMax;
         if (_holdingMove == true)
         {
             _moving = true;
@@ -290,22 +261,30 @@ public class PlayerControls : MonoBehaviour
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
         {
-
-            /*if (_attacking == false)
-            {
-                _hasGrounded = true;
-            }*/
             PlayerRB.rotation = (0);
+        }
+
+        if (collision.gameObject.tag == "Ground")
+        {
+            if (_attacking && _bouncing == false)
+            {
+                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x / _slowDownSpeed, PlayerRB.velocity.y / _slowDownSpeed);
+            }
         }
 
         if (collision.gameObject.tag == "Killbox")
         {
-            RestartGame();
+            _dying = true;
+            _bombParticles.SetActive(false);
+            _bouncyParticles.SetActive(false);
+            _fuseParticles.SetActive(false);
+            _animator.SetBool("Die", true);
         }
         if (collision.gameObject.tag == "Bouncy")
         {
-            if (_attacking == true && _bouncing == false)
+            if (_attacking == true)
             {
+                print("bouncy");
                 _bouncing = true;
                 PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
                 _bouncyParticles.SetActive(true);
@@ -320,8 +299,45 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
+    public void DeathTransition()
+    {
+        _deathTransition.SetActive(true);
+    }
+
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag == "Ground")
+    //    {
+    //        //_stopAttackTimer = _stopAttackTimerMax;
+    //    }
+    //}
+
+    public void Die()
+    {
+        RestartGame();
+    }
+
     public void FixedUpdate()
     {
+        if (_canExplode == true)
+        {
+            _fuseParticles.SetActive(true);
+        }
+        else
+        {
+            _fuseParticles.SetActive(false);
+        }
+
+        if (_grounded == true && _attacking == true && _bouncing == false)
+        {
+            _stopAttackTimer -= Time.deltaTime;
+            if (_stopAttackTimer <= 0)
+            {
+                _stopAttackTimer = _stopAttackTimerMax;
+                StopAttack();
+            }
+        }
+
         if (coyoteTimeCounter > 0f)
         {
             //Checks if the player is colliding with something, and if so turns off InAir and makes sure the double jump doesn't occur
@@ -361,12 +377,50 @@ public class PlayerControls : MonoBehaviour
 
         }
         
+        if (_cutscene == true || _dying == true)
+        {
+            PlayerRB.velocity = new Vector2(0, 0);
+        }
 
     }
 
 
+    public void EquipTNTEndCutscene()
+    {
+        _animator.SetBool("TNT", true);
+        _animator.SetBool("EquipTNTCutscene", false);
+        _cutscene = false;
+    }
+    public void UnequipTNTEndCutscene()
+    {
+        _animator.SetBool("TNT", false);
+        _animator.SetBool("UnequipTNTCutscene", false);
+        _cutscene = false;
+    }
+    
+    public void CanExplode()
+    {
+        _canExplode = true;
+    }
+    public void CannotExplode()
+    {
+        _canExplode = false;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "EquipTNTCutscene")
+        {
+            _animator.SetBool("EquipTNTCutscene", true);
+            _cutscene = true;
+            Destroy(collision.gameObject);
+        }
+        if (collision.gameObject.tag == "UnequipTNTCutscene")
+        {
+            StopAttack();
+            _animator.SetBool("UnequipTNTCutscene", true);
+            _cutscene = true;
+            Destroy(collision.gameObject);
+        }
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")//Checks if the player is touching the ground
         {
@@ -429,16 +483,6 @@ public class PlayerControls : MonoBehaviour
     {
         PlayerRB.gravityScale = BaseGravity;
 
-        //if (_grounded = true && _moving == true)
-        //{
-        //    _animator.SetBool("Walking", true);
-        //} 
-
-        //if (_grounded = true && PlayerRB.velocity.y != 0)
-        //{
-        //    _animator.SetBool("Walking", true);
-        //} 
-
         if (_moving == true && _velocityY > -2)
         {
             if (_bouncing == false)
@@ -481,14 +525,14 @@ public class PlayerControls : MonoBehaviour
             _animator.SetBool("Walking", false);
         }
 
-        if (_colliding == true)
-        {
-            coyoteTimeCounter = coyoteTime;
-        }
-        else
-        {
-            coyoteTimeCounter -= Time.deltaTime;
-        }
+        //if (_colliding == true)
+        //{
+        //    coyoteTimeCounter = coyoteTime;
+        //}
+        //else
+        //{
+        //    coyoteTimeCounter -= Time.deltaTime;
+        //}
 
         //if (Walking == true)
         //{
@@ -544,7 +588,12 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_RestartPerformed(InputAction.CallbackContext obj)
     {//Sets the game back to the previous checkpoint
-         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+     //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        _dying = true;
+        _bombParticles.SetActive(false);
+        _bouncyParticles.SetActive(false);
+        _fuseParticles.SetActive(false);
+        _animator.SetBool("Die", true);
     }
 
     public void RestartGame()
