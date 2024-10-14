@@ -12,6 +12,9 @@ TagManager:
   - Stop
   - Bomb
   - Explosion
+  - Cutscene
+  - EquipTNTCutscene
+  - UnequipTNTCutscene
   layers:
   - Default
   - TransparentFX
