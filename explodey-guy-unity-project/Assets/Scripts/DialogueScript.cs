@@ -13,12 +13,23 @@ public class NPC : MonoBehaviour
     public float wordSpeed;
     public bool playerIsClose;
     [SerializeField] private bool _cutscene;
+    [SerializeField] private bool _cameraSwapper;
+    [SerializeField] private bool _sayNewText;
+    [SerializeField] private GameObject _cutsceneStop;
+    [SerializeField] private GameObject _otherText;
+    [SerializeField] private GameObject _thisText;
+    [SerializeField] private GameObject _interactButton;
+    [SerializeField] private SwapCams _swapCams;
 
     public PlayerInput MPI;
     private InputAction interact;
 
     private void Awake()
     {
+        if (_cutscene == true)
+        {
+            _cutsceneStop.SetActive(true);
+        }
         MPI = GetComponent<PlayerInput>();
         interact = MPI.currentActionMap.FindAction("Interact");
         interact.started += Handle_Interact;
@@ -37,6 +48,10 @@ public class NPC : MonoBehaviour
             if (!dialoguePanel.activeInHierarchy)
             {
                 dialoguePanel.SetActive(true);
+                if (_cutscene == false)
+                {
+                    _interactButton.SetActive(false);
+                }
                 StartCoroutine(Typing());
             }
             else if (dialogueText.text == dialogue[index])
@@ -54,19 +69,6 @@ public class NPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.E) && playerIsClose)
-        //{
-        //    if (!dialoguePanel.activeInHierarchy)
-        //    {
-        //        dialoguePanel.SetActive(true);
-        //        StartCoroutine(Typing());
-        //    }
-        //    else if (dialogueText.text == dialogue[index])
-        //    {
-        //        NextLine();
-        //    }
-
-        //}
         if (Input.GetKeyDown(KeyCode.Q) && dialoguePanel.activeInHierarchy)
         {
             RemoveText();
@@ -100,6 +102,24 @@ public class NPC : MonoBehaviour
         else
         {
             RemoveText();
+            if (_cutscene == false)
+            {
+                _interactButton.SetActive(true);
+            }
+            else if (_cutscene == true)
+            {
+                _cutscene = false;
+                _cutsceneStop.SetActive(false);
+            }
+            if (_cameraSwapper == true)
+            {
+                _swapCams.SwapCamSwap();
+            }
+            if (_sayNewText == true)
+            {
+                _otherText.SetActive(true);
+                _thisText.SetActive(false);
+            }
         }
     }
 
@@ -108,7 +128,11 @@ public class NPC : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerIsClose = true;
-            if (_cutscene == true)
+            if (_cutscene == false)
+            {
+                _interactButton.gameObject.SetActive(true);
+            }
+            else if (_cutscene == true)
             {
                 if (!dialoguePanel.activeInHierarchy)
                 {
@@ -129,6 +153,7 @@ public class NPC : MonoBehaviour
         {
             playerIsClose = false;
             RemoveText();
+            _interactButton.gameObject.SetActive(false);
         }
     }
 }
