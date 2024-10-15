@@ -221,13 +221,16 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_MoveStarted(InputAction.CallbackContext obj)
     {
-        _holdingMove = true;
-        if (_canMove == true)
+        if (_cutscene == false)
         {
-            //Can only be active if dash isn't occuring
-            //Turns on the movement command
-            PlayerShouldBeMoving = true;
-            _moving = true;
+            _holdingMove = true;
+            if (_canMove == true)
+            {
+                //Can only be active if dash isn't occuring
+                //Turns on the movement command
+                PlayerShouldBeMoving = true;
+                _moving = true;
+            }
         }
     }
     private void Handle_MoveCanceled(InputAction.CallbackContext obj)
@@ -421,6 +424,12 @@ public class PlayerControls : MonoBehaviour
             _cutscene = true;
             Destroy(collision.gameObject);
         }
+        if (collision.gameObject.tag == "Cutscene")
+        {
+            _cutscene = true;
+            _holdingMove = false;
+            _moving = false;
+        }
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")//Checks if the player is touching the ground
         {
@@ -456,6 +465,10 @@ public class PlayerControls : MonoBehaviour
             StopAttack();
             PlayerRB.rotation = (0);
         }
+        //if (collision.gameObject.tag == "Cutscene")
+        //{
+        //    _cutscene = false;
+        //}
     }
 
     private void OnTriggerExit2D(Collider2D collision)
