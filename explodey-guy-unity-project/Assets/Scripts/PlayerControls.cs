@@ -76,6 +76,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private Collider2D _collider;
     [SerializeField] private PhysicsMaterial2D _bounceMaterial;
     [SerializeField] private PhysicsMaterial2D _baseMaterial;
+    [SerializeField] private ParticleSystem _dust;
 
     // public GameManager GM;
 
@@ -501,6 +502,7 @@ public class PlayerControls : MonoBehaviour
             if (_bouncing == false)
             {
                 _animator.SetBool("Walking", true);
+                _dust.Play();
             }
         }
 
@@ -536,6 +538,7 @@ public class PlayerControls : MonoBehaviour
         if (PlayerRB.velocity.y < -2 || _moving == false)
         {
             _animator.SetBool("Walking", false);
+            _dust.Stop();
         }
 
         //if (_colliding == true)
@@ -569,12 +572,23 @@ public class PlayerControls : MonoBehaviour
             _lastDirection = -1;
         }
 
-        if (PlayerRB.velocity.x > 0)
+        //if (PlayerRB.velocity.x > 0)
+        //{
+        //    gameObject.transform.localScale = new Vector2(1, 1);
+        //    _currentDirection = 1;
+        //}
+        //else if (PlayerRB.velocity.x < 0)
+        //{
+        //    gameObject.transform.localScale = new Vector2(-1, 1);
+        //    _currentDirection = -1;
+        //}
+        
+        if (_lastDirection > 0)
         {
             gameObject.transform.localScale = new Vector2(1, 1);
             _currentDirection = 1;
         }
-        else if (PlayerRB.velocity.x < 0)
+        else if (_lastDirection < 0)
         {
             gameObject.transform.localScale = new Vector2(-1, 1);
             _currentDirection = -1;
