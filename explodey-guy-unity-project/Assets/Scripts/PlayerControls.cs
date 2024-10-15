@@ -490,6 +490,10 @@ public class PlayerControls : MonoBehaviour
             }
             
         }
+        if (collision.gameObject.tag == "Cutscene")
+        {
+            _cutscene = false;
+        }
     }
 
     // Update is called once per frame
