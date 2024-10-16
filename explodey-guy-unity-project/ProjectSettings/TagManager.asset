@@ -15,6 +15,10 @@ TagManager:
   - Cutscene
   - EquipTNTCutscene
   - UnequipTNTCutscene
+  - Forward
+  - Backward
+  - Explode
+  - StopExplode
   layers:
   - Default
   - TransparentFX
