@@ -12,6 +12,7 @@ public class NPCMovement : MonoBehaviour
     [SerializeField] private bool _moving;
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private GameObject _explosion;
+    [SerializeField] private GameObject _fuse;
     [SerializeField] private Transform _self;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _jumpPower;
@@ -30,6 +31,10 @@ public class NPCMovement : MonoBehaviour
         
 
         print(_color + "_Action_" + _equipment);
+        if (_equipment == "Unequipped")
+        {
+            _fuse.SetActive(false);
+        }
     }
 
     public void Update()
