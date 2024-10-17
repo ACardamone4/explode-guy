@@ -15,6 +15,7 @@ public class NPC : MonoBehaviour
     [SerializeField] private bool _cutscene;
     [SerializeField] private bool _cameraSwapper;
     [SerializeField] private bool _sayNewText;
+    [SerializeField] private bool _repeatCutscene;
     [SerializeField] private GameObject _cutsceneStop;
     [SerializeField] private GameObject _otherText;
     [SerializeField] private GameObject _thisText;
@@ -108,7 +109,10 @@ public class NPC : MonoBehaviour
             }
             else if (_cutscene == true)
             {
-                _cutscene = false;
+                if (_repeatCutscene == false)
+                {
+                    _cutscene = false;
+                }
                 _cutsceneStop.SetActive(false);
             }
             if (_cameraSwapper == true)
@@ -136,6 +140,7 @@ public class NPC : MonoBehaviour
             {
                 if (!dialoguePanel.activeInHierarchy)
                 {
+                    _cutsceneStop.SetActive(true);
                     dialoguePanel.SetActive(true);
                     StartCoroutine(Typing());
                 }
