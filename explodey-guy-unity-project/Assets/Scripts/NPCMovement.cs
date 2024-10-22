@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class NPCMovement : MonoBehaviour
 {
@@ -25,16 +22,14 @@ public class NPCMovement : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private string _color;
     [SerializeField] private string _equipment;
-
+    private int swapIntColor;
+    private int swapIntEquipment;
     public void Awake()
     {
         
 
         print(_color + "_Action_" + _equipment);
-        if (_equipment == "Unequipped")
-        {
-            _fuse.SetActive(false);
-        }
+        
     }
 
     public void Update()
@@ -64,6 +59,14 @@ public class NPCMovement : MonoBehaviour
         {
 
             _animator.Play(_color + "_NPC_Idle_" + _equipment);
+        }
+
+        if (_equipment == "Unequipped" || _color != "Yellow")
+        {
+            _fuse.SetActive(false);
+        } else if (_equipment == "Equipped" && _color == "Yellow")
+        {
+            _fuse.SetActive(true);
         }
     }
 
@@ -101,6 +104,33 @@ public class NPCMovement : MonoBehaviour
         Stop();
     }
 
+    public void SwapInNPC()
+    {
+        swapIntColor = Random.Range(0, 4);
+        if (swapIntColor == 0)
+        {
+            _color = "Red";
+        }
+        else if (swapIntColor == 1)
+        {
+            _color = "Blue";
+        } else if (swapIntColor == 2)
+        {
+            _color = "Green";
+        } else if (swapIntColor == 3)
+        {
+            _color = "Yellow";
+        }
+       swapIntEquipment = Random.Range(0, 2);
+        if (swapIntEquipment == 0)
+        {
+            _equipment = "Equipped";
+        } else if (swapIntEquipment == 1)
+        {
+            _equipment = "Unequipped";
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Killbox"))
@@ -130,6 +160,14 @@ public class NPCMovement : MonoBehaviour
         if (collision.CompareTag("StopExplode"))
         {
             StopExplode();
+        }
+        if (collision.CompareTag("NewNPC"))
+        {
+            SwapInNPC();
+        }
+        if (collision.CompareTag("NPCSpeedRando"))
+        {
+            _movementSpeed = Random.Range(10, 30);
         }
 
     }
