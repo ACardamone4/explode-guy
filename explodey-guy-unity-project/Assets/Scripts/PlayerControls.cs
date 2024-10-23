@@ -412,6 +412,14 @@ public class PlayerControls : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Killbox")
+        {
+            _dying = true;
+            _bombParticles.SetActive(false);
+            _bouncyParticles.SetActive(false);
+            _fuseParticles.SetActive(false);
+            _animator.SetBool("Die", true);
+        }
         if (collision.gameObject.tag == "EquipTNTCutscene")
         {
             _animator.SetBool("EquipTNTCutscene", true);
