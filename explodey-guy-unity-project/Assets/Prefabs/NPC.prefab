@@ -4887,6 +4887,7 @@ MonoBehaviour:
   _grounded: 0
   _falling: 0
   _moving: 0
+  _forklift: 0
   _rigidBody: {fileID: 4117095194250318011}
   _explosion: {fileID: 3781362513746207069, guid: 3e15684841538e742a641579f7c030e3, type: 3}
   _fuse: {fileID: 4993119414305974992}
