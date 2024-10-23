@@ -7,6 +7,7 @@ public class NPCMovement : MonoBehaviour
     [SerializeField] private bool _grounded;
     [SerializeField] private bool _falling;
     [SerializeField] private bool _moving;
+    [SerializeField] private bool _forklift;
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private GameObject _explosion;
     [SerializeField] private GameObject _fuse;
@@ -106,21 +107,28 @@ public class NPCMovement : MonoBehaviour
 
     public void SwapInNPC()
     {
-        swapIntColor = Random.Range(0, 4);
-        if (swapIntColor == 0)
+        if (!_forklift)
         {
-            _color = "Red";
+            swapIntColor = Random.Range(0, 4);
+
+            if (swapIntColor == 0)
+            {
+                _color = "Red";
+            }
+            else if (swapIntColor == 1)
+            {
+                _color = "Blue";
+            }
+            else if (swapIntColor == 2)
+            {
+                _color = "Green";
+            }
+            else if (swapIntColor == 3)
+            {
+                _color = "Yellow";
+            }
         }
-        else if (swapIntColor == 1)
-        {
-            _color = "Blue";
-        } else if (swapIntColor == 2)
-        {
-            _color = "Green";
-        } else if (swapIntColor == 3)
-        {
-            _color = "Yellow";
-        }
+       
        swapIntEquipment = Random.Range(0, 2);
         if (swapIntEquipment == 0)
         {
