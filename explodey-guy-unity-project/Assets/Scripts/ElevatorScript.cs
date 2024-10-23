@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,7 @@ public class ElevatorScript : MonoBehaviour
     public bool playerIsClose;
     [SerializeField] private GameObject _interactButton;
     [SerializeField] private GameObject _levelTransition;
+    [SerializeField] private GameObject _playerTeleport;
     [SerializeField] private GameObject _player;
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -46,8 +48,23 @@ public class ElevatorScript : MonoBehaviour
     public void SpawnLevelTransition()
     {
         _levelTransition.SetActive(true);
-        _player.SetActive(false);
+        //_player.SetActive(false);
+        if (this.gameObject.activeInHierarchy == false)
+        {
+            return;
+        }
+        else
+        {
+            StartCoroutine(Teleport());
+        }
     }
+
+    IEnumerator Teleport()
+    {
+        yield return new WaitForSeconds(5);
+        _playerTeleport.SetActive(true);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
