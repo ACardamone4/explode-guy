@@ -22,6 +22,7 @@ TagManager:
   - Reset
   - NewNPC
   - NPCSpeedRando
+  - EnemyKillBox
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 
