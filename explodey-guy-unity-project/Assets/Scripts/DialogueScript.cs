@@ -2,11 +2,14 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class NPC : MonoBehaviour
 {
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
+    public TextMeshProUGUI speakerNameObject;
+    public string speakerName;
     public string[] dialogue;
     private int index = 0;
 
@@ -21,12 +24,15 @@ public class NPC : MonoBehaviour
     [SerializeField] private GameObject _thisText;
     [SerializeField] private GameObject _interactButton;
     [SerializeField] private SwapCams _swapCams;
+    [SerializeField] private Sprite _speakerSprite;
+    [SerializeField] private Image _speakerImageObject;
 
     public PlayerInput MPI;
     private InputAction interact;
 
     private void Awake()
     {
+        
         if (_cutscene == true)
         {
             _cutsceneStop.SetActive(true);
@@ -46,11 +52,13 @@ public class NPC : MonoBehaviour
     {
         if (playerIsClose)
         {
+            
             if (!dialoguePanel.activeInHierarchy)
             {
                 dialoguePanel.SetActive(true);
                 if (_cutscene == false)
                 {
+                    
                     _interactButton.SetActive(false);
                 }
                 StartCoroutine(Typing());
@@ -131,6 +139,8 @@ public class NPC : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            speakerNameObject.text = speakerName;
+            _speakerImageObject.sprite = _speakerSprite;
             playerIsClose = true;
             if (_cutscene == false)
             {
