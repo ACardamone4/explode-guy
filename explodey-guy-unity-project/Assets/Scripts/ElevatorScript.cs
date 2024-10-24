@@ -16,9 +16,11 @@ public class ElevatorScript : MonoBehaviour
 
     public PlayerInput MPI;
     private InputAction interact;
+    private bool canInteract;
 
     private void Awake()
     {
+        canInteract = true;
         MPI = GetComponent<PlayerInput>();
         interact = MPI.currentActionMap.FindAction("Interact");
         interact.started += Handle_Interact;
@@ -32,8 +34,10 @@ public class ElevatorScript : MonoBehaviour
 
     private void Handle_Interact(InputAction.CallbackContext obj)
     {
-        if (playerIsClose)
+        if (playerIsClose && canInteract)
         {
+            canInteract = false;
+            _interactButton.SetActive(false);
             _stopPlayerObject.SetActive(true);
             _animator.Play("Elevator_Open");
         }

@@ -52,7 +52,7 @@ public class NPCMovement : MonoBehaviour
             _animator.Play(_color + "_NPC_Walking_" + _equipment);
         }
 
-        if (_rigidBody.velocity.y < -1)
+        if (_rigidBody.velocity.y < -1 && _color == "Yellow")
         {
             _animator.Play(_color + "_NPC_Fall_" + _equipment);
         } 
