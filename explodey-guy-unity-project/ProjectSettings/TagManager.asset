@@ -23,6 +23,7 @@ TagManager:
   - NewNPC
   - NPCSpeedRando
   - EnemyKillBox
+  - Elevator
   layers:
   - Default
   - TransparentFX

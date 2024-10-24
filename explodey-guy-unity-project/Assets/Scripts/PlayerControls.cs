@@ -12,8 +12,8 @@ public class PlayerControls : MonoBehaviour
     private InputAction quit;
     private InputAction attack;
 
-    private float coyoteTime = 0.2f;
-    private float coyoteTimeCounter;
+    //private float coyoteTime = 0.2f;
+    //private float coyoteTimeCounter;
     public float PlayerSpeed;
     public bool PlayerShouldBeMoving;
     private bool playerJump;
@@ -342,17 +342,17 @@ public class PlayerControls : MonoBehaviour
             }
         }
 
-        if (coyoteTimeCounter > 0f)
-        {
-            //Checks if the player is colliding with something, and if so turns off InAir and makes sure the double jump doesn't occur
-            //DoubleJump = false;
-            InAir = false;
+        //if (coyoteTimeCounter > 0f)
+        //{
+        //    //Checks if the player is colliding with something, and if so turns off InAir and makes sure the double jump doesn't occur
+        //    //DoubleJump = false;
+        //    InAir = false;
 
-            //Animator.SetBool("InAir", false);
+        //    //Animator.SetBool("InAir", false);
 
-            //Animator.SetBool("OnGround", true);
+        //    //Animator.SetBool("OnGround", true);
 
-        }
+        //}
 
         if (_attacking == false)
         {
