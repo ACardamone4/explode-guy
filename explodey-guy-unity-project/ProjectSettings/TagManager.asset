@@ -24,6 +24,7 @@ TagManager:
   - NPCSpeedRando
   - EnemyKillBox
   - Elevator
+  - GiveTNT
   layers:
   - Default
   - TransparentFX

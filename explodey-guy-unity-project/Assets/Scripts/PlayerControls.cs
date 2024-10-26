@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -68,6 +67,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private GameObject _bouncyParticles;
     [SerializeField] private GameObject _bombParticles;
     [SerializeField] private GameObject _fuseParticles;
+    [SerializeField] private GameObject _explosionBox;
     [SerializeField] private Animator _animator;
 
     [SerializeField] private float _velocityX;
@@ -154,6 +154,7 @@ public class PlayerControls : MonoBehaviour
     void Attack()
     {
         GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+        _explosionBox.SetActive(true);
         PlayerRB.freezeRotation = false;
         PlayerShouldBeMoving = true;
         _canAttack = false;
@@ -195,6 +196,7 @@ public class PlayerControls : MonoBehaviour
         _bombed = false;
         _bouncyParticles.SetActive(false);
         _bombParticles.SetActive(false);
+        _explosionBox.SetActive(false);
         _attacking = false;
         _canMove = true;
         //TryAttack();
@@ -439,6 +441,10 @@ public class PlayerControls : MonoBehaviour
             _holdingMove = false;
             _moving = false;
         }
+        if (collision.gameObject.tag == "GiveTNT")
+        {
+            _canExplode = true;
+        }
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")//Checks if the player is touching the ground
         {
@@ -507,6 +513,11 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+        if (_canExplode == true)
+        {
+            _animator.SetBool("TNT", true);
+        }
+
         PlayerRB.gravityScale = BaseGravity;
 
         if (_moving == true && _velocityY > -2)
