@@ -88,7 +88,10 @@ public class NPC : MonoBehaviour
     {
         dialogueText.text = "";
         index = 0;
-        dialoguePanel.SetActive(false);
+        if (dialoguePanel.activeInHierarchy && dialoguePanel.gameObject != null)
+        {
+            dialoguePanel.SetActive(false);
+        }
     }
 
     IEnumerator Typing()
