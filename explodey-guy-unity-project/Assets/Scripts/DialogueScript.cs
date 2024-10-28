@@ -19,6 +19,7 @@ public class NPC : MonoBehaviour
     [SerializeField] private bool _cameraSwapper;
     [SerializeField] private bool _sayNewText;
     [SerializeField] private bool _repeatCutscene;
+    //[SerializeField] private bool _typing;
     [SerializeField] private GameObject _cutsceneStop;
     [SerializeField] private GameObject _otherText;
     [SerializeField] private GameObject _thisText;
@@ -67,6 +68,12 @@ public class NPC : MonoBehaviour
             {
                 NextLine();
             }
+            //if (_typing)
+            //{
+            //    _typing = false;
+            //    StopCoroutine(Typing());
+            //    NextLine();
+            //}
         }
     }
 
@@ -91,11 +98,15 @@ public class NPC : MonoBehaviour
         if (dialoguePanel.activeInHierarchy && dialoguePanel.gameObject != null)
         {
             dialoguePanel.SetActive(false);
+        } else
+        {
+            print("E");
         }
     }
 
     IEnumerator Typing()
     {
+        //_typing = true;
         foreach (char letter in dialogue[index].ToCharArray())
         {
             dialogueText.text += letter;
