@@ -8,6 +8,7 @@ public class NPCMovement : MonoBehaviour
     [SerializeField] private bool _falling;
     [SerializeField] private bool _moving;
     [SerializeField] private bool _forklift;
+    [SerializeField] private bool _die;
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private GameObject _explosion;
     [SerializeField] private GameObject _fuse;
@@ -143,9 +144,12 @@ public class NPCMovement : MonoBehaviour
     {
         if (collision.CompareTag("Killbox"))
         {
-            GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
-            new WaitForSeconds(.2f);
-            Destroy(gameObject);
+            if (!_die)
+            {
+                GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
+                new WaitForSeconds(.2f);
+                Destroy(gameObject);
+            }
         }
         if (collision.CompareTag("Stop"))
         {

@@ -17,7 +17,7 @@ public class PlayerControls : MonoBehaviour
     public bool PlayerShouldBeMoving;
     private bool playerJump;
     public Rigidbody2D PlayerRB;
-    private float moveDirection;
+    [SerializeField] private float moveDirection;
     public float JumpForce;
     private InputAction jump;
     public bool PerformLaunch;
@@ -44,6 +44,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private bool _holdingMove;
     [SerializeField] private bool _cutscene;
     [SerializeField] private bool _canExplode;
+    [SerializeField] private bool _showFuse;
     [SerializeField] private bool _dying;
     [SerializeField] private float _explosionPower;
     [SerializeField] private float _rotationAmount;
@@ -159,6 +160,7 @@ public class PlayerControls : MonoBehaviour
         PlayerShouldBeMoving = true;
         _canAttack = false;
         _attacking = true;
+        _showFuse = false;
         _canMove = false;
         _hasGrounded = false;
         //_animator.SetBool("Attack", true);
@@ -253,17 +255,6 @@ public class PlayerControls : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        /*if (_attacking == true)
-        {
-            if (_bouncing == true)
-            {
-                GameObject BouncyAttackInstance = Instantiate(_bouncyExplosion, _self.position, _self.rotation);
-            }
-            else
-            {
-                GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
-            }
-        }*/
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
         {
@@ -310,14 +301,6 @@ public class PlayerControls : MonoBehaviour
         _deathTransition.SetActive(true);
     }
 
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.tag == "Ground")
-    //    {
-    //        //_stopAttackTimer = _stopAttackTimerMax;
-    //    }
-    //}
-
     public void Die()
     {
         RestartGame();
@@ -325,14 +308,6 @@ public class PlayerControls : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (_canExplode == true)
-        {
-            _fuseParticles.SetActive(true);
-        }
-        else
-        {
-            _fuseParticles.SetActive(false);
-        }
 
         if (_grounded == true && _attacking == true && _bouncing == false)
         {
@@ -344,31 +319,10 @@ public class PlayerControls : MonoBehaviour
             }
         }
 
-        //if (coyoteTimeCounter > 0f)
-        //{
-        //    //Checks if the player is colliding with something, and if so turns off InAir and makes sure the double jump doesn't occur
-        //    //DoubleJump = false;
-        //    InAir = false;
-
-        //    //Animator.SetBool("InAir", false);
-
-        //    //Animator.SetBool("OnGround", true);
-
-        //}
-
         if (_attacking == false)
         {
             print("Not attacking");
             PlayerRB.rotation = (0);
-        }
-
-
-        if (InAir == true) //Makes animations show the player is moving and in the air
-        {
-            // Animator.SetBool("InAir", true);
-            //Animator.SetBool("IsMoving", true);
-            //Animator.SetBool("OnGround", false);
-            //Animator.SetBool("Dash", false);
         }
 
         if (PlayerShouldBeMoving == true)
@@ -386,6 +340,8 @@ public class PlayerControls : MonoBehaviour
         if (_cutscene == true || _dying == true)
         {
             PlayerRB.velocity = new Vector2(0, 0);
+            PlayerRB.rotation = (0);
+            PlayerRB.freezeRotation = true;
         }
 
     }
@@ -406,6 +362,7 @@ public class PlayerControls : MonoBehaviour
     
     public void CanExplode()
     {
+        _showFuse = true;
         _canExplode = true;
     }
     public void CannotExplode()
@@ -414,6 +371,13 @@ public class PlayerControls : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Refresh")
+        {
+            _canAttack = true;
+            _canExplode = true;
+            _showFuse = true;
+        }
+
         if (collision.gameObject.tag == "Killbox")
         {
             _dying = true;
@@ -445,27 +409,6 @@ public class PlayerControls : MonoBehaviour
         {
             _canExplode = true;
         }
-
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")//Checks if the player is touching the ground
-        {
-                PlayerRB.gravityScale = BaseGravity;
-                _grounded = true;
-                //GroundSaver = true;
-                print("Touch Grass");
-
-                //IsColliding = true;
-
-                //Turns on ground animations
-                //Animator.SetBool("OnGround", true);
-                //Animator.SetBool("InAir", false);
-                //Animator.SetBool("DoubleJump", false);
-                //Animator.SetBool("Dash", false);
-                InAir = false;
-                // CanDoubleJump = false;
-                //JumpIndicator.gameObject.SetActive(false);
-                _colliding = true;
-
-            }
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
         {
             
@@ -486,10 +429,27 @@ public class PlayerControls : MonoBehaviour
         //}
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void Grounded()
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
-        {//Makes the game realize the player is not touching the ground
+            PlayerRB.gravityScale = BaseGravity;
+            _grounded = true;
+            print("Touch Grass");
+            InAir = false;
+            _colliding = true;
+            if (_attacking == false)
+            {
+                if (_canExplode == true)
+                {
+                    _showFuse = true;
+                }
+                _hasGrounded = true;
+                PlayerRB.rotation = (0);
+            }
+    }
+
+    public void NotGrounded()
+    {
+        //Makes the game realize the player is not touching the ground
             //print("Dont Touch Grass");
             InAir = true;
             // CoyoteTime = true;
@@ -502,8 +462,12 @@ public class PlayerControls : MonoBehaviour
             {
                 _hasGrounded = true;
             }
-            
-        }
+
+        
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
         if (collision.gameObject.tag == "Cutscene")
         {
             _cutscene = false;
@@ -513,6 +477,19 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+
+        if (_showFuse == true)
+        {
+            _fuseParticles.SetActive(true);
+        } else
+        {
+            _fuseParticles.SetActive(false);
+        }
+
+        Time.timeScale = 1;
+            Time.fixedDeltaTime = Time.deltaTime;
+        
+
         if (_canExplode == true)
         {
             _animator.SetBool("TNT", true);
@@ -564,17 +541,7 @@ public class PlayerControls : MonoBehaviour
             _dust.Stop();
         }
 
-        //if (_colliding == true)
-        //{
-        //    coyoteTimeCounter = coyoteTime;
-        //}
-        //else
-        //{
-        //    coyoteTimeCounter -= Time.deltaTime;
-        //}
 
-        //if (Walking == true)
-        //{
         if (PlayerShouldBeMoving == true)
         {
             //Checks what direction the player should be moving(Horizontally)
@@ -594,17 +561,6 @@ public class PlayerControls : MonoBehaviour
             //gameObject.transform.localScale = new Vector2(-1, 1);
             _lastDirection = -1;
         }
-
-        //if (PlayerRB.velocity.x > 0)
-        //{
-        //    gameObject.transform.localScale = new Vector2(1, 1);
-        //    _currentDirection = 1;
-        //}
-        //else if (PlayerRB.velocity.x < 0)
-        //{
-        //    gameObject.transform.localScale = new Vector2(-1, 1);
-        //    _currentDirection = -1;
-        //}
         
         if (_lastDirection > 0)
         {
@@ -616,29 +572,15 @@ public class PlayerControls : MonoBehaviour
             gameObject.transform.localScale = new Vector2(-1, 1);
             _currentDirection = -1;
         }
-        //}
-
-        //if (inputHorizontal < 0)
-        //{
-        //    //Makes the player look left
-        //    gameObject.transform.localScale = new Vector2(-1, 1);
-        //}
-        if (inputHorizontal == 0 && InAir == false)
-        {//Makes the player go to idle animation
-            //Animator.SetBool("IsMoving", false);
-        }
     }
     private void Handle_QuitPerformed(InputAction.CallbackContext onj)
-    {//Quits the game when quit is pressed
-        //print("Handled quit Performed");
-        //QuitGame();
+    {
         Application.Quit();
         print("Quit");
     }
 
     private void Handle_RestartPerformed(InputAction.CallbackContext obj)
-    {//Sets the game back to the previous checkpoint
-     //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    {
         _dying = true;
         _bombParticles.SetActive(false);
         _bouncyParticles.SetActive(false);
