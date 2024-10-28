@@ -25,6 +25,7 @@ TagManager:
   - EnemyKillBox
   - Elevator
   - GiveTNT
+  - Refresh
   layers:
   - Default
   - TransparentFX

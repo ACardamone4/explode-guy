@@ -4,8 +4,10 @@ using UnityEngine;
 public class BreakableObject : MonoBehaviour
 {
     [SerializeField] private float _breakingDuration;
+    [SerializeField] private bool _respawns;
     [SerializeField] private Transform _self;
     [SerializeField] private GameObject _rubble;
+    [SerializeField] private GameObject _blockOutline;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -19,6 +21,10 @@ public class BreakableObject : MonoBehaviour
     {
         yield return new WaitForSeconds(_breakingDuration);
         GameObject BrokenParticles = Instantiate(_rubble, _self.position, _self.rotation);
+        if (_respawns)
+        {
+            GameObject BlockRefresh = Instantiate(_blockOutline, _self.position, _self.rotation);
+        }
         Destroy(gameObject);
     }
 
@@ -27,6 +33,10 @@ public class BreakableObject : MonoBehaviour
         if (collision.gameObject.tag == "Explosion")
         {
             GameObject BrokenParticles = Instantiate(_rubble, _self.position, _self.rotation);
+            if (_respawns)
+            {
+                GameObject BlockRefresh = Instantiate(_blockOutline, _self.position, _self.rotation);
+            }
             Destroy(gameObject);
         }
     }
