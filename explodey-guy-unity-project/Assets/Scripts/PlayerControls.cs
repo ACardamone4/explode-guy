@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -48,6 +49,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private bool _dying;
     [SerializeField] private float _explosionPower;
     [SerializeField] private float _rotationAmount;
+    //[SerializeField] private float _shakyCamDuration;
 
     [SerializeField] private GameObject _explosion;
     [SerializeField] private GameObject _bouncyExplosion;
@@ -69,6 +71,8 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private GameObject _bombParticles;
     [SerializeField] private GameObject _fuseParticles;
     [SerializeField] private GameObject _explosionBox;
+    //[SerializeField] private GameObject _shakyCam;
+    //[SerializeField] private GameObject _basicCam;
     [SerializeField] private Animator _animator;
 
     [SerializeField] private float _velocityX;
@@ -154,6 +158,10 @@ public class PlayerControls : MonoBehaviour
 
     void Attack()
     {
+        //_basicCam.SetActive(false);
+        //_shakyCam.SetActive(true);
+        //StopAllCoroutines();
+        //StartCoroutine(StopShakyCam());
         GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
         _explosionBox.SetActive(true);
         PlayerRB.freezeRotation = false;
@@ -179,8 +187,18 @@ public class PlayerControls : MonoBehaviour
         // StartCoroutine(attackDuration());
     }
 
+    //public IEnumerator StopShakyCam()
+    //{
+    //    yield return new WaitForSeconds(_shakyCamDuration);
+    //    _basicCam.SetActive(true);
+    //    _shakyCam.SetActive(false);
+        
+    //}
+
     void StopAttack()
     {
+        //StopAllCoroutines();
+        //StartCoroutine(StopShakyCam());
         _stopAttackTimer = _stopAttackTimerMax;
         if (_holdingMove == true)
         {
@@ -355,6 +373,7 @@ public class PlayerControls : MonoBehaviour
     }
     public void UnequipTNTEndCutscene()
     {
+        _showFuse = false;
         _animator.SetBool("TNT", false);
         _animator.SetBool("UnequipTNTCutscene", false);
         _cutscene = false;
