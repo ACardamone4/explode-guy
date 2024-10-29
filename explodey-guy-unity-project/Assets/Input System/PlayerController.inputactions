@@ -141,7 +141,18 @@
                 {
                     "name": "",
                     "id": "4b016dd1-01dc-4e77-aeef-25f24720fdd8",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b355525-dd47-446b-a717-19d4de05ad79",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -152,7 +163,7 @@
                 {
                     "name": "",
                     "id": "4b4bf751-eb3c-4d02-a295-8854d396b717",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/0",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -11,15 +11,21 @@ public class MenuControls : MonoBehaviour
     /// </summary>
     public void NextScene()
     {
+        print("NextScene");
         Cutscene.SetActive(true);
-        Invoke("LoadScene", _cutsceneTimer);
     }
 
+
+    public void ShowNextScene()
+    {
+        print(SceneManager.GetActiveScene().buildIndex + 1);
+    }
     /// <summary>
     /// Loads the next scene
     /// </summary>
-    private void LoadScene()
+    public void LoadScene()
     {
+        Debug.Log("E");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -38,6 +44,8 @@ public class MenuControls : MonoBehaviour
     /// </summary>
     public void Menu()
     {
+        Time.timeScale = 1;
+        //Time.fixedDeltaTime = Time.deltaTime;
         // Loads the first scene, which is the main menu
         SceneManager.LoadScene(0);
     }
