@@ -16,10 +16,11 @@ public class NPC : MonoBehaviour
     public float wordSpeed;
     public bool playerIsClose;
     [SerializeField] private bool _cutscene;
+    [SerializeField] private bool _interactToCutscene;
     [SerializeField] private bool _cameraSwapper;
     [SerializeField] private bool _sayNewText;
     [SerializeField] private bool _repeatCutscene;
-    //[SerializeField] private bool _typing;
+    [SerializeField] private bool _typing;
     [SerializeField] private GameObject _cutsceneStop;
     [SerializeField] private GameObject _otherText;
     [SerializeField] private GameObject _thisText;
@@ -34,10 +35,10 @@ public class NPC : MonoBehaviour
     private void Awake()
     {
         
-        if (_cutscene == true)
-        {
-            _cutsceneStop.SetActive(true);
-        }
+        //if (_cutscene == true)
+        //{
+        //    _cutsceneStop.SetActive(true);
+        //}
         MPI = GetComponent<PlayerInput>();
         interact = MPI.currentActionMap.FindAction("Interact");
         interact.started += Handle_Interact;
@@ -61,6 +62,9 @@ public class NPC : MonoBehaviour
                 {
                     
                     _interactButton.SetActive(false);
+                } else
+                {
+                    _cutsceneStop.SetActive(true);
                 }
                 StartCoroutine(Typing());
             }
@@ -85,9 +89,23 @@ public class NPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && dialoguePanel.activeInHierarchy)
+        //if (Input.GetKeyDown(KeyCode.Q) && dialoguePanel.activeInHierarchy)
+        //{
+        //    RemoveText();
+        //}
+
+        if (dialogueText.text == dialogue[index])
         {
-            RemoveText();
+            _typing = false;
+        }
+
+        if (_typing)
+        {
+            _interactButton.SetActive(false);
+        }
+        else if (_typing == false && playerIsClose == true)
+        {
+            _interactButton.SetActive(true);
         }
     }
 
@@ -106,7 +124,7 @@ public class NPC : MonoBehaviour
 
     IEnumerator Typing()
     {
-        //_typing = true;
+        _typing = true;
         foreach (char letter in dialogue[index].ToCharArray())
         {
             dialogueText.text += letter;
@@ -162,15 +180,25 @@ public class NPC : MonoBehaviour
             }
             else if (_cutscene == true)
             {
-                if (!dialoguePanel.activeInHierarchy)
+                if (_interactToCutscene == false)
                 {
-                    _cutsceneStop.SetActive(true);
-                    dialoguePanel.SetActive(true);
-                    StartCoroutine(Typing());
-                }
-                else if (dialogueText.text == dialogue[index])
+                    if (!dialoguePanel.activeInHierarchy)
+                    {
+                        StopCoroutine(Typing());
+                        RemoveText();
+                        dialogueText.text = "";
+                        _cutsceneStop.SetActive(true);
+                        dialoguePanel.SetActive(true);
+                        StartCoroutine(Typing());
+                    }
+                    else if (dialogueText.text == dialogue[index])
+                    {
+                        NextLine();
+                    }
+                } 
+                else if (_interactToCutscene == true)
                 {
-                    NextLine();
+                    _interactButton.gameObject.SetActive(true);
                 }
             }
         }
@@ -180,8 +208,10 @@ public class NPC : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerIsClose = false;
+            StopCoroutine(Typing());
             RemoveText();
+            dialogueText.text = "";
+            playerIsClose = false;
             _interactButton.gameObject.SetActive(false);
         }
     }
