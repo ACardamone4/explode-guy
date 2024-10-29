@@ -1,4 +1,4 @@
-using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -54,6 +54,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private GameObject _explosion;
     [SerializeField] private GameObject _bouncyExplosion;
     [SerializeField] private GameObject _deathTransition;
+    [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private Transform _self;
 
     [SerializeField] private bool _grounded;
@@ -82,6 +83,8 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D _bounceMaterial;
     [SerializeField] private PhysicsMaterial2D _baseMaterial;
     [SerializeField] private ParticleSystem _dust;
+
+    [SerializeField] private bool paused;
 
     // public GameManager GM;
 
@@ -142,7 +145,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_Attack(InputAction.CallbackContext obj)
     {
-        if (_canExplode == true && _dying == false)
+        if (_canExplode == true && _dying == false && paused == false)
         {
             TryAttack();
             if (_canAttack == true)
@@ -505,9 +508,16 @@ public class PlayerControls : MonoBehaviour
             _fuseParticles.SetActive(false);
         }
 
-        Time.timeScale = 1;
-            Time.fixedDeltaTime = Time.deltaTime;
-        
+        if (!paused)
+        {
+            Time.timeScale = 1;
+            //Time.fixedDeltaTime = Time.deltaTime;
+        } else if (paused)
+        {
+            Time.timeScale = 0;
+            //Time.fixedDeltaTime = Time.deltaTime;
+        }
+
 
         if (_canExplode == true)
         {
@@ -600,6 +610,42 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_RestartPerformed(InputAction.CallbackContext obj)
     {
+        if (!paused)
+        {
+            Pause();
+        } else
+        {
+            UnPause();
+        }
+        
+        //_dying = true;
+        //_bombParticles.SetActive(false);
+        //_bouncyParticles.SetActive(false);
+        //_fuseParticles.SetActive(false);
+        //_animator.SetBool("Die", true);
+    }
+
+    public void Pause()
+    {
+        print("Pause");
+        _pauseMenu.SetActive(true);
+        paused = true;
+    }
+
+    public void UnPause()
+    {
+        Time.timeScale = 1;
+       // Time.fixedDeltaTime = Time.deltaTime;
+        paused = false;
+        _pauseMenu.SetActive(false);
+    }
+    
+    public void Respawn()
+    {
+        Time.timeScale = 1;
+       // Time.fixedDeltaTime = Time.deltaTime;
+        paused = false;
+        _pauseMenu.SetActive(false);
         _dying = true;
         _bombParticles.SetActive(false);
         _bouncyParticles.SetActive(false);
@@ -612,6 +658,9 @@ public class PlayerControls : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-
+    public void Quit()
+    {
+        Application.Quit();
+    }
 
 }
