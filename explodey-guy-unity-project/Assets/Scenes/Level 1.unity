@@ -2527,7 +2527,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.100654, y: 5.29698, z: -10}
+  m_LocalPosition: {x: 8.770204, y: 5.93438, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -34185,7 +34185,7 @@ MonoBehaviour:
   _moving: 0
   _hasGrounded: 0
   _bouncing: 0
-  _bouncepadBoost: 2
+  _bouncepadBoost: 1
   _bombed: 0
   _bombBoost: -3
   _slowDownSpeed: 1.1
