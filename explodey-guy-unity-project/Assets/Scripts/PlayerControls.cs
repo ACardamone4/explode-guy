@@ -1,4 +1,3 @@
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -11,6 +10,10 @@ public class PlayerControls : MonoBehaviour
     private InputAction restart;
     private InputAction quit;
     private InputAction attack;
+    private InputAction up;
+    private InputAction down;
+    public bool Up;
+    public bool Down;
 
     //private float coyoteTime = 0.2f;
     //private float coyoteTimeCounter;
@@ -117,6 +120,8 @@ public class PlayerControls : MonoBehaviour
         restart = MPI.currentActionMap.FindAction("Restart");
         quit = MPI.currentActionMap.FindAction("Quit");
         attack = MPI.currentActionMap.FindAction("Attack");
+        up = MPI.currentActionMap.FindAction("Up");
+        down = MPI.currentActionMap.FindAction("Down");
         //release = MPI.currentActionMap.FindAction("Release");
 
         MPI.currentActionMap.Enable();
@@ -125,11 +130,15 @@ public class PlayerControls : MonoBehaviour
         restart.performed += Handle_RestartPerformed;
         quit.performed += Handle_QuitPerformed;
         attack.performed += Handle_Attack;
+        up.started += Handle_Up;
+        up.canceled += Handle_UpStop;
+        down.started += Handle_Down;
+        down.canceled += Handle_DownStop;
         //if (_animator == null)
         //{
         //    _animator.enabled = true;
         //}
-        
+
     }
 
     public void OnDisable()
@@ -141,6 +150,32 @@ public class PlayerControls : MonoBehaviour
         quit.performed -= Handle_QuitPerformed;
         attack.performed -= Handle_Attack;
         //_animator.enabled = false;
+        up.started -= Handle_Up;
+        up.canceled -= Handle_UpStop;
+        down.started -= Handle_Down;
+        down.canceled -= Handle_DownStop;
+    }
+
+    private void Handle_Up(InputAction.CallbackContext obj)
+    {
+        Up = true;
+        Down = false;
+    }
+
+    private void Handle_UpStop(InputAction.CallbackContext obj)
+    {
+        Up = false;
+    }
+
+    private void Handle_Down(InputAction.CallbackContext obj)
+    {
+        Down = true;
+        Up = false;
+    }
+
+    private void Handle_DownStop(InputAction.CallbackContext obj)
+    {
+        Down = false;
     }
 
     private void Handle_Attack(InputAction.CallbackContext obj)
@@ -178,11 +213,33 @@ public class PlayerControls : MonoBehaviour
         //GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
         if (moveDirection != 0)
         {
-            PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
+            if (Up == true)
+            {
+                PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
+            }
+            else if (Down == true)
+            {
+                PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, -_explosionPower);
+            } 
+            else
+            {
+                PlayerRB.velocity = new Vector2(moveDirection * _explosionPower * 1.5f, 0);
+            }
             PlayerRB.AddTorque(_rotationAmount * moveDirection);
         } else if (moveDirection == 0)
         {
-            PlayerRB.velocity = new Vector2(_explosionPower * _lastDirection, _explosionPower);
+            if (Up == true)
+            {
+                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, _explosionPower);
+            }
+            else if (Down == true)
+            {
+                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, -_explosionPower);
+            }
+            else
+            {
+                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
+            }
             PlayerRB.AddTorque(_rotationAmount * _lastDirection);
         }
         this._collider.sharedMaterial = _bounceMaterial;
