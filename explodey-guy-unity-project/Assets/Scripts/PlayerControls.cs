@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 
 public class PlayerControls : MonoBehaviour
 {
+    [SerializeField] private GameObject pauseFirstButton;
+
     public PlayerInput MPI;
     private InputAction move;
     private InputAction restart;
@@ -211,23 +214,23 @@ public class PlayerControls : MonoBehaviour
         _hasGrounded = false;
         //_animator.SetBool("Attack", true);
         //GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
-        if (moveDirection != 0)
-        {
+        //if (moveDirection != 0)
+        //{
             if (Up == true)
             {
-                PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, _explosionPower);
+                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, _explosionPower);
             }
             else if (Down == true)
             {
-                PlayerRB.velocity = new Vector2(moveDirection * _explosionPower, -_explosionPower);
+                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, -_explosionPower);
             } 
             else
             {
-                PlayerRB.velocity = new Vector2(moveDirection * _explosionPower * 1.5f, 0);
+                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
             }
             PlayerRB.AddTorque(_rotationAmount * moveDirection);
-        } else if (moveDirection == 0)
-        {
+        //} else if (moveDirection == 0)
+        /*{
             if (Up == true)
             {
                 PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, _explosionPower);
@@ -241,7 +244,7 @@ public class PlayerControls : MonoBehaviour
                 PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
             }
             PlayerRB.AddTorque(_rotationAmount * _lastDirection);
-        }
+        }*/
         this._collider.sharedMaterial = _bounceMaterial;
         this.PlayerRB.sharedMaterial = _baseMaterial;
         // StartCoroutine(attackDuration());
@@ -685,6 +688,8 @@ public class PlayerControls : MonoBehaviour
     public void Pause()
     {
         print("Pause");
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(pauseFirstButton);
         _pauseMenu.SetActive(true);
         paused = true;
     }

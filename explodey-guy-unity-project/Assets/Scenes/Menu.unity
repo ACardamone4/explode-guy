@@ -211,7 +211,6 @@ GameObject:
   - component: {fileID: 50689912}
   - component: {fileID: 50689916}
   - component: {fileID: 50689915}
-  - component: {fileID: 50689914}
   - component: {fileID: 50689913}
   m_Layer: 5
   m_Name: Credits
@@ -252,12 +251,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnUp: {fileID: 788074102}
+    m_SelectOnDown: {fileID: 1370919149}
+    m_SelectOnLeft: {fileID: 788074102}
+    m_SelectOnRight: {fileID: 1370919149}
   m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -270,7 +269,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 1522252103, guid: 399ee1c99bbde164d869120f57b97202, type: 3}
     m_PressedSprite: {fileID: 36314387, guid: 399ee1c99bbde164d869120f57b97202, type: 3}
-    m_SelectedSprite: {fileID: 36314387, guid: 399ee1c99bbde164d869120f57b97202, type: 3}
+    m_SelectedSprite: {fileID: 1522252103, guid: 399ee1c99bbde164d869120f57b97202, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -295,20 +294,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
---- !u!114 &50689914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50689911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6251ae375014b54286ec79d3245fe11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Cutscene: {fileID: 1239176224}
-  _cutsceneTimer: 1
+      - m_Target: {fileID: 25634898}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 950481969}
+        m_TargetAssemblyTypeName: MenuKeyboardController, Assembly-CSharp
+        m_MethodName: CreditsOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &50689915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,7 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -579,6 +588,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 25634898}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 950481969}
+        m_TargetAssemblyTypeName: MenuKeyboardController, Assembly-CSharp
+        m_MethodName: CreditsOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &241437554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,7 +646,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1798940571, guid: c05279a998bffd84dafc6af67cae8fdc, type: 3}
+  m_Sprite: {fileID: -713726421, guid: c05279a998bffd84dafc6af67cae8fdc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -682,12 +715,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnUp: {fileID: 1370919149}
+    m_SelectOnDown: {fileID: 50689913}
+    m_SelectOnLeft: {fileID: 1370919149}
+    m_SelectOnRight: {fileID: 50689913}
   m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -700,7 +733,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: -1113931612, guid: 0639a671cfb5f3442b3fe2a465519aa7, type: 3}
     m_PressedSprite: {fileID: 1253318249, guid: 0639a671cfb5f3442b3fe2a465519aa7, type: 3}
-    m_SelectedSprite: {fileID: 1253318249, guid: 0639a671cfb5f3442b3fe2a465519aa7, type: 3}
+    m_SelectedSprite: {fileID: -1113931612, guid: 0639a671cfb5f3442b3fe2a465519aa7, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -772,9 +805,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 950481968}
+  - component: {fileID: 950481970}
+  - component: {fileID: 950481969}
   - component: {fileID: 950481967}
   - component: {fileID: 950481966}
   - component: {fileID: 950481965}
+  - component: {fileID: 950481971}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -867,6 +903,64 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &950481969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950481964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c5ed3afcb03e64d95359b4ee6ddd49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _creditsButton: {fileID: 50689911}
+  _creditsBack: {fileID: 241437551}
+--- !u!114 &950481970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950481964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4913952a8c370e1449f668953cef8374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MPI: {fileID: 950481971}
+  _defaultButton: {fileID: 788074100}
+--- !u!114 &950481971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950481964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: a795a396b137dea4f85972f239293e72, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1239176224
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,7 +1271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1370919148
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1194,7 +1288,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -321.04074, y: -147.74802}
+  m_AnchoredPosition: {x: -310.6, y: -147.74802}
   m_SizeDelta: {x: 133.8621, y: 70.798}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1370919149
@@ -1210,12 +1304,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnUp: {fileID: 50689913}
+    m_SelectOnDown: {fileID: 788074102}
+    m_SelectOnLeft: {fileID: 50689913}
+    m_SelectOnRight: {fileID: 788074102}
   m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1228,7 +1322,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 1099538541, guid: 3e5ce338d256e364787291b1d55c10fc, type: 3}
     m_PressedSprite: {fileID: 396176470, guid: 3e5ce338d256e364787291b1d55c10fc, type: 3}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 1099538541, guid: 3e5ce338d256e364787291b1d55c10fc, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -1411,7 +1505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 788074100}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1800329133
@@ -1450,7 +1544,7 @@ MonoBehaviour:
   m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 0}
   m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
