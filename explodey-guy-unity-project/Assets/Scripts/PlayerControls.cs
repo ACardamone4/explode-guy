@@ -402,7 +402,7 @@ public class PlayerControls : MonoBehaviour
 
         if (_attacking == false)
         {
-            print("Not attacking");
+            //print("Not attacking");
             PlayerRB.rotation = (0);
         }
 
@@ -410,7 +410,7 @@ public class PlayerControls : MonoBehaviour
         {
             if (_canMove == true)
             {
-                print("PlayerRB Should Be Moving");
+                //print("PlayerRB Should Be Moving");
                 //Makes the player able to move, and turns on the moving animation   
                 PlayerRB.velocity = new Vector2(PlayerSpeed * moveDirection, PlayerRB.velocity.y);
                 //Animator.SetBool("IsMoving", true);
@@ -515,7 +515,7 @@ public class PlayerControls : MonoBehaviour
     {
             PlayerRB.gravityScale = BaseGravity;
             _grounded = true;
-            print("Touch Grass");
+            //print("Touch Grass");
             InAir = false;
             _colliding = true;
             if (_attacking == false)
@@ -538,7 +538,7 @@ public class PlayerControls : MonoBehaviour
             // IsColliding = false;
             _colliding = false;
             //CanDoubleJump = true;
-            print("Left Grass");
+            //print("Left Grass");
             _grounded = false;
             if (_attacking == false)
             {
