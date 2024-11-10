@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa538dd8dc546f5418c72cdbeeffadfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosion: {fileID: 3781362513746207069, guid: 3e15684841538e742a641579f7c030e3, type: 3}
+  _explosion: {fileID: 4006050466729934090, guid: b6ee5e19bac80d04cbcc7bc637505058, type: 3}
   _tntOutline: {fileID: 0}
   _self: {fileID: 1451746440198169313}
   _respawnTNT: 0

@@ -372,7 +372,7 @@ public class PlayerControls : MonoBehaviour
         {
             Attack();
             _bombed = true;
-            PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bombBoost, _explosionPower * _bombBoost);
+            PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bombBoost, _explosionPower * _bombBoost * -1);
             _bombParticles.SetActive(true);
         }
     }
@@ -651,12 +651,22 @@ public class PlayerControls : MonoBehaviour
             _lastDirection = -1;
         }
         
-        if (_lastDirection > 0)
+        if (_lastDirection > 0 && !_attacking)
         {
             gameObject.transform.localScale = new Vector2(1, 1);
             _currentDirection = 1;
         }
-        else if (_lastDirection < 0)
+        else if (_lastDirection < 0 && !_attacking)
+        {
+            gameObject.transform.localScale = new Vector2(-1, 1);
+            _currentDirection = -1;
+        }
+
+        if (_velocityX > 0 && _attacking)
+        {
+            gameObject.transform.localScale = new Vector2(1, 1);
+            _currentDirection = 1;
+        } else if (_velocityX < 0 && _attacking)
         {
             gameObject.transform.localScale = new Vector2(-1, 1);
             _currentDirection = -1;
