@@ -26,13 +26,6 @@ public class NPCMovement : MonoBehaviour
     [SerializeField] private string _equipment;
     private int swapIntColor;
     private int swapIntEquipment;
-    public void Awake()
-    {
-        
-
-        print(_color + "_Action_" + _equipment);
-        
-    }
 
     public void Update()
     {
