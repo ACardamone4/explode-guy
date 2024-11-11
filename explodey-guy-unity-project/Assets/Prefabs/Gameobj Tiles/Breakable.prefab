@@ -101,8 +101,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _breakingDuration: 0.3
+  _respawns: 0
   _self: {fileID: 3644814270553747979}
   _rubble: {fileID: 6238773602516364986, guid: 716c6a87ee2d520478803e0130b4530a, type: 3}
+  _blockOutline: {fileID: 0}
 --- !u!61 &6348653136368800793
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -112,7 +114,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 9110334975591244972}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: f908abe5ff512d9439507001999e5628, type: 2}
+  m_Material: {fileID: 6200000, guid: beb0e3fad7e4635419ce1b7e47d42e27, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -164,7 +166,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: f908abe5ff512d9439507001999e5628, type: 2}
+  m_Material: {fileID: 6200000, guid: beb0e3fad7e4635419ce1b7e47d42e27, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
