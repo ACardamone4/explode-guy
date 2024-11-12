@@ -687,12 +687,6 @@ public class PlayerControls : MonoBehaviour
         {
             UnPause();
         }
-        
-        //_dying = true;
-        //_bombParticles.SetActive(false);
-        //_bouncyParticles.SetActive(false);
-        //_fuseParticles.SetActive(false);
-        //_animator.SetBool("Die", true);
     }
 
     public void Pause()
