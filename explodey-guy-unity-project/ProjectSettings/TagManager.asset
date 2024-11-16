@@ -26,6 +26,8 @@ TagManager:
   - Elevator
   - GiveTNT
   - Refresh
+  - PExplosionTexture
+  - Cam
   layers:
   - Default
   - TransparentFX
