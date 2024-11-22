@@ -7,7 +7,7 @@ public class ElevatorScript : MonoBehaviour
     public GameObject _stopPlayerObject;
 
     public bool playerIsClose;
-    [SerializeField] private GameObject _interactButton;
+    //[SerializeField] private GameObject _interactButton;
     [SerializeField] private GameObject _levelTransition;
     [SerializeField] private GameObject _playerTeleport;
     [SerializeField] private GameObject _player;
@@ -37,7 +37,7 @@ public class ElevatorScript : MonoBehaviour
         if (playerIsClose && canInteract)
         {
             canInteract = false;
-            _interactButton.SetActive(false);
+            //_interactButton.SetActive(false);
             _stopPlayerObject.SetActive(true);
             _animator.Play("Elevator_Open");
         }
@@ -74,7 +74,7 @@ public class ElevatorScript : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerIsClose = true;
-            _interactButton.gameObject.SetActive(true);
+            //_interactButton.gameObject.SetActive(true);
         }
     }
 
@@ -83,7 +83,7 @@ public class ElevatorScript : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerIsClose = false;
-            _interactButton.gameObject.SetActive(false);
+            //_interactButton.gameObject.SetActive(false);
         }
     }
 }
