@@ -222,7 +222,7 @@ public class PlayerControls : MonoBehaviour
             }
             else if (Down == true)
             {
-                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, -_explosionPower);
+                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, -_explosionPower * .95f);
             } 
             else
             {
@@ -451,6 +451,7 @@ public class PlayerControls : MonoBehaviour
     {
         _canExplode = false;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Refresh")
@@ -458,6 +459,11 @@ public class PlayerControls : MonoBehaviour
             _canAttack = true;
             _canExplode = true;
             _showFuse = true;
+        }
+
+        if (collision.CompareTag("StopExplode"))
+        {
+            StopAttack();
         }
 
         if (collision.gameObject.tag == "Killbox")
