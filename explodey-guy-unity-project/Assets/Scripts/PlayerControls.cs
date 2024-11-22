@@ -78,6 +78,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private GameObject _bombParticles;
     [SerializeField] private GameObject _fuseParticles;
     [SerializeField] private GameObject _explosionBox;
+    [SerializeField] private GameObject _interactIcon;
     //[SerializeField] private GameObject _shakyCam;
     //[SerializeField] private GameObject _basicCam;
     [SerializeField] private Animator _animator;
@@ -454,16 +455,16 @@ public class PlayerControls : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.tag == "Dialogue")
+        {
+            _interactIcon.SetActive(true);
+        }
+
         if (collision.gameObject.tag == "Refresh")
         {
             _canAttack = true;
             _canExplode = true;
             _showFuse = true;
-        }
-
-        if (collision.CompareTag("StopExplode"))
-        {
-            StopAttack();
         }
 
         if (collision.gameObject.tag == "Killbox")
@@ -559,6 +560,11 @@ public class PlayerControls : MonoBehaviour
         if (collision.gameObject.tag == "Cutscene")
         {
             _cutscene = false;
+        }
+
+        if (collision.tag == "Dialogue")
+        {
+            _interactIcon.SetActive(false);
         }
     }
 
@@ -733,6 +739,16 @@ public class PlayerControls : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void StartCutscene()
+    {
+        _cutscene = true;
+    }
+
+    public void StopCutscene()
+    {
+        _cutscene = false;
     }
 
 }

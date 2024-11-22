@@ -28,6 +28,8 @@ TagManager:
   - Refresh
   - PExplosionTexture
   - Cam
+  - Dialogue
+  - InteractIcon
   layers:
   - Default
   - TransparentFX
