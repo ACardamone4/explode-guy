@@ -74,6 +74,12 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in dialogueLine.line.ToCharArray())
         {
             dialogueArea.text += letter;
+            print(letter);
+
+            if (letter.ToString().Equals("?") || letter.ToString().Equals("!") || letter.ToString().Equals("."))
+            {
+                yield return new WaitForSeconds(.2f);
+            }
             yield return new WaitForSeconds(typingSpeed);
         }
     }
@@ -83,7 +89,10 @@ public class DialogueManager : MonoBehaviour
         playerControls.StopCutscene();
         isDialogueActive = false;
         //animator.Play("hide");
-        _dialogueBox.SetActive(false);
+        if (_dialogueBox != null)
+        {
+            _dialogueBox.SetActive(false);
+        }
         Icons.SetActive(false);
     }
 }
