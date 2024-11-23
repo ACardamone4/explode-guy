@@ -510,6 +510,7 @@ public class PlayerControls : MonoBehaviour
         if (collision.gameObject.tag == "Stop")
         {
             StopAttack();
+            PlayerRB.velocity = new Vector2 (0,0);
             PlayerRB.rotation = (0);
         }
         //if (collision.gameObject.tag == "Cutscene")
