@@ -97,6 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e893e8938aba9a7459e6c1d88e500dba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waitToDie: 0
+  _waitToDie: 1
   _waitToSpawn: 3
   _spawnedObject: {fileID: 2452231047911986117, guid: 7808059da3c79a0479998157273ae870, type: 3}
