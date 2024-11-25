@@ -338,12 +338,12 @@ public class PlayerControls : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy" || collision.gameObject.tag == "Ground2")
         {
             PlayerRB.rotation = (0);
         }
 
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Ground2")
         {
             if (_attacking && _bouncing == false)
             {
@@ -498,7 +498,7 @@ public class PlayerControls : MonoBehaviour
         {
             _canExplode = true;
         }
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy" || collision.gameObject.tag == "Ground2")
         {
             
             if (_attacking == false)

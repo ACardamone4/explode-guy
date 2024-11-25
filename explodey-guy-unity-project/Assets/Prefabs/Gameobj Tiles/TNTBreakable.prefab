@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6379608471980146548}
   m_Layer: 0
   m_Name: TNTBreakable
-  m_TagString: Ground
+  m_TagString: Ground2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
