@@ -30,6 +30,7 @@ TagManager:
   - Cam
   - Dialogue
   - InteractIcon
+  - Ground2
   layers:
   - Default
   - TransparentFX

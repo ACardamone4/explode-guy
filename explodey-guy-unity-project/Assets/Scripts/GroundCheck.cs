@@ -6,7 +6,7 @@ public class GroundCheck : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")//Checks if the player is touching the ground
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy" || collision.gameObject.tag == "Ground2")//Checks if the player is touching the ground
         {
             _playerControls.Grounded();
 
@@ -15,7 +15,7 @@ public class GroundCheck : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")//Checks if the player is touching the ground
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy" || collision.gameObject.tag == "Ground2")//Checks if the player is touching the ground
         {
             _playerControls.Grounded();
 
@@ -24,7 +24,7 @@ public class GroundCheck : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")//Checks if the player is touching the ground
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy" || collision.gameObject.tag == "Ground2")//Checks if the player is touching the ground
         {
             _playerControls.NotGrounded();
 
