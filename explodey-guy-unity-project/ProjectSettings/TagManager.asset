@@ -31,6 +31,10 @@ TagManager:
   - Dialogue
   - InteractIcon
   - Ground2
+  - Disappear
+  - Reappear
+  - ComputerInteract
+  - NPC
   layers:
   - Default
   - TransparentFX

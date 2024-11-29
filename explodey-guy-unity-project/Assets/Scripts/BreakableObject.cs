@@ -11,7 +11,7 @@ public class BreakableObject : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "NPC")
         {
             StartCoroutine(Breaking());
         }
@@ -30,7 +30,7 @@ public class BreakableObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Explosion")
+        if (collision.gameObject.tag == "Explosion" || collision.gameObject.tag == "NPC")
         {
             GameObject BrokenParticles = Instantiate(_rubble, _self.position, _self.rotation);
             if (_respawns)

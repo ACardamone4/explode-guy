@@ -38,6 +38,8 @@ public class DialogueTrigger : MonoBehaviour
     private PlayerControls playerControls;
     [SerializeField] private SwapCams _swapCams;
     [SerializeField] private bool _cameraSwapper;
+    [SerializeField] private bool _activateOnDeath;
+    [SerializeField] private GameObject _activatedObject;
     public void Awake()
     {
         ButtonPresses = 0;
@@ -71,6 +73,10 @@ public class DialogueTrigger : MonoBehaviour
             if (_cameraSwapper == true)
             {
                 _swapCams.SwapCamSwap();
+            }
+            if (_activateOnDeath == true)
+            {
+                _activatedObject.SetActive(true);
             }
             Destroy(gameObject);
         }
@@ -113,6 +119,10 @@ public class DialogueTrigger : MonoBehaviour
                 if (_cameraSwapper == true)
                 {
                     _swapCams.SwapCamSwap();
+                }
+                if (_activateOnDeath == true)
+                {
+                    _activatedObject.SetActive(true);
                 }
                 Destroy(gameObject);
             }
