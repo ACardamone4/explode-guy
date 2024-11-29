@@ -19,9 +19,15 @@ public class ControllerChecker : MonoBehaviour
     public void ActivateKeyboardObjects()
     {
         foreach (var obj in keyboardObjects)
-            obj.SetActive(true);
+            if (obj.gameObject != null)
+            {
+                obj.SetActive(true);
+            }
         foreach (var obj in controllerObjects)
-            obj.SetActive(false);
+            if (obj.gameObject != null)
+            {
+                obj.SetActive(false);
+            }
     }
 
 

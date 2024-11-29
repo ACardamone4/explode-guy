@@ -99,6 +99,8 @@ public class PlayerControls : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private CheckpointManager _checkpointManager;
 
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+
     private void Awake()
     {
         if (_canExplode == true)
@@ -493,6 +495,18 @@ public class PlayerControls : MonoBehaviour
             _cutscene = true;
             _holdingMove = false;
             _moving = false;
+        }
+        if (collision.gameObject.tag == "Disappear")
+        {
+            _cutscene = true;
+            _spriteRenderer.enabled = false;
+            _holdingMove = false;
+            _moving = false;
+        }
+        if (collision.gameObject.tag == "Reappear")
+        {
+            _cutscene = false;
+            _spriteRenderer.enabled = true;
         }
         if (collision.gameObject.tag == "GiveTNT")
         {
