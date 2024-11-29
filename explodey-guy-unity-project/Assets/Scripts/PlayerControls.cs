@@ -579,7 +579,10 @@ public class PlayerControls : MonoBehaviour
 
         if (collision.tag == "Dialogue")
         {
-            _interactIcon.SetActive(false);
+            if (_interactIcon != null)
+            {
+                _interactIcon.SetActive(false);
+            }
         }
     }
 
