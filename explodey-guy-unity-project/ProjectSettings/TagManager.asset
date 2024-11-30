@@ -35,6 +35,7 @@ TagManager:
   - Reappear
   - ComputerInteract
   - NPC
+  - Disable
   layers:
   - Default
   - TransparentFX

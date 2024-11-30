@@ -186,7 +186,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_Attack(InputAction.CallbackContext obj)
     {
-        if (_canExplode == true && _dying == false && paused == false)
+        if (_canExplode == true && _dying == false && paused == false && _cutscene == false)
         {
             TryAttack();
             if (_canAttack == true)
@@ -508,6 +508,11 @@ public class PlayerControls : MonoBehaviour
             _cutscene = false;
             _spriteRenderer.enabled = true;
         }
+        //if (collision.gameObject.tag == "Disable")
+        //{
+        //    this.gameObject.SetActive(false);
+        //}
+       
         if (collision.gameObject.tag == "GiveTNT")
         {
             _canExplode = true;
