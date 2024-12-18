@@ -231,7 +231,7 @@ public class PlayerControls : MonoBehaviour
             {
                 PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
             }
-            PlayerRB.AddTorque(_rotationAmount * moveDirection);
+            PlayerRB.AddTorque(_rotationAmount/* * moveDirection*/);
         //} else if (moveDirection == 0)
         /*{
             if (Up == true)
@@ -253,18 +253,8 @@ public class PlayerControls : MonoBehaviour
         // StartCoroutine(attackDuration());
     }
 
-    //public IEnumerator StopShakyCam()
-    //{
-    //    yield return new WaitForSeconds(_shakyCamDuration);
-    //    _basicCam.SetActive(true);
-    //    _shakyCam.SetActive(false);
-        
-    //}
-
     void StopAttack()
     {
-        //StopAllCoroutines();
-        //StartCoroutine(StopShakyCam());
         _stopAttackTimer = _stopAttackTimerMax;
         if (_holdingMove == true)
         {
@@ -273,6 +263,7 @@ public class PlayerControls : MonoBehaviour
         {
             _moving = false;
         }
+        //PlayerRB.velocity = new Vector2(0, 0);
         this._collider.sharedMaterial = _baseMaterial;
         this.PlayerRB.sharedMaterial = _baseMaterial;
         //this._collider.isTrigger = false;
@@ -283,7 +274,11 @@ public class PlayerControls : MonoBehaviour
         _bouncyParticles.SetActive(false);
         _bombParticles.SetActive(false);
         _explosionBox.SetActive(false);
-        _attacking = false;
+        if (_attacking)
+        {
+            _attacking = false;
+            PlayerRB.velocity = new Vector2(0, 0);
+        }
         _canMove = true;
         //TryAttack();
         _animator.SetBool("Walking", false);
