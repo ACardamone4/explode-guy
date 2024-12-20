@@ -103,6 +103,8 @@ public class PlayerControls : MonoBehaviour
 
     private void Awake()
     {
+        _lastDirection = 1;
+
         if (_canExplode == true)
         {
             _animator.SetBool("TNT", true);
