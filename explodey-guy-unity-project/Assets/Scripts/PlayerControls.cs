@@ -90,6 +90,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D _bounceMaterial;
     [SerializeField] private PhysicsMaterial2D _baseMaterial;
     [SerializeField] private ParticleSystem _dust;
+    [SerializeField] private GameObject _smokeTrail;
 
     [SerializeField] private bool paused;
 
@@ -404,6 +405,10 @@ public class PlayerControls : MonoBehaviour
         {
             //print("Not attacking");
             PlayerRB.rotation = (0);
+            _smokeTrail.SetActive(false);
+        } else
+        {
+            _smokeTrail.SetActive(true);
         }
 
         if (PlayerShouldBeMoving == true)
