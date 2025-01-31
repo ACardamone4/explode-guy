@@ -9,12 +9,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: a3b2eb3ccc864384aac54f667f8cdc0c
   - enabled: 1
+    path: Assets/Scenes/FUSE/FUSETutorial.unity
+    guid: da7a97435248d534d96bf5ac9f3d850d
+  - enabled: 1
+    path: Assets/Scenes/FUSE/FUSELevel.unity
+    guid: 7a3853e907200544294f45d1b8bdde56
+  - enabled: 0
     path: Assets/Scenes/Tutorial.unity
     guid: 861555c9b63397747b0a384ac422c172
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level 1.unity
     guid: ebee9db83f8bff24c800931eab263045
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/End_Of_Demo_Space.unity
     guid: b001e9ca9c777b7409339f0a7f09f6bc
   - enabled: 0
