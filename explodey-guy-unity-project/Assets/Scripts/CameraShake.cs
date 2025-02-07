@@ -7,6 +7,7 @@ public class CameraShake : MonoBehaviour
 
     [SerializeField] private CinemachineVirtualCamera _cam;
     [SerializeField] private float _intensity;
+    [SerializeField] private float _lightIntensity;
     [SerializeField] private float _shakeDuration;
     [SerializeField] private float _shakeDurationMax;
     [SerializeField] private bool _shaking;
@@ -33,6 +34,15 @@ public class CameraShake : MonoBehaviour
         CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+    }
+
+    public void LightShake()
+    {
+        _shakeDuration = _shakeDurationMax;
+        _shaking = true;
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = _lightIntensity;
     }
 
     private void Update()
