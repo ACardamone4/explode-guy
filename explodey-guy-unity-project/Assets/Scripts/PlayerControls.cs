@@ -102,6 +102,10 @@ public class PlayerControls : MonoBehaviour
 
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
+    [SerializeField] private GameObject _arrowUp;
+    [SerializeField] private GameObject _arrowSide;
+    [SerializeField] private GameObject _arrowDown;
+
     private void Awake()
     {
         _lastDirection = 1;
@@ -169,6 +173,7 @@ public class PlayerControls : MonoBehaviour
     {
         Up = true;
         Down = false;
+
     }
 
     private void Handle_UpStop(InputAction.CallbackContext obj)
@@ -390,6 +395,30 @@ public class PlayerControls : MonoBehaviour
 
     public void FixedUpdate()
     {
+        if (Up == true && _attacking == false)
+        {
+            _arrowUp.SetActive(true);
+            _arrowDown.SetActive(false);
+            _arrowSide.SetActive(false);
+        } else if (Down == true && _attacking == false)
+        {
+            _arrowUp.SetActive(false);
+            _arrowDown.SetActive(true);
+            _arrowSide.SetActive(false);
+        } else if (Down == false && Up == false && _attacking == false)
+        {
+            _arrowUp.SetActive(false);
+            _arrowDown.SetActive(false);
+            _arrowSide.SetActive(true);
+        }
+
+        if (_attacking == true || _showFuse == false)
+        {
+            _arrowUp.SetActive(false);
+            _arrowDown.SetActive(false);
+            _arrowSide.SetActive(false);
+        }
+
 
         if (_grounded == true && _attacking == true && _bouncing == false)
         {
