@@ -5,12 +5,8 @@ using UnityEngine;
 public class CollisionPointTest : MonoBehaviour
 {
     public Transform explosionPrefab;
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        ContactPoint contact = collision.contacts[0];
-        Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
-        Vector3 pos = contact.point;
-        Instantiate(explosionPrefab, pos, rot);
-        Destroy(gameObject);
+        //collision.GetContact
     }
 }
