@@ -78,6 +78,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Side",
+                    "type": "Button",
+                    "id": "4441660d-7b21-46b4-8dec-63257385871b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Misclick",
                     "type": "Button",
                     "id": "1d5c6639-8f3b-4560-bd30-a3308eed980e",
@@ -459,6 +468,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Misclick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f4e7a854-eddb-4b35-bc59-680d5de0b49c",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Side",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3fd4d374-6f07-4a07-abb3-c8a95a034f39",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Side",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11692be6-950e-40b4-9d49-81ae3e032153",
+                    "path": "<Joystick>/stick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Side",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26d4b551-226b-4235-acc9-d042ae863bbf",
+                    "path": "<Joystick>/stick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Side",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

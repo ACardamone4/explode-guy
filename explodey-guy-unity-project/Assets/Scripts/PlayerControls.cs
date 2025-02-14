@@ -15,8 +15,10 @@ public class PlayerControls : MonoBehaviour
     private InputAction attack;
     private InputAction up;
     private InputAction down;
+    private InputAction side;
     public bool Up;
     public bool Down;
+    public bool Side;
 
     //private float coyoteTime = 0.2f;
     //private float coyoteTimeCounter;
@@ -102,9 +104,14 @@ public class PlayerControls : MonoBehaviour
 
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
+    [SerializeField] private GameObject _arrowSideUp;
     [SerializeField] private GameObject _arrowUp;
     [SerializeField] private GameObject _arrowSide;
+    [SerializeField] private GameObject _arrowSideDown;
     [SerializeField] private GameObject _arrowDown;
+    private bool _pauseExplodeAnimationActive;
+
+    public ParticleSystem PauseExplodeParticle;
 
     private void Awake()
     {
@@ -135,6 +142,8 @@ public class PlayerControls : MonoBehaviour
         attack = MPI.currentActionMap.FindAction("Attack");
         up = MPI.currentActionMap.FindAction("Up");
         down = MPI.currentActionMap.FindAction("Down");
+        side = MPI.currentActionMap.FindAction("Side");
+
         //release = MPI.currentActionMap.FindAction("Release");
 
         MPI.currentActionMap.Enable();
@@ -145,6 +154,8 @@ public class PlayerControls : MonoBehaviour
         attack.performed += Handle_Attack;
         up.started += Handle_Up;
         up.canceled += Handle_UpStop;
+        side.started += Handle_Side;
+        side.canceled += Handle_SideStop;
         down.started += Handle_Down;
         down.canceled += Handle_DownStop;
         //if (_animator == null)
@@ -167,6 +178,8 @@ public class PlayerControls : MonoBehaviour
         up.canceled -= Handle_UpStop;
         down.started -= Handle_Down;
         down.canceled -= Handle_DownStop;
+        side.started -= Handle_Side;
+        side.canceled -= Handle_SideStop;
     }
 
     private void Handle_Up(InputAction.CallbackContext obj)
@@ -179,6 +192,17 @@ public class PlayerControls : MonoBehaviour
     private void Handle_UpStop(InputAction.CallbackContext obj)
     {
         Up = false;
+    }
+
+    private void Handle_Side(InputAction.CallbackContext obj)
+    {
+        Side = true;
+
+    }
+
+    private void Handle_SideStop(InputAction.CallbackContext obj)
+    {
+        Side = false;
     }
 
     private void Handle_Down(InputAction.CallbackContext obj)
@@ -227,14 +251,22 @@ public class PlayerControls : MonoBehaviour
         //GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
         //if (moveDirection != 0)
         //{
-            if (Up == true)
+            if (Up == true && Side == true)
             {
                 PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, _explosionPower);
             }
-            else if (Down == true)
+            else if (Up == true && Side == false)
+            {
+                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, _explosionPower);
+            }
+            else if (Down == true && Side == true)
             {
                 PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, -_explosionPower * .95f);
-            } 
+            }
+            else if (Down == true && Side == false)
+            {
+                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, -_explosionPower * .95f);
+            }
             else
             {
                 PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
@@ -290,6 +322,25 @@ public class PlayerControls : MonoBehaviour
         _canMove = true;
         //TryAttack();
         _animator.SetBool("Walking", false);
+        _animator.SetBool("ExplodeStop", true);
+    }
+
+    public void ExplodeStopAnimStop()
+    {
+        _animator.SetBool("ExplodeStop", false);
+    }
+
+    public void NoSpeed()
+    {
+        PlayerSpeed = 0;
+        BaseGravity = 0;
+        PauseExplodeParticle.Play();
+    }
+
+    public void NormalSpeed()
+    {
+        PlayerSpeed = 20;
+        BaseGravity = 10;
     }
 
     void TryAttack()
@@ -395,27 +446,53 @@ public class PlayerControls : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (Up == true && _attacking == false)
+        if (Up == true && _attacking == false && Side == true) // Side Up
+        {
+            _arrowUp.SetActive(false);
+            _arrowDown.SetActive(false);
+            _arrowSideUp.SetActive(true);
+            _arrowSideDown.SetActive(false);
+            _arrowSide.SetActive(false);
+        } 
+        if (Up == true && _attacking == false && Side == false) // Up
         {
             _arrowUp.SetActive(true);
-            _arrowDown.SetActive(false);
+            _arrowSideUp.SetActive(false);
+            _arrowSideDown.SetActive(false);
             _arrowSide.SetActive(false);
-        } else if (Down == true && _attacking == false)
+            _arrowDown.SetActive(false);
+        } 
+        else if (Down == true && _attacking == false && Side == true) // SideDown
+        {
+            _arrowUp.SetActive(false);
+            _arrowDown.SetActive(false);
+            _arrowSideUp.SetActive(false);
+            _arrowSideDown.SetActive(true);
+            _arrowSide.SetActive(false);
+        } 
+        else if (Down == true && _attacking == false && Side == false) // down
         {
             _arrowUp.SetActive(false);
             _arrowDown.SetActive(true);
+            _arrowSideUp.SetActive(false);
+            _arrowSideDown.SetActive(false);
             _arrowSide.SetActive(false);
-        } else if (Down == false && Up == false && _attacking == false)
+        } 
+        else if (Down == false && Up == false && _attacking == false) // Side
         {
             _arrowUp.SetActive(false);
             _arrowDown.SetActive(false);
+            _arrowSideUp.SetActive(false);
+            _arrowSideDown.SetActive(false);
             _arrowSide.SetActive(true);
-        }
+        } 
 
         if (_attacking == true || _showFuse == false)
         {
             _arrowUp.SetActive(false);
             _arrowDown.SetActive(false);
+            _arrowSideUp.SetActive(false);
+            _arrowSideDown.SetActive(false);
             _arrowSide.SetActive(false);
         }
 
