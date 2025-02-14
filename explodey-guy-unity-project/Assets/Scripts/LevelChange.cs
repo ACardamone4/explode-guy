@@ -23,4 +23,13 @@ public class LevelTransition : MonoBehaviour
         _checkpointManager.NewLevel();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+    public void Menu()
+    {
+        _checkpointManager.NewLevel();
+        Time.timeScale = 1;
+        //Time.fixedDeltaTime = Time.deltaTime;
+        // Loads the first scene, which is the main menu
+        SceneManager.LoadScene(0);
+    }
 }
