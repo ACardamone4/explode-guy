@@ -495,8 +495,8 @@
                 },
                 {
                     "name": "",
-                    "id": "11692be6-950e-40b4-9d49-81ae3e032153",
-                    "path": "<Joystick>/stick/left",
+                    "id": "c8d4363d-6b03-431c-afb3-d3386e25249d",
+                    "path": "<Gamepad>/leftStick/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -506,8 +506,8 @@
                 },
                 {
                     "name": "",
-                    "id": "26d4b551-226b-4235-acc9-d042ae863bbf",
-                    "path": "<Joystick>/stick/right",
+                    "id": "686f240e-e12d-43e2-b2bb-25d39c1b0796",
+                    "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
