@@ -3,9 +3,14 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     private static AudioManager instance;
+    public AudioSource audioSource;
     public GameObject LevelMusicSFX;
     public GameObject MenuMusicSFX;
     public GameObject TutorialMusicSFX;
+    public AudioClip[] Explosions;
+    public int TotalExplosionTypes;
+    private int targetedExplosion;
+    public AudioClip chosenExplosion;
 
     private void Awake()
     {
@@ -39,6 +44,16 @@ public class AudioManager : MonoBehaviour
         LevelMusicSFX.SetActive(true);
         MenuMusicSFX.SetActive(false);
         TutorialMusicSFX.SetActive(false);
+    }
+
+    public void Explosion()
+    {
+        targetedExplosion = Random.Range(0, TotalExplosionTypes);
+        chosenExplosion = Explosions[targetedExplosion];
+        if (chosenExplosion != null)
+        { 
+            audioSource.PlayOneShot(chosenExplosion);
+        }
     }
 
 
