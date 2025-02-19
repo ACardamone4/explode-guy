@@ -10,7 +10,10 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] Explosions;
     public int TotalExplosionTypes;
     private int targetedExplosion;
-    public AudioClip chosenExplosion;
+    private AudioClip chosenExplosion;
+    public AudioClip LandSFX;
+    public AudioClip PauseExplosionSFX;
+    public AudioClip DeathSFX;
 
     private void Awake()
     {
@@ -56,5 +59,19 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void Land()
+    {
+        audioSource.PlayOneShot(LandSFX);
+    }
 
+    public void PauseExplosion()
+    {
+        audioSource.PlayOneShot(PauseExplosionSFX);
+    }
+
+    public void Death()
+    {
+        Explosion();
+        audioSource.PlayOneShot(DeathSFX);
+    }
 }

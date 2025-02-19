@@ -2003,7 +2003,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 280e4cdba820a7b43af2fb354807c846, type: 3}
   - {fileID: 8300000, guid: e7e2cb6b56bb92c4295c6a701daf475a, type: 3}
   TotalExplosionTypes: 3
-  chosenExplosion: {fileID: 0}
+  LandSFX: {fileID: 8300000, guid: fa61450af3e0d4a469d568111cde0dbb, type: 3}
+  PauseExplosionSFX: {fileID: 8300000, guid: c8610beca3579854787d39b0213e080b, type: 3}
+  DeathSFX: {fileID: 8300000, guid: 8a30a68544f3b6a4f82b28246cb3b1ca, type: 3}
 --- !u!4 &1526721742
 Transform:
   m_ObjectHideFlags: 0
