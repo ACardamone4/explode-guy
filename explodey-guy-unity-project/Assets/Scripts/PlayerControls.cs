@@ -333,6 +333,7 @@ public class PlayerControls : MonoBehaviour
         //TryAttack();
         _animator.SetBool("Walking", false);
         _animator.SetBool("ExplodeStop", true);
+        audioManager.PauseExplosion();
     }
 
     public void ExplodeStopAnimStop()
@@ -407,6 +408,8 @@ public class PlayerControls : MonoBehaviour
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy" || collision.gameObject.tag == "Ground2")
         {
             PlayerRB.rotation = (0);
+
+            audioManager.Land();
         }
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Ground2")
@@ -587,13 +590,14 @@ public class PlayerControls : MonoBehaviour
             _showFuse = true;
         }
 
-        if (collision.gameObject.tag == "Killbox")
+        if (collision.gameObject.tag == "Killbox" && _dying != true)
         {
             _dying = true;
             _bombParticles.SetActive(false);
             _bouncyParticles.SetActive(false);
             _fuseParticles.SetActive(false);
             _animator.SetBool("Die", true);
+            audioManager.Death();
         }
         if (collision.gameObject.tag == "EquipTNTCutscene")
         {
