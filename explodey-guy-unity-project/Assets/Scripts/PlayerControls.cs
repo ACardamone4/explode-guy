@@ -113,8 +113,17 @@ public class PlayerControls : MonoBehaviour
 
     public ParticleSystem PauseExplodeParticle;
 
+    public AudioManager audioManager;
+    public GameObject audioManagerObject;
+
     private void Awake()
     {
+        audioManagerObject = GameObject.Find("Audio Manager");
+        if (audioManagerObject != null)
+        {
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
+        }
+
         _lastDirection = 1;
 
         if (_canExplode == true)
@@ -234,6 +243,7 @@ public class PlayerControls : MonoBehaviour
 
     void Attack()
     {
+        audioManager.Explosion();
         //_basicCam.SetActive(false);
         //_shakyCam.SetActive(true);
         //StopAllCoroutines();
