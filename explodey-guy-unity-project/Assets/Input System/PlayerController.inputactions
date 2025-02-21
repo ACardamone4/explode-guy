@@ -242,7 +242,7 @@
                 },
                 {
                     "name": "",
-                    "id": "0b767f0b-1120-40e1-a410-2254699968f6",
+                    "id": "ad084540-17f3-43ef-b5e8-4a640a58a648",
                     "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
@@ -365,17 +365,6 @@
                     "name": "",
                     "id": "a10e442f-3560-4a8d-bfcd-f12634f81559",
                     "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c6215f79-ea3c-4a12-96d5-53392d049a58",
-                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
