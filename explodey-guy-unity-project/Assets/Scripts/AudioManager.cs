@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip LandSFX;
     public AudioClip PauseExplosionSFX;
     public AudioClip DeathSFX;
+    public AudioClip CheckpointSFX;
 
     private void Awake()
     {
@@ -73,5 +74,10 @@ public class AudioManager : MonoBehaviour
     {
         Explosion();
         audioSource.PlayOneShot(DeathSFX);
+    }
+
+    public void CheckpointAudio()
+    {
+        audioSource.PlayOneShot(CheckpointSFX);
     }
 }
