@@ -16,6 +16,7 @@ public class PlayerControls : MonoBehaviour
     private InputAction up;
     private InputAction down;
     private InputAction side;
+    private InputAction menu;
     public bool Up;
     public bool Down;
     public bool Side;
@@ -152,6 +153,7 @@ public class PlayerControls : MonoBehaviour
         up = MPI.currentActionMap.FindAction("Up");
         down = MPI.currentActionMap.FindAction("Down");
         side = MPI.currentActionMap.FindAction("Side");
+        menu = MPI.currentActionMap.FindAction("Menu");
 
         //release = MPI.currentActionMap.FindAction("Release");
 
@@ -159,6 +161,7 @@ public class PlayerControls : MonoBehaviour
         move.started += Handle_MoveStarted;
         move.canceled += Handle_MoveCanceled;
         restart.performed += Handle_RestartPerformed;
+        menu.performed += BackToMenu;
         quit.performed += Handle_QuitPerformed;
         attack.performed += Handle_Attack;
         up.started += Handle_Up;
@@ -195,6 +198,12 @@ public class PlayerControls : MonoBehaviour
     {
         Up = true;
         Down = false;
+
+    }
+    
+    private void BackToMenu(InputAction.CallbackContext obj)
+    {
+        SceneManager.LoadScene("Menu");
 
     }
 
