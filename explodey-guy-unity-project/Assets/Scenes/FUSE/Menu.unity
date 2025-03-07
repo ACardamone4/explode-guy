@@ -1453,7 +1453,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1239176225
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1983,6 +1983,7 @@ MonoBehaviour:
   LandSFX: {fileID: 8300000, guid: fa61450af3e0d4a469d568111cde0dbb, type: 3}
   PauseExplosionSFX: {fileID: 8300000, guid: c8610beca3579854787d39b0213e080b, type: 3}
   DeathSFX: {fileID: 8300000, guid: 8a30a68544f3b6a4f82b28246cb3b1ca, type: 3}
+  CheckpointSFX: {fileID: 8300000, guid: af1f1a5d2ef17e74a9d8ee8acd226fd1, type: 3}
 --- !u!4 &1526721742
 Transform:
   m_ObjectHideFlags: 0
