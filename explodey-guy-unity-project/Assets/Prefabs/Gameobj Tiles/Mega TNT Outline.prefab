@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8166530517278288325}
   - component: {fileID: 6281383127139250035}
   - component: {fileID: 6632486271230252314}
+  - component: {fileID: 1333035279101127461}
   m_Layer: 0
   m_Name: Mega TNT Outline
   m_TagString: Bomb
@@ -98,5 +99,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _waitToDie: 0
-  _waitToSpawn: 3
+  _waitToSpawn: 2
   _spawnedObject: {fileID: 2439875925694870811, guid: a57e54d4de665fe44aa460af75a3b855, type: 3}
+--- !u!95 &1333035279101127461
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4857874006294892052}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6b41837ae768f9a439c46120f7a44366, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

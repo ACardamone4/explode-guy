@@ -263,7 +263,7 @@
                 {
                     "name": "",
                     "id": "4b4bf751-eb3c-4d02-a295-8854d396b717",
-                    "path": "<Keyboard>/0",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -516,7 +516,7 @@
                 {
                     "name": "",
                     "id": "6fd3dd65-c43c-456b-b7db-ddb1d2502e0a",
-                    "path": "<Gamepad>/select",
+                    "path": "<Keyboard>/0",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
