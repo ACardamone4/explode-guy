@@ -151,7 +151,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 14.75
+        time: 20.733334
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -262,7 +262,7 @@ AnimationClip:
       value: {fileID: 805332103, guid: 274624261b50fd6409957dde2d331653, type: 3}
     - time: 13.166667
       value: {fileID: 1200140234, guid: 9728f0aa2da0a1d4d85eaf7919114a78, type: 3}
-    - time: 14.733334
+    - time: 20.333334
       value: {fileID: 1200140234, guid: 9728f0aa2da0a1d4d85eaf7919114a78, type: 3}
     attribute: m_Sprite
     path: 
@@ -383,7 +383,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 14.75
+    m_StopTime: 20.733334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -533,7 +533,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 14.75
+        time: 20.733334
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -553,7 +553,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 13.75
+  - time: 20
     functionName: Menu
     data: 
     objectReferenceParameter: {fileID: 0}

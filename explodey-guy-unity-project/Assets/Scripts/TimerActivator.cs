@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class TimerActivator : MonoBehaviour
