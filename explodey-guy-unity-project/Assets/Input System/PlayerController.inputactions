@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Level",
+                    "type": "Button",
+                    "id": "7bca9ae7-85b7-4230-8006-055e0dcd8a6c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -251,17 +260,6 @@
                 },
                 {
                     "name": "",
-                    "id": "ad084540-17f3-43ef-b5e8-4a640a58a648",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Restart",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4b4bf751-eb3c-4d02-a295-8854d396b717",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
@@ -328,17 +326,6 @@
                 },
                 {
                     "name": "",
-                    "id": "2f2679df-32e3-40a3-9e82-1f0634a2d39a",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "1bab57a5-e15b-469e-955e-568c04d4dd1b",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
@@ -350,8 +337,8 @@
                 },
                 {
                     "name": "",
-                    "id": "d6e447a1-4bc4-4212-8618-c73c123aace9",
-                    "path": "<Gamepad>/leftShoulder",
+                    "id": "1fff1ebe-795d-4967-b7e5-085fa0cf3c31",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -361,8 +348,63 @@
                 },
                 {
                     "name": "",
-                    "id": "1fff1ebe-795d-4967-b7e5-085fa0cf3c31",
-                    "path": "<Gamepad>/leftTrigger",
+                    "id": "20293ff1-9e4e-485b-87db-e751c6432a30",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "480b6d77-22ad-4ae3-82d5-f79e88029343",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b44f6cb-0ff8-42a9-a772-3e9b8321e9fc",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3cb364ed-bea6-49b1-a4dc-4fd0ad2a0785",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55194d4c-4d14-4d62-a5cf-68660c12b497",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3721765b-6d4f-48e5-b05c-3ad1922a2a06",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -521,6 +563,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c1a77fe-17e1-4dd9-858b-feca7c67a165",
+                    "path": "<Keyboard>/9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Level",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

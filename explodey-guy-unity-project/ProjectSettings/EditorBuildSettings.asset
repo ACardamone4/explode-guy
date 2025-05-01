@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial.unity
     guid: 861555c9b63397747b0a384ac422c172
   - enabled: 0
+    path: Assets/Scenes/Demo.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 0
     path: Assets/Scenes/Level 1.unity
     guid: ebee9db83f8bff24c800931eab263045
   - enabled: 0
@@ -26,9 +29,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/The Box.unity
     guid: 883c4f3b73428b14fb030a332b349910
-  - enabled: 0
-    path: Assets/Scenes/Demo.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 0
     path: Assets/Scenes/FUSE/FUSEEND.unity
     guid: ce9831824d2e93a4e99759cc2c2d48ea

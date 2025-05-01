@@ -6,6 +6,7 @@ public class MenuControls : MonoBehaviour
 {
     [SerializeField] private GameObject Cutscene;
     [SerializeField] private float _cutsceneTimer;
+     [SerializeField] private bool gameRestarting = false;
 
     /// <summary>
     /// Loads the next scene in the build index.

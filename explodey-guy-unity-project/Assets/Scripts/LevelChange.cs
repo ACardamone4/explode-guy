@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class LevelTransition : MonoBehaviour
 {
     [SerializeField] private CheckpointManager _checkpointManager;
+   
     private void Start()
     {
         _checkpointManager = FindObjectOfType<CheckpointManager>();
