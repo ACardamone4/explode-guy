@@ -17,6 +17,7 @@ public class PlayerControls : MonoBehaviour
     private InputAction down;
     private InputAction side;
     private InputAction menu;
+    private InputAction level;
     public bool Up;
     public bool Down;
     public bool Side;
@@ -104,6 +105,8 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private CheckpointManager _checkpointManager;
 
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SpriteRenderer _backpackSprite;
+    [SerializeField] private SpriteRenderer _arrowSprite;
 
     [SerializeField] private GameObject _arrowSideUp;
     [SerializeField] private GameObject _arrowUp;
@@ -117,6 +120,10 @@ public class PlayerControls : MonoBehaviour
     public AudioManager audioManager;
     public GameObject audioManagerObject;
 
+    private int bombPower;
+    private bool bombing;
+
+    [SerializeField] private bool gameRestarting = false;
     private void Awake()
     {
         audioManagerObject = GameObject.Find("Audio Manager");
@@ -154,6 +161,7 @@ public class PlayerControls : MonoBehaviour
         down = MPI.currentActionMap.FindAction("Down");
         side = MPI.currentActionMap.FindAction("Side");
         menu = MPI.currentActionMap.FindAction("Menu");
+        level = MPI.currentActionMap.FindAction("Level");
 
         //release = MPI.currentActionMap.FindAction("Release");
 
@@ -162,6 +170,7 @@ public class PlayerControls : MonoBehaviour
         move.canceled += Handle_MoveCanceled;
         restart.performed += Handle_RestartPerformed;
         menu.performed += BackToMenu;
+        level.performed += ToLevel;
         quit.performed += Handle_QuitPerformed;
         attack.performed += Handle_Attack;
         up.started += Handle_Up;
@@ -203,7 +212,29 @@ public class PlayerControls : MonoBehaviour
     
     private void BackToMenu(InputAction.CallbackContext obj)
     {
-        SceneManager.LoadScene("Menu");
+        if (gameRestarting == false)
+        {
+            gameRestarting = true;
+            SceneManager.LoadScene("Menu");
+        }
+        else
+        {
+            return;
+        }
+    }
+    
+    private void ToLevel(InputAction.CallbackContext obj)
+    {
+
+        if (gameRestarting == false)
+        {
+            gameRestarting = true;
+            SceneManager.LoadScene("FUSELevel");
+        }
+        else
+        {
+            return;
+        }
 
     }
 
@@ -236,7 +267,7 @@ public class PlayerControls : MonoBehaviour
 
     private void Handle_Attack(InputAction.CallbackContext obj)
     {
-        if (_canExplode == true && _dying == false && paused == false && _cutscene == false)
+        if (_canExplode == true && _dying == false && paused == false && _cutscene == false && _bombed == false)
         {
             TryAttack();
             if (_canAttack == true)
@@ -253,10 +284,6 @@ public class PlayerControls : MonoBehaviour
     void Attack()
     {
         audioManager.Explosion();
-        //_basicCam.SetActive(false);
-        //_shakyCam.SetActive(true);
-        //StopAllCoroutines();
-        //StartCoroutine(StopShakyCam());
         GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
         _explosionBox.SetActive(true);
         PlayerRB.freezeRotation = false;
@@ -266,10 +293,6 @@ public class PlayerControls : MonoBehaviour
         _showFuse = false;
         _canMove = false;
         _hasGrounded = false;
-        //_animator.SetBool("Attack", true);
-        //GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
-        //if (moveDirection != 0)
-        //{
             if (Up == true && Side == true)
             {
                 PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, _explosionPower);
@@ -291,22 +314,6 @@ public class PlayerControls : MonoBehaviour
                 PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
             }
             PlayerRB.AddTorque(_rotationAmount/* * moveDirection*/);
-        //} else if (moveDirection == 0)
-        /*{
-            if (Up == true)
-            {
-                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, _explosionPower);
-            }
-            else if (Down == true)
-            {
-                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, -_explosionPower);
-            }
-            else
-            {
-                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
-            }
-            PlayerRB.AddTorque(_rotationAmount * _lastDirection);
-        }*/
         this._collider.sharedMaterial = _bounceMaterial;
         this.PlayerRB.sharedMaterial = _baseMaterial;
         // StartCoroutine(attackDuration());
@@ -343,6 +350,7 @@ public class PlayerControls : MonoBehaviour
         _animator.SetBool("Walking", false);
         _animator.SetBool("ExplodeStop", true);
         audioManager.PauseExplosion();
+        bombing = false;
     }
 
     public void ExplodeStopAnimStop()
@@ -439,6 +447,8 @@ public class PlayerControls : MonoBehaviour
         }
         if (collision.gameObject.tag == "Bouncy")
         {
+
+
             if (_attacking == true)
             {
                 print("bouncy");
@@ -446,14 +456,39 @@ public class PlayerControls : MonoBehaviour
                 PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
                 _bouncyParticles.SetActive(true);
             }
+            //} else
+            //{
+            //    PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, 50);
+            //}
         }
         if (collision.gameObject.tag == "Bomb")
         {
             Attack();
+            Vector2 Direction = (transform.position - collision.gameObject.transform.position).normalized;
+            if (bombing)
+            {
+                if (bombPower < 3)
+                {
+                    bombPower += 1;
+                }
+                PlayerRB.velocity = new Vector2(Direction.x * _explosionPower * _bombBoost * bombPower * -1, _explosionPower * _bombBoost * bombPower * -1);
+            } else
+            {
+                bombPower = 0;
+                PlayerRB.velocity = new Vector2(Direction.x * _explosionPower * _bombBoost * -1, _explosionPower * _bombBoost * -1);
+            }
+
+                //PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bombBoost, _explosionPower * _bombBoost * -1);
+                _bombParticles.SetActive(true);
             _bombed = true;
-            PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bombBoost, _explosionPower * _bombBoost * -1);
-            _bombParticles.SetActive(true);
+            bombing = true;
+            Invoke("CanStopBomb", .5f);
         }
+    }
+
+    public void CanStopBomb()
+    {
+        _bombed = false;
     }
 
     public void DeathTransition()
