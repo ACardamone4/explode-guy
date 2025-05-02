@@ -17,11 +17,11 @@ public class PlayerMovement : MonoBehaviour
     private float _lastHorizontal;
     private bool _grounded;
     private bool _attacking;
-    private bool _canAttack;
+    [SerializeField] private bool _canAttack;
     private bool _attackDelayActive;
     private bool _paused;
     private bool _timeStopWaiting;
-    private bool _dying;
+    [SerializeField] private bool _dying;
     //[SerializeField] private PlayerAnimations _pAnims;
     private CheckpointManager _checkpointManager;
     private Rigidbody2D _rigidbody;
@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        _dying = false;
         _lastHorizontal = 1;
         _baseSpeed = _speed;
         _fuseParticles = GameObject.Find("Fuse");
@@ -162,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
             _tntBackpack.SetActive(false);
         }
 
-        if (_canAttack && _dying)
+        if (_canAttack && !_dying)
         {
             _arrow.SetActive(true);
             if (_horizontal == 0 && _vertical == 1)
