@@ -1,61 +1,85 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-     private GameObject _self;
-     private float _horizontal;
-     private float _vertical;
+    private GameObject _self;
+    private float _horizontal;
+    private float _backpackControl;
+    [SerializeField] private float _backpackFloat;
+    private float _vertical;
     [SerializeField] private float _speed;
     private float _baseSpeed;
     [SerializeField] private float _explosionPower;
     private float _lastHorizontal;
     private bool _grounded;
     private bool _attacking;
-    [SerializeField] private bool _canAttack;
+    private bool _canAttack;
     private bool _attackDelayActive;
     private bool _paused;
     private bool _timeStopWaiting;
-    [SerializeField] private bool _dying;
-    //[SerializeField] private PlayerAnimations _pAnims;
+    private bool _dying;
     private CheckpointManager _checkpointManager;
     private Rigidbody2D _rigidbody;
     private AudioManager audioManager;
     private GameObject audioManagerObject;
     [SerializeField] private GameObject _explosion;
-    private GameObject _fuseParticles;
+    private GameObject _fuseParticlesGameobject;
+    private ParticleSystem _fuseParticles;
     private Collider2D _collider;
     [SerializeField] private PhysicsMaterial2D _bounceMaterial;
     [SerializeField] private PhysicsMaterial2D _baseMaterial;
     private GameObject _pauseMenu;
     private GameObject _pauseFirstButton;
     private Animator _pAnim;
+    private Animator _backpackAnims;
     private GameObject _pauseExplodeParticleGameObject;
     private ParticleSystem _pauseExplodeParticle;
+    private GameObject _fuseLightGameobject;
+    private Light2D _fuseLight;
     private GameObject _bouncyParticles;
     private GameObject _bombParticles;
     private GameObject _deathTransition;
     private GameObject _tntBackpack;
-     private GameObject _arrow;
+    private GameObject _arrow;
+    private Animator _arrowAnims;
+    private int _backpackInt;
     [SerializeField] private GameObject[] _arrowPoints;
+    [SerializeField] private string[] _backpack;
 
     private void Awake()
     {
         _dying = false;
         _lastHorizontal = 1;
         _baseSpeed = _speed;
-        _fuseParticles = GameObject.Find("Fuse");
+        _fuseParticlesGameobject = GameObject.Find("Fuse");
+        if (_fuseParticlesGameobject != null)
+        {
+            _fuseParticles = _fuseParticlesGameobject.GetComponent<ParticleSystem>();
+        }
+        _fuseLightGameobject = GameObject.Find("FuseLight");
+        if (_fuseLightGameobject != null)
+        {
+            _fuseLight = _fuseLightGameobject.GetComponent<Light2D>();
+        }
         _self = GameObject.Find("Player");
         if (_self != null)
         {
             _rigidbody = _self.GetComponent<Rigidbody2D>();
             _collider = _self.GetComponent<CircleCollider2D>();
             _pAnim = _self.GetComponent<Animator>();
+        }
+        _tntBackpack = GameObject.Find("TNTBackpack");
+        if (_tntBackpack != null)
+        {
+            _backpackAnims = _tntBackpack.GetComponent<Animator>();
         }
         _pauseMenu = GameObject.Find("Pause Menu");
         _pauseFirstButton = GameObject.Find("PauseTopButton");
@@ -92,6 +116,11 @@ public class PlayerMovement : MonoBehaviour
             _deathTransition.SetActive(false);
         }
         _arrow = GameObject.Find("Arrow");
+        if (_arrow != null)
+        {
+            _arrowAnims = _arrow.GetComponent<Animator>();
+            _arrow.SetActive(false);
+        }
         _tntBackpack = GameObject.Find("TNTBackpack");
     }
 
@@ -163,9 +192,12 @@ public class PlayerMovement : MonoBehaviour
             _tntBackpack.SetActive(false);
         }
 
-        if (_canAttack && !_dying)
+        if (_canAttack && !_dying && !_attacking)
         {
             _arrow.SetActive(true);
+            _fuseParticlesGameobject.SetActive(true);
+            CheckParticleColor();
+            _arrowAnims.Play("Arrow_" + _backpack[_backpackInt]);
             if (_horizontal == 0 && _vertical == 1)
             {
                 _arrow.transform.position = _arrowPoints[0].transform.position;
@@ -196,26 +228,26 @@ public class PlayerMovement : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
-        if (!_attackDelayActive)
+        if (context.performed)
         {
-            _attackDelayActive = true;
-
-            print("fuck");
-            if (_attacking)
+            if (!_attackDelayActive)
             {
-                StopAttack();
-            }
-            else if (!_attacking && _canAttack)
-            {
-                _grounded = false;
-                _attacking = true;
-                _canAttack = false;
-                AttackAction();
-            }
+                _attackDelayActive = true;
+                if (_attacking)
+                {
+                    StopAttack();
+                }
+                else if (!_attacking && _canAttack)
+                {
+                    _grounded = false;
+                    _attacking = true;
+                    _canAttack = false;
+                    AttackAction();
+                }
 
-            Invoke("AttackDelay", .3f);
+                Invoke("AttackDelay", .15f);
+            }
         }
-        
     }
 
     void AttackDelay()
@@ -225,11 +257,12 @@ public class PlayerMovement : MonoBehaviour
 
     void AttackAction()
     {
+        _attacking = true;
         HitStop(.08f);
         audioManager.Explosion();
         GameObject AttackInstance = Instantiate(_explosion, this.transform.position, this.transform.rotation);
         _rigidbody.freezeRotation = false;
-        _fuseParticles.SetActive(false);
+        _fuseParticlesGameobject.SetActive(false);
         if (_horizontal != 0 || _vertical != 0)
         {
             _rigidbody.velocity = new Vector2(_horizontal * _explosionPower, _vertical * _explosionPower);
@@ -282,7 +315,53 @@ public class PlayerMovement : MonoBehaviour
         {
             _pAnim.SetBool("Walking", true);
         }
-        
+    }
+
+    public void BackpackSwap(InputAction.CallbackContext context)
+    {
+        if (context.performed && _grounded && !_attacking)
+        {
+            _backpackControl = context.ReadValue<Vector2>().x;
+            _backpackFloat += 1 * _backpackControl;
+            if (_backpackFloat < 0)
+            {
+                _backpackFloat = 3;
+            }
+            else if (_backpackFloat > 3)
+            {
+                _backpackFloat = 0;
+            }
+            _backpackInt = (int)_backpackFloat;
+            print(_backpackInt);
+            print(_backpack[_backpackInt]);
+            _backpackAnims.Play("TNT_" + _backpack[_backpackInt]);
+            _arrowAnims.Play("Arrow_" + _backpack[_backpackInt]);
+            CheckParticleColor();
+        }
+    }
+
+   public void CheckParticleColor()
+    {
+        if (_backpackInt == 0)
+        {
+            _fuseParticles.startColor = new Color(1, 0, 0);
+            _fuseLight.color = new Color(1, 0, 0);
+        }
+        else if (_backpackInt == 1)
+        {
+            _fuseParticles.startColor = new Color(1f, 0.07843138f, 0.5764706f);
+            _fuseLight.color = new Color(1f, 0.07843138f, 0.5764706f);
+        }
+        else if (_backpackInt == 2)
+        {
+            _fuseParticles.startColor = new Color(0, 0, 1);
+            _fuseLight.color = new Color(0, 0, 1);
+        }
+        else if (_backpackInt == 3)
+        {
+            _fuseParticles.startColor = new Color(0, 1, 0);
+            _fuseLight.color = new Color(0, 1, 0);
+        }
     }
 
     public void NoSpeed()
@@ -308,7 +387,7 @@ public class PlayerMovement : MonoBehaviour
                 //_pAnims.SetGrounded(true);
                 _grounded = true;
                 _canAttack = true;
-                _fuseParticles.SetActive(true);
+                _fuseParticlesGameobject.SetActive(true);
             } 
         }
     }
@@ -318,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.tag == "Killbox" && _dying != true)
         {
             _dying = true;
-            _fuseParticles.SetActive(false);
+            _fuseParticlesGameobject.SetActive(false);
             _pAnim.SetBool("Die", true);
             audioManager.Death();
         }
@@ -366,13 +445,13 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.tag == "Bomb")
         {
             _attacking = true;
+            _attackDelayActive = true;
             AttackAction();
             Invoke("AttackDelay", .3f);
             Vector2 Direction = (transform.position - collision.gameObject.transform.position).normalized;
             _rigidbody.velocity = new Vector2(Direction.x * _explosionPower * 2, Direction.y * _explosionPower * 2);
-
-            //PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bombBoost, _explosionPower * _bombBoost * -1);
             _bombParticles.SetActive(true);
+            _canAttack = true;
         }
     }
 
@@ -407,9 +486,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Respawn()
     {
+        _dying = true;
         Time.timeScale = 1;
         _pauseMenu.SetActive(false);
-        _fuseParticles.SetActive(false);
+        _fuseParticlesGameobject.SetActive(false);
         _pAnim.SetBool("Die", true);
     }
 
