@@ -6,6 +6,7 @@ public class CameraShake : MonoBehaviour
 {
 
     [SerializeField] private CinemachineVirtualCamera _cam;
+    [SerializeField] private GameObject _playerGameobject;
     [SerializeField] private float _intensity;
     [SerializeField] private float _lightIntensity;
     [SerializeField] private float _shakeDuration;
@@ -15,7 +16,10 @@ public class CameraShake : MonoBehaviour
 
     public void Awake()
     {
+        _playerGameobject = GameObject.Find("Player");
         _cam = GetComponent<CinemachineVirtualCamera>();
+        _cam.Follow = _playerGameobject.transform;
+        _cam.LookAt = _playerGameobject.transform;
         CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
     }
