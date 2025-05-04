@@ -5,12 +5,19 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _timerText;
     private GameObject _timerTextObject;
-    private float elapsedTime;
+    private DataPersistenceManager _dataPersistanceManager;
+    private GameObject _dataPersistanceManagerGameobject;
+    public float elapsedTime;
     public bool Active;
+    public bool _performedInvoke;
+    public bool _recievedData;
 
     private static Timer instance;
     private void Awake()
     {
+        _recievedData = false;
+        _performedInvoke = false;
+
         if (instance == null)
         {
             instance = this;
@@ -22,6 +29,12 @@ public class Timer : MonoBehaviour
         }
     }
 
+    public void StartTimer()
+    {
+        elapsedTime = _dataPersistanceManager.GameData.CurrentTimerTime;
+        _recievedData = true;
+    }
+
     public void Reset()
     {
         elapsedTime = 0;
@@ -29,21 +42,38 @@ public class Timer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _timerTextObject = GameObject.Find("Timer");
-        if (_timerTextObject != null)
+        _dataPersistanceManagerGameobject = GameObject.Find("DataPersistanceManager");
+        if (_dataPersistanceManagerGameobject != null)
         {
-            _timerText = _timerTextObject.GetComponent<TextMeshProUGUI>();
-
-
-            if (Active)
+            _dataPersistanceManager = _dataPersistanceManagerGameobject.GetComponent<DataPersistenceManager>();
+            print(_dataPersistanceManager.GameData.CurrentTimerTime);
+            if (!_performedInvoke)
             {
-                elapsedTime += Time.deltaTime;
+                _performedInvoke = true;
+                Invoke("StartTimer", .3f);
             }
-            int minutes = Mathf.FloorToInt(elapsedTime / 60);
-            int seconds = Mathf.FloorToInt(elapsedTime % 60);
+            
+        }
+        if (_recievedData)
+        {
+            //_dataPersistanceManager.GameData.CurrentTimerTime = elapsedTime;
+            _timerTextObject = GameObject.Find("Timer");
+            if (_timerTextObject != null)
+            {
+                _timerText = _timerTextObject.GetComponent<TextMeshProUGUI>();
 
-            _timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 
+                if (Active)
+                {
+                    elapsedTime += Time.deltaTime;
+                }
+                int minutes = Mathf.FloorToInt(elapsedTime / 60);
+                int seconds = Mathf.FloorToInt(elapsedTime % 60);
+
+                _timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+                _dataPersistanceManager.GameData.CurrentTimerTime = elapsedTime;
+                print(_dataPersistanceManager.GameData.CurrentTimerTime);
+            }
         }
     }
 }

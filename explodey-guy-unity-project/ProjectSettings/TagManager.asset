@@ -36,6 +36,7 @@ TagManager:
   - ComputerInteract
   - NPC
   - Disable
+  - Room
   layers:
   - Default
   - TransparentFX

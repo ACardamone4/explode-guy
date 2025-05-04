@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _paused;
     private bool _timeStopWaiting;
     private bool _dying;
+    private bool _hasSpawned;
     private CheckpointManager _checkpointManager;
     private Rigidbody2D _rigidbody;
     private AudioManager audioManager;
@@ -53,12 +54,34 @@ public class PlayerMovement : MonoBehaviour
     private int _backpackInt;
     [SerializeField] private GameObject[] _arrowPoints;
     [SerializeField] private string[] _backpack;
+    private DataPersistenceManager _dataPersistanceManager;
+    private GameObject _dataPersistanceManagerGameobject;
+    private GameManager _gameManager;
+    private GameObject _gameManagerGameobject;
 
     private void Awake()
     {
+        _dataPersistanceManagerGameobject = GameObject.Find("DataPersistanceManager");
+        if (_dataPersistanceManagerGameobject != null)
+        {
+            _dataPersistanceManager = _dataPersistanceManagerGameobject.GetComponent<DataPersistenceManager>();
+        }
+        _gameManagerGameobject = GameObject.Find("GameManager");
+        if (_gameManagerGameobject != null)
+        {
+            _gameManager = _gameManagerGameobject.GetComponent<GameManager>();
+        }
         _dying = false;
         _lastHorizontal = 1;
         _baseSpeed = _speed;
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _self = GameObject.Find("Player");
+        if (_self != null)
+        {
+            _rigidbody = _self.GetComponent<Rigidbody2D>();
+            _collider = _self.GetComponent<CircleCollider2D>();
+            _pAnim = _self.GetComponent<Animator>();
+        }
         _fuseParticlesGameobject = GameObject.Find("Fuse");
         if (_fuseParticlesGameobject != null)
         {
@@ -69,32 +92,11 @@ public class PlayerMovement : MonoBehaviour
         {
             _fuseLight = _fuseLightGameobject.GetComponent<Light2D>();
         }
-        _self = GameObject.Find("Player");
-        if (_self != null)
-        {
-            _rigidbody = _self.GetComponent<Rigidbody2D>();
-            _collider = _self.GetComponent<CircleCollider2D>();
-            _pAnim = _self.GetComponent<Animator>();
-        }
         _tntBackpack = GameObject.Find("TNTBackpack");
         if (_tntBackpack != null)
         {
             _backpackAnims = _tntBackpack.GetComponent<Animator>();
         }
-        _pauseMenu = GameObject.Find("Pause Menu");
-        _pauseFirstButton = GameObject.Find("PauseTopButton");
-        _pauseMenu.SetActive(false);
-        _checkpointManager = FindObjectOfType<CheckpointManager>();
-        if (_checkpointManager != null)
-        {
-            transform.position = _checkpointManager.LastCheckPointPos;
-        }
-        audioManagerObject = GameObject.Find("Audio Manager");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
-        _rigidbody = GetComponent<Rigidbody2D>();
         _pauseExplodeParticleGameObject = GameObject.Find("PauseExplodeParticles");
         if (_pauseExplodeParticleGameObject != null)
         {
@@ -110,11 +112,6 @@ public class PlayerMovement : MonoBehaviour
         {
             _bombParticles.SetActive(false);
         }
-        _deathTransition = GameObject.Find("DeathTransition");
-        if (_deathTransition != null)
-        {
-            _deathTransition.SetActive(false);
-        }
         _arrow = GameObject.Find("Arrow");
         if (_arrow != null)
         {
@@ -122,10 +119,46 @@ public class PlayerMovement : MonoBehaviour
             _arrow.SetActive(false);
         }
         _tntBackpack = GameObject.Find("TNTBackpack");
+        NoSpeed();
+        Invoke("FindEverything", .3f);
+        
+    }
+
+    public void FindEverything()
+    {
+        NormalSpeed();
+        _pauseMenu = GameObject.Find("Pause Menu");
+        if (_pauseMenu != null)
+        {
+            _pauseFirstButton = GameObject.Find("PauseTopButton");
+            _pauseMenu.SetActive(false);
+        }
+        _checkpointManager = FindObjectOfType<CheckpointManager>();
+        if (_checkpointManager != null)
+        {
+            transform.position = _checkpointManager.LastCheckPointPos;
+        }
+        audioManagerObject = GameObject.Find("Audio Manager");
+        if (audioManagerObject != null)
+        {
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
+        }
+        _deathTransition = GameObject.Find("DeathTransition");
+        if (_deathTransition != null)
+        {
+            _deathTransition.SetActive(false);
+        }
     }
 
     private void FixedUpdate()
     {
+        if (_dataPersistanceManager != null && _hasSpawned == false)
+        {
+            _hasSpawned = true;
+            _self.transform.position = new Vector2(_dataPersistanceManager.GameData.PlayerPosX, _dataPersistanceManager.GameData.PlayerPosY);
+
+        }
+
         if (_grounded && !_attacking)
         {
             _rigidbody.velocity = new Vector2(0, 0);
@@ -230,7 +263,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (context.performed)
         {
-            if (!_attackDelayActive)
+            if (!_attackDelayActive && !_paused)
             {
                 _attackDelayActive = true;
                 if (_attacking)
@@ -401,16 +434,12 @@ public class PlayerMovement : MonoBehaviour
             _pAnim.SetBool("Die", true);
             audioManager.Death();
         }
-    }
 
-    public void Die()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void DeathTransition()
-    {
-        _deathTransition.SetActive(true);
+        if (collision.CompareTag("Checkpoint"))
+        {
+            _dataPersistanceManager.GameData.PlayerPosX = (collision.transform.position.x);
+            _dataPersistanceManager.GameData.PlayerPosY = (collision.transform.position.y);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -423,7 +452,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Bouncy")
+        if (collision.gameObject.tag == "Ground" && audioManagerObject != null || collision.gameObject.tag == "Bouncy" && audioManagerObject != null)
         {
             audioManager.Land();
         }
@@ -457,13 +486,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void Pause(InputAction.CallbackContext context)
     {
-        if (!_paused)
+        if (context.performed)
         {
-            Pause();
-        }
-        else
-        {
-            UnPause();
+            if (!_paused)
+            {
+                Pause();
+            }
+            else
+            {
+                UnPause();
+            }
         }
     }
 
@@ -493,8 +525,28 @@ public class PlayerMovement : MonoBehaviour
         _pAnim.SetBool("Die", true);
     }
 
+    public void Die()
+    {
+        _dataPersistanceManager.Save();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void DeathTransition()
+    {
+        _deathTransition.SetActive(true);
+    }
+
     public void disableMovement()
     {
         _speed = 0;
+    }
+
+    public void ResetData(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            print("Reset");
+            _dataPersistanceManager.NewGame();
+        }
     }
 }
