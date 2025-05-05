@@ -536,8 +536,21 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die()
     {
+        _self.transform.position = new Vector2(_dataPersistanceManager.GameData.PlayerPosX, _dataPersistanceManager.GameData.PlayerPosY);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Invoke("Respawning", .5f);
+    }
+
+    public void Respawning()
+    {
+        StopAttack();
         _dataPersistanceManager.Save();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        _dying = false;
+        _arrow.SetActive(true);
+        _tntBackpack.SetActive(true);
+        _pAnim.SetBool("Die", false);
+        _deathTransition.SetActive(false);
+
     }
 
     public void DeathTransition()
