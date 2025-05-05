@@ -11,5 +11,6 @@ public class GameData
     public float PlayerPosX;
     public float PlayerPosY;
     public float CurrentTimerTime;
+    public int CurrentBackpack;
     public string RoomName;
 }

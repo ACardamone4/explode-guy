@@ -46,7 +46,7 @@ public class Timer : MonoBehaviour
         if (_dataPersistanceManagerGameobject != null)
         {
             _dataPersistanceManager = _dataPersistanceManagerGameobject.GetComponent<DataPersistenceManager>();
-            print(_dataPersistanceManager.GameData.CurrentTimerTime);
+            //print(_dataPersistanceManager.GameData.CurrentTimerTime);
             if (!_performedInvoke)
             {
                 _performedInvoke = true;
@@ -72,7 +72,7 @@ public class Timer : MonoBehaviour
 
                 _timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
                 _dataPersistanceManager.GameData.CurrentTimerTime = elapsedTime;
-                print(_dataPersistanceManager.GameData.CurrentTimerTime);
+                //print(_dataPersistanceManager.GameData.CurrentTimerTime);
             }
         }
     }

@@ -7,12 +7,27 @@ public class MenuControls : MonoBehaviour
     [SerializeField] private GameObject Cutscene;
     [SerializeField] private float _cutsceneTimer;
      [SerializeField] private bool gameRestarting = false;
+    private DataPersistenceManager _dataPersistanceManager;
+    private GameObject _dataPersistanceManagerGameobject;
+
+    public void Awake()
+    {
+        _dataPersistanceManagerGameobject = GameObject.Find("DataPersistanceManager");
+        if (_dataPersistanceManagerGameobject != null)
+        {
+            _dataPersistanceManager = _dataPersistanceManagerGameobject.GetComponent<DataPersistenceManager>();
+        }
+    }
 
     /// <summary>
     /// Loads the next scene in the build index.
     /// </summary>
     public void NextScene()
     {
+        if (_dataPersistanceManager != null)
+        {
+            _dataPersistanceManager.Save();
+        }
         print("NextScene");
         Cutscene.SetActive(true);
     }
@@ -20,6 +35,10 @@ public class MenuControls : MonoBehaviour
 
     public void ShowNextScene()
     {
+        if (_dataPersistanceManager != null)
+        {
+            _dataPersistanceManager.Save();
+        }
         print(SceneManager.GetActiveScene().buildIndex + 1);
     }
     /// <summary>
@@ -27,6 +46,10 @@ public class MenuControls : MonoBehaviour
     /// </summary>
     public void LoadScene()
     {
+        if (_dataPersistanceManager != null)
+        {
+            _dataPersistanceManager.Save();
+        }
         Debug.Log("E");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
@@ -37,6 +60,10 @@ public class MenuControls : MonoBehaviour
     /// <param name="context"></param>
     public void Quit()
     {
+        if (_dataPersistanceManager != null)
+        {
+            _dataPersistanceManager.Save();
+        }
         Debug.Log("Quit");
         Application.Quit();
     }
@@ -46,6 +73,10 @@ public class MenuControls : MonoBehaviour
     /// </summary>
     public void Menu()
     {
+        if (_dataPersistanceManager != null)
+        {
+            _dataPersistanceManager.Save();
+        }
         Time.timeScale = 1;
         //Time.fixedDeltaTime = Time.deltaTime;
         // Loads the first scene, which is the main menu

@@ -58,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject _dataPersistanceManagerGameobject;
     private GameManager _gameManager;
     private GameObject _gameManagerGameobject;
+    private GameObject _loadScreen;
 
     private void Awake()
     {
@@ -120,8 +121,7 @@ public class PlayerMovement : MonoBehaviour
         }
         _tntBackpack = GameObject.Find("TNTBackpack");
         NoSpeed();
-        Invoke("FindEverything", .3f);
-        
+        Invoke("FindEverything", .35f);
     }
 
     public void FindEverything()
@@ -148,6 +148,14 @@ public class PlayerMovement : MonoBehaviour
         {
             _deathTransition.SetActive(false);
         }
+        _gameManagerGameobject = GameObject.Find("LoadScreen");
+        {
+            _gameManagerGameobject.SetActive(false);
+        }
+        _backpackFloat = _dataPersistanceManager.GameData.CurrentBackpack;
+        _backpackInt = _dataPersistanceManager.GameData.CurrentBackpack;
+        print("Backpacking: " + _backpackInt);
+        CheckParticleColor();
     }
 
     private void FixedUpdate()
@@ -365,16 +373,17 @@ public class PlayerMovement : MonoBehaviour
                 _backpackFloat = 0;
             }
             _backpackInt = (int)_backpackFloat;
+            _dataPersistanceManager.GameData.CurrentBackpack = _backpackInt;
             print(_backpackInt);
             print(_backpack[_backpackInt]);
-            _backpackAnims.Play("TNT_" + _backpack[_backpackInt]);
-            _arrowAnims.Play("Arrow_" + _backpack[_backpackInt]);
             CheckParticleColor();
         }
     }
 
    public void CheckParticleColor()
     {
+        _backpackAnims.Play("TNT_" + _backpack[_backpackInt]);
+        _arrowAnims.Play("Arrow_" + _backpack[_backpackInt]);
         if (_backpackInt == 0)
         {
             _fuseParticles.startColor = new Color(1, 0, 0);
