@@ -527,6 +527,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Respawn()
     {
+        _paused = false;
         _dying = true;
         Time.timeScale = 1;
         _pauseMenu.SetActive(false);

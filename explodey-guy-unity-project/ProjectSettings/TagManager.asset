@@ -71,11 +71,20 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Far BG
+    uniqueID: 3125774597
+    locked: 0
   - name: Background
     uniqueID: 2678306883
     locked: 0
   - name: CloserBG
     uniqueID: 2436287787
+    locked: 0
+  - name: Lava
+    uniqueID: 50373375
+    locked: 0
+  - name: Signs
+    uniqueID: 3608078155
     locked: 0
   - name: Default
     uniqueID: 0
