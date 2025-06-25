@@ -304,7 +304,12 @@ public class PlayerMovement : MonoBehaviour
         GameObject AttackInstance = Instantiate(_explosion, this.transform.position, this.transform.rotation);
         _rigidbody.freezeRotation = false;
         _fuseParticlesGameobject.SetActive(false);
-        if (_horizontal != 0 || _vertical != 0)
+        if (_horizontal != 0 && _vertical == 0)
+        {
+            print("side");
+            _rigidbody.velocity = new Vector2(_explosionPower * 1.5f * _horizontal, _vertical * _explosionPower);
+        }
+        else if (_horizontal != 0 || _vertical != 0)
         {
             _rigidbody.velocity = new Vector2(_horizontal * _explosionPower, _vertical * _explosionPower);
         } 
