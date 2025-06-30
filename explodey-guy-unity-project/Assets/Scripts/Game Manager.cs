@@ -7,11 +7,13 @@
 *****************************************************************************/
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour//, IDataPersistence
 {
     [SerializeField] private DataPersistenceManager _dataPersistanceManager;
+    [SerializeField] private GameObject _dataPersistanceManagerGameObject;
 
     [SerializeField] private GameObject _currentRoom;
 
@@ -24,7 +26,11 @@ public class GameManager : MonoBehaviour//, IDataPersistence
     void Start()
     {
         hasStartRoom = false;
-
+        _dataPersistanceManagerGameObject = GameObject.Find("DataPersistanceManager");
+        if (_dataPersistanceManagerGameObject != null)
+        {
+            _dataPersistanceManager = _dataPersistanceManagerGameObject.GetComponent<DataPersistenceManager>();
+        }
 
 
         StartCoroutine(SpawnLevel());

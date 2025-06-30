@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
         _pauseMenu = GameObject.Find("Pause Menu");
         if (_pauseMenu != null)
         {
-            _pauseFirstButton = GameObject.Find("PauseTopButton");
+            _pauseFirstButton = GameObject.Find("Unpause");
             _pauseMenu.SetActive(false);
         }
         _checkpointManager = FindObjectOfType<CheckpointManager>();
@@ -149,6 +149,7 @@ public class PlayerMovement : MonoBehaviour
             _deathTransition.SetActive(false);
         }
         _gameManagerGameobject = GameObject.Find("LoadScreen");
+        if (_gameManagerGameobject != null) 
         {
             _gameManagerGameobject.SetActive(false);
         }
@@ -538,6 +539,18 @@ public class PlayerMovement : MonoBehaviour
         _pauseMenu.SetActive(false);
         _fuseParticlesGameobject.SetActive(false);
         _pAnim.SetBool("Die", true);
+    }
+
+    public void RestartLevel()
+    {
+        _paused = false;
+        _dying = true;
+        Time.timeScale = 1;
+        _pauseMenu.SetActive(false);
+        _fuseParticlesGameobject.SetActive(false);
+        _pAnim.SetBool("Die", true);
+        _dataPersistanceManager.GameData.PlayerPosX = 0;
+        _dataPersistanceManager.GameData.PlayerPosY = 0;
     }
 
     public void Die()
