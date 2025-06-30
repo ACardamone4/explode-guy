@@ -122,10 +122,18 @@ public class PlayerControls : MonoBehaviour
 
     private int bombPower;
     private bool bombing;
+    [SerializeField] private DataPersistenceManager _dataPersistanceManager;
+    [SerializeField] private GameObject _dataPersistanceManagerGameObject;
 
     [SerializeField] private bool gameRestarting = false;
     private void Awake()
     {
+        _dataPersistanceManagerGameObject = GameObject.Find("DataPersistanceManager");
+        if (_dataPersistanceManagerGameObject != null)
+        {
+            _dataPersistanceManager = _dataPersistanceManagerGameObject.GetComponent<DataPersistenceManager>();
+        }
+
         audioManagerObject = GameObject.Find("Audio Manager");
         if (audioManagerObject != null)
         {
@@ -437,13 +445,14 @@ public class PlayerControls : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.tag == "Killbox")
+        if (collision.gameObject.tag == "Killbox" && _dying != true)
         {
             _dying = true;
             _bombParticles.SetActive(false);
             _bouncyParticles.SetActive(false);
             _fuseParticles.SetActive(false);
             _animator.SetBool("Die", true);
+            audioManager.Death();
         }
         if (collision.gameObject.tag == "Bouncy")
         {
@@ -918,6 +927,21 @@ public class PlayerControls : MonoBehaviour
         _bouncyParticles.SetActive(false);
         _fuseParticles.SetActive(false);
         _animator.SetBool("Die", true);
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1;
+        // Time.fixedDeltaTime = Time.deltaTime;
+        paused = false;
+        _pauseMenu.SetActive(false);
+        _dying = true;
+        _bombParticles.SetActive(false);
+        _bouncyParticles.SetActive(false);
+        _fuseParticles.SetActive(false);
+        _animator.SetBool("Die", true);
+        _dataPersistanceManager.GameData.PlayerPosY = 0;
+        _dataPersistanceManager.GameData.PlayerPosX = 0;
     }
 
     public void RestartGame()

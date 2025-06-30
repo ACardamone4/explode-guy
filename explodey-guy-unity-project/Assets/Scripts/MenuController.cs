@@ -9,6 +9,8 @@ public class MenuControls : MonoBehaviour
      [SerializeField] private bool gameRestarting = false;
     private DataPersistenceManager _dataPersistanceManager;
     private GameObject _dataPersistanceManagerGameobject;
+    [SerializeField] private string _levelName;
+    [SerializeField] private bool _backToStart;
 
     public void Awake()
     {
@@ -48,6 +50,13 @@ public class MenuControls : MonoBehaviour
     {
         if (_dataPersistanceManager != null)
         {
+            _dataPersistanceManager.Save();
+            if (_dataPersistanceManager.GameData.RoomName != _levelName || _backToStart)
+            {
+                _dataPersistanceManager.GameData.PlayerPosX = 0;
+                _dataPersistanceManager.GameData.PlayerPosY = 0;
+            }
+            _dataPersistanceManager.GameData.RoomName = _levelName;
             _dataPersistanceManager.Save();
         }
         Debug.Log("E");
