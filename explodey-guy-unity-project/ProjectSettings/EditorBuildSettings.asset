@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/FUSE/Menu.unity
     guid: a3b2eb3ccc864384aac54f667f8cdc0c
   - enabled: 1
-    path: Assets/Scenes/FUSE/FUSETutorial.unity
+    path: Assets/Scenes/FUSE/Levels.unity
     guid: da7a97435248d534d96bf5ac9f3d850d
   - enabled: 1
     path: Assets/Scenes/FUSE/FUSELevel.unity
