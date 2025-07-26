@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _timeStopWaiting;
     private bool _dying;
     private bool _hasSpawned;
+    private bool cutscene;
     private CheckpointManager _checkpointManager;
     private Rigidbody2D _rigidbody;
     private AudioManager audioManager;
@@ -55,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
     private GameManager _gameManager;
     private GameObject _gameManagerGameobject;
     private GameObject _loadScreen;
+
+    public bool Cutscene { get => cutscene; set => cutscene = value; }
 
     private void Awake()
     {
@@ -497,7 +500,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Pause(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && cutscene == false)
         {
             if (!_paused)
             {
@@ -568,6 +571,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    public void Save()
+    {
+        _dataPersistanceManager.Save();
+    }
+
     public void DeathTransition()
     {
         _deathTransition.SetActive(true);
@@ -576,6 +584,12 @@ public class PlayerMovement : MonoBehaviour
     public void disableMovement()
     {
         _speed = 0;
+    }
+
+    public void ResetPosition()
+    {
+        _dataPersistanceManager.GameData.PlayerPosX = 0;
+        _dataPersistanceManager.GameData.PlayerPosY = 0;
     }
 
     public void ResetData(InputAction.CallbackContext context)

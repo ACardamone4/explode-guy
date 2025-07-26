@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9195189393951080122}
-  - component: {fileID: 6668123379415408965}
+  - component: {fileID: 1571606050410660881}
   - component: {fileID: 4914375477094459687}
   - component: {fileID: 7959591829086924890}
   - component: {fileID: 1715273202155626028}
@@ -37,7 +37,7 @@ Transform:
   - {fileID: 6424438198708059976}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6668123379415408965
+--- !u!114 &1571606050410660881
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,13 +46,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2439875925694870811}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa538dd8dc546f5418c72cdbeeffadfd, type: 3}
+  m_Script: {fileID: 11500000, guid: a75a119c6413e514ab33a02cb3dcfbca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _explosion: {fileID: 7580993573538625705, guid: 045be1e33c27a8947b9c691c22dc4120, type: 3}
-  _tntOutline: {fileID: 4857874006294892052, guid: 11813954e03b3a34ebf1603ebff481b9, type: 3}
-  _self: {fileID: 9195189393951080122}
-  _respawnTNT: 1
+  _fuseLight: {fileID: 5228919260767569592}
+  _animator: {fileID: 458568449917243890}
+  _selfPosition: {fileID: 9195189393951080122}
+  _selfCollider: {fileID: 7959591829086924890}
 --- !u!212 &4914375477094459687
 SpriteRenderer:
   m_ObjectHideFlags: 0

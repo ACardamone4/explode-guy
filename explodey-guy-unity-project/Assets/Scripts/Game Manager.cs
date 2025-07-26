@@ -6,8 +6,6 @@
 // Brief Description : Keeps track of the player's score, and loads the lose screen.
 *****************************************************************************/
 using System.Collections;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour//, IDataPersistence
@@ -18,6 +16,8 @@ public class GameManager : MonoBehaviour//, IDataPersistence
     [SerializeField] private GameObject _currentRoom;
 
     [SerializeField] private bool hasStartRoom;
+
+    public GameObject CurrentRoom { get => _currentRoom; set => _currentRoom = value; }
 
 
     /// <summary>
@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour//, IDataPersistence
 
         StartCoroutine(SpawnLevel());
 
+    }
+
+    public void NewLevel()
+    {
+        StartCoroutine(SpawnLevel());
     }
 
     private IEnumerator SpawnLevel()

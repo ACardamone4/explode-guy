@@ -5,7 +5,10 @@ using UnityEngine;
 public class Renamer : MonoBehaviour
 {
     [SerializeField] private string _name;
-    void Awake()
+
+    public string Name { get => _name; set => _name = value; }
+
+    void Update()
     {
         this.gameObject.name = _name;
     }
