@@ -1,12 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -469,7 +465,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground" && audioManagerObject != null || collision.gameObject.tag == "Bouncy" && audioManagerObject != null)
         {
-            audioManager.Land();
+            audioManager.Land(0f);
         }
         if (collision.gameObject.tag == "Ground")
         {
@@ -491,7 +487,7 @@ public class PlayerMovement : MonoBehaviour
             _attacking = true;
             _attackDelayActive = true;
             AttackAction();
-            Invoke("AttackDelay", .3f);
+            Invoke("AttackDelay", .2f);
             Vector2 Direction = (transform.position - collision.gameObject.transform.position).normalized;
             _rigidbody.velocity = new Vector2(Direction.x * _explosionPower * 2, Direction.y * _explosionPower * 2);
             _bombParticles.SetActive(true);

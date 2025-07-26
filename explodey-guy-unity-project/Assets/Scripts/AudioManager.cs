@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+
 
 public class AudioManager : MonoBehaviour
 {
@@ -15,9 +17,12 @@ public class AudioManager : MonoBehaviour
     public AudioClip PauseExplosionSFX;
     public AudioClip DeathSFX;
     public AudioClip CheckpointSFX;
+    [SerializeField] private float _minSoundInterval = 0.25f;
+    [SerializeField] private bool _playLandSFX;
 
     private void Awake()
     {
+        _playLandSFX = true;
         if (instance == null)
         {
             instance = this;
@@ -60,9 +65,20 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void Land()
+    public void Land(float duration)
     {
-        audioSource.PlayOneShot(LandSFX);
+        if (_playLandSFX == true)
+        {
+            _playLandSFX = false;
+            audioSource.PlayOneShot(LandSFX);
+            StartCoroutine(LandSFXDelay(duration));
+        }
+    }
+
+    IEnumerator LandSFXDelay(float duration)
+    {
+        yield return new WaitForSeconds(_minSoundInterval);
+        _playLandSFX = true;
     }
 
     public void PauseExplosion()
