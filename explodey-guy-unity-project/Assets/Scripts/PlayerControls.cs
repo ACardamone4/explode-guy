@@ -434,7 +434,7 @@ public class PlayerControls : MonoBehaviour
         {
             PlayerRB.rotation = (0);
 
-            audioManager.Land();
+            audioManager.Land(0f);
         }
 
         if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Ground2")
