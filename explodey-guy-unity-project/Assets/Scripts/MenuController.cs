@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class MenuControls : MonoBehaviour
@@ -48,19 +47,19 @@ public class MenuControls : MonoBehaviour
     /// </summary>
     public void LoadScene()
     {
-        if (_dataPersistanceManager != null)
-        {
-            _dataPersistanceManager.Save();
-            if (_dataPersistanceManager.GameData.RoomName != _levelName || _backToStart)
+            if (_dataPersistanceManager != null)
             {
-                _dataPersistanceManager.GameData.PlayerPosX = 0;
-                _dataPersistanceManager.GameData.PlayerPosY = 0;
+                _dataPersistanceManager.Save();
+                if (_dataPersistanceManager.GameData.RoomName != _levelName || _backToStart)
+                {
+                    _dataPersistanceManager.GameData.PlayerPosX = 0;
+                    _dataPersistanceManager.GameData.PlayerPosY = 0;
+                }
+                _dataPersistanceManager.GameData.RoomName = _levelName;
+                _dataPersistanceManager.Save();
             }
-            _dataPersistanceManager.GameData.RoomName = _levelName;
-            _dataPersistanceManager.Save();
-        }
-        Debug.Log("E");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            Debug.Log("E");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     /// <summary>
@@ -82,6 +81,8 @@ public class MenuControls : MonoBehaviour
     /// </summary>
     public void Menu()
     {
+        _dataPersistanceManager.GameData.PlayerPosX = 0;
+        _dataPersistanceManager.GameData.PlayerPosY = 0;
         if (_dataPersistanceManager != null)
         {
             _dataPersistanceManager.Save();

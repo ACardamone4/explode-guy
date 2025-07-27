@@ -18,4 +18,9 @@ public class ActivateEndScreenEffects : MonoBehaviour
     {
         _endScreenMenuSpawn.Continue();
     }
+
+    public void Restart()
+    {
+        _endScreenMenuSpawn.Restart();
+    }
 }
