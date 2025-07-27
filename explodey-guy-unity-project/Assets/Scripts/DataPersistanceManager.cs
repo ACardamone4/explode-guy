@@ -77,12 +77,14 @@ public class DataPersistenceManager : MonoBehaviour
             GameData.RoomName = loadedData.RoomName;
             GameData.CurrentTimerTime = loadedData.CurrentTimerTime;
             GameData.CurrentBackpack = loadedData.CurrentBackpack;
+            GameData.LevelsUnlocked = loadedData.LevelsUnlocked;
             print("loaded data = " + loadedData);
             print("Game Data Player X Pos = " + GameData.PlayerPosX);
             print("Game Data Player Y Pos = " + GameData.PlayerPosY);
             print("Game Data Room Name = " + GameData.RoomName);
             print("Current Timer Time = " + GameData.CurrentTimerTime);
             print("Current Timer Time = " + GameData.CurrentBackpack);
+            print("Levels Unlocked = " + GameData.LevelsUnlocked);
         }
         return loadedData;
     }

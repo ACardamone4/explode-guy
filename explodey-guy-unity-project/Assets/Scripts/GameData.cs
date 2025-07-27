@@ -13,4 +13,5 @@ public class GameData
     public float CurrentTimerTime;
     public int CurrentBackpack;
     public string RoomName;
+    public int LevelsUnlocked;
 }

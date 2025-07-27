@@ -8,11 +8,14 @@ public class EndscreenMenuSpawn : MonoBehaviour
     [SerializeField] private Renamer _renamer;
     [SerializeField] private GameObject _renamerGameObject;
     [SerializeField] private string _nextLevelName;
+    [SerializeField] private int _levelUnlockNumber;
     [SerializeField] private GameObject _endscreen;
     [SerializeField] private GameObject _continueButton;
     [SerializeField] private GameObject _gameManagerGameObject;
     [SerializeField] private GameManager _gameManager;
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _dataPersistanceManagerGameObject;
+    [SerializeField] private DataPersistenceManager _dataPersistanceManager;
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private Animator _timerAnimator;
 
@@ -29,12 +32,18 @@ public class EndscreenMenuSpawn : MonoBehaviour
         _gameManagerGameObject = GameObject.Find("GameManager");
         _gameManager = _gameManagerGameObject.GetComponent<GameManager>();
         _endscreen.SetActive(false);
+        _dataPersistanceManagerGameObject = GameObject.Find("DataPersistanceManager");
+        _dataPersistanceManager = _dataPersistanceManagerGameObject.GetComponent<DataPersistenceManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
+            if (_dataPersistanceManager.GameData.LevelsUnlocked < _levelUnlockNumber)
+            {
+                _dataPersistanceManager.GameData.LevelsUnlocked = _levelUnlockNumber;
+            }
             _renamer.Name = (_nextLevelName);
             _endscreen.SetActive(true);
             _timerAnimator.Play("WinScreen");
@@ -58,5 +67,13 @@ public class EndscreenMenuSpawn : MonoBehaviour
         _gameManager.NewLevel();
         _playerMovement.Cutscene = false;
         Destroy(_renamerGameObject);
+    }
+
+    public void Restart()
+    {
+        _playerMovement.RestartLevel();
+        _timerAnimator.Play("Corner");
+        _playerMovement.Cutscene = false;
+        _endscreen.SetActive(false);
     }
 }
