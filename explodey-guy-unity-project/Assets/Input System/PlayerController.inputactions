@@ -69,15 +69,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Misclick",
-                    "type": "Button",
-                    "id": "1d5c6639-8f3b-4560-bd30-a3308eed980e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Menu",
                     "type": "Button",
                     "id": "630bfcb1-317e-43e5-bf0f-fa962ff3f78c",
@@ -464,28 +455,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Down",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bf3a1f52-ea52-40ca-b598-82c5dafed309",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Misclick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0e4cd6a3-98d9-4590-8d82-920ea4b942d6",
-                    "path": "<Keyboard>/8",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Misclick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

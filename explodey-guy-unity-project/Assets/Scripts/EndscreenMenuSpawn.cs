@@ -45,6 +45,7 @@ public class EndscreenMenuSpawn : MonoBehaviour
                 _dataPersistanceManager.GameData.LevelsUnlocked = _levelUnlockNumber;
             }
             _renamer.Name = (_nextLevelName);
+            _playerMovement.ResetPosition();
             _endscreen.SetActive(true);
             _timerAnimator.Play("WinScreen");
             EventSystem.current.SetSelectedGameObject(null);
@@ -68,6 +69,8 @@ public class EndscreenMenuSpawn : MonoBehaviour
         _playerMovement.Cutscene = false;
         Destroy(_renamerGameObject);
     }
+
+
 
     public void Restart()
     {
