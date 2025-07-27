@@ -32,4 +32,5 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/FUSE/FUSEEND.unity
     guid: ce9831824d2e93a4e99759cc2c2d48ea
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 87c936c8c0c6e8544bb6e3b766ee66ad, type: 2}

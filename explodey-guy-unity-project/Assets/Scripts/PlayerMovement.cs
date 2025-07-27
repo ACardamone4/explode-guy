@@ -449,7 +449,7 @@ public class PlayerMovement : MonoBehaviour
             audioManager.Death();
         }
 
-        if (collision.CompareTag("Checkpoint"))
+        if (collision.CompareTag("Checkpoint") && cutscene == false)
         {
             _dataPersistanceManager.GameData.PlayerPosX = (collision.transform.position.x);
             _dataPersistanceManager.GameData.PlayerPosY = (collision.transform.position.y);
