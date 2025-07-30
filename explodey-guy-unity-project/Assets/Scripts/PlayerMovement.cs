@@ -47,7 +47,9 @@ public class PlayerMovement : MonoBehaviour
     private GameObject _deathTransition;
     private GameObject _tntBackpack;
     private GameObject _arrow;
+    private GameObject _explodeIndicator;
     private Animator _arrowAnims;
+    private Animator _explodeIndicatorAnims;
     private int _backpackInt;
     [SerializeField] private GameObject[] _arrowPoints;
     [SerializeField] private string[] _backpack;
@@ -117,6 +119,12 @@ public class PlayerMovement : MonoBehaviour
         {
             _arrowAnims = _arrow.GetComponent<Animator>();
             _arrow.SetActive(false);
+        }
+        _explodeIndicator = GameObject.Find("Explode_Indicator");
+        if (_explodeIndicator != null)
+        {
+            _explodeIndicatorAnims = _explodeIndicator.GetComponent<Animator>();
+            _explodeIndicatorAnims.Play("ExplodeIndicator_Disabled");
         }
         _tntBackpack = GameObject.Find("TNTBackpack");
         NoSpeed();
@@ -222,6 +230,8 @@ public class PlayerMovement : MonoBehaviour
         {
             _pAnim.SetBool("Walking", false);
             _arrow.SetActive(false);
+            _explodeIndicatorAnims.Play("ExplodeIndicator_Disabled");
+
         }
 
         if (_dying == true)
@@ -230,12 +240,14 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.rotation = (0);
             _rigidbody.freezeRotation = true;
             _arrow.SetActive(false);
+            _explodeIndicatorAnims.Play("ExplodeIndicator_Disabled");
             _tntBackpack.SetActive(false);
         }
 
         if (_canAttack && !_dying && !_attacking)
         {
             _arrow.SetActive(true);
+            _explodeIndicatorAnims.Play("ExplodeIndicator_Pulse");
             _fuseParticlesGameobject.SetActive(true);
             CheckParticleColor();
             _arrowAnims.Play("Arrow_" + _backpack[_backpackInt]);
@@ -565,6 +577,7 @@ public class PlayerMovement : MonoBehaviour
         _dataPersistanceManager.Save();
         _dying = false;
         _arrow.SetActive(true);
+        _explodeIndicatorAnims.Play("ExplodeIndicator_Pulse");
         _tntBackpack.SetActive(true);
         _pAnim.SetBool("Die", false);
         _deathTransition.SetActive(false);
