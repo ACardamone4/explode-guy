@@ -14,4 +14,5 @@ public class GameData
     public int CurrentBackpack;
     public string RoomName;
     public int LevelsUnlocked;
+    public float[] BestLevelTimes = new float[9];
 }

@@ -78,6 +78,7 @@ public class DataPersistenceManager : MonoBehaviour
             GameData.CurrentTimerTime = loadedData.CurrentTimerTime;
             GameData.CurrentBackpack = loadedData.CurrentBackpack;
             GameData.LevelsUnlocked = loadedData.LevelsUnlocked;
+            GameData.BestLevelTimes = loadedData.BestLevelTimes;
             print("loaded data = " + loadedData);
             print("Game Data Player X Pos = " + GameData.PlayerPosX);
             print("Game Data Player Y Pos = " + GameData.PlayerPosY);
