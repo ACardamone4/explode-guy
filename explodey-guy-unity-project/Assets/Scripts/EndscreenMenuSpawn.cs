@@ -1,9 +1,13 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class EndscreenMenuSpawn : MonoBehaviour
 {
     [SerializeField] private GameObject _timer;
+    [SerializeField] private GameObject _levelBestTime;
+    [SerializeField] private TextMeshProUGUI _levelBestTimeText;
+    [SerializeField] private int _levelNumber;
     //[SerializeField] private GameObject _pauseMenu;
     [SerializeField] private Renamer _renamer;
     [SerializeField] private GameObject _renamerGameObject;
@@ -23,6 +27,8 @@ public class EndscreenMenuSpawn : MonoBehaviour
     void Start()
     {
         _timer = GameObject.Find("Timer");
+        _levelBestTime = GameObject.Find("LevelBestTime");
+        _levelBestTimeText = _levelBestTime.GetComponent<TextMeshProUGUI>();
         _endscreen = GameObject.Find("Endscreen");
         _continueButton = GameObject.Find("Continue");
         _player = GameObject.Find("Player");
@@ -52,6 +58,14 @@ public class EndscreenMenuSpawn : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(_continueButton);
             _playerMovement.Cutscene = true;
             Time.timeScale = 0;
+            if (_dataPersistanceManager.GameData.BestLevelTimes[_levelNumber] > _dataPersistanceManager.GameData.CurrentTimerTime || _dataPersistanceManager.GameData.BestLevelTimes[_levelNumber] == 0)
+            {
+                _dataPersistanceManager.GameData.BestLevelTimes[_levelNumber] = _dataPersistanceManager.GameData.CurrentTimerTime;
+                int minutes = Mathf.FloorToInt(_dataPersistanceManager.GameData.BestLevelTimes[_levelNumber] / 60);
+                int seconds = Mathf.FloorToInt(_dataPersistanceManager.GameData.BestLevelTimes[_levelNumber] % 60);
+                _levelBestTimeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+                _dataPersistanceManager.Save();
+            }
         }
     }
 

@@ -316,6 +316,21 @@ public class PlayerMovement : MonoBehaviour
         GameObject AttackInstance = Instantiate(_explosion, this.transform.position, this.transform.rotation);
         _rigidbody.freezeRotation = false;
         _fuseParticlesGameobject.SetActive(false);
+        if (_horizontal > 0)
+        {
+            _horizontal = 1;
+        } else if (_horizontal < 0)
+        {
+            _horizontal = -1;
+        }
+        if (_vertical > 0)
+        {
+            _vertical = 1;
+        }
+        else if (_vertical < 0)
+        {
+            _vertical = -1;
+        }
         if (_horizontal != 0 && _vertical == 0)
         {
             print("side");
