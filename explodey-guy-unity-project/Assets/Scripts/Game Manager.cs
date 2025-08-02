@@ -48,7 +48,15 @@ public class GameManager : MonoBehaviour//, IDataPersistence
         print(_dataPersistanceManager.GameData.RoomName);
             _currentRoom = Resources.Load<GameObject>("Prefabs/Levels/" + _dataPersistanceManager.GameData.RoomName);
             print(_currentRoom);
+        if (_currentRoom != null)
+        {
             Instantiate(_currentRoom, new Vector2(0, 0), Quaternion.identity);
+        } else
+        {
+            _dataPersistanceManager.GameData.RoomName = "Tutorial";
+            _currentRoom = Resources.Load<GameObject>("Prefabs/Levels/" + _dataPersistanceManager.GameData.RoomName);
+            Instantiate(_currentRoom, new Vector2(0, 0), Quaternion.identity);
+        }
             yield return new WaitForSeconds(.1f);
         hasStartRoom = true;
     }
