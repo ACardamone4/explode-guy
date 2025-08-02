@@ -22,8 +22,10 @@ public class MenuControls : MonoBehaviour
         {
             _dataPersistanceManager = _dataPersistanceManagerGameobject.GetComponent<DataPersistenceManager>();
         }
+    }
 
-
+    public void Update()
+    {
         if (_hasTimer)
         {
             int minutes = Mathf.FloorToInt(_dataPersistanceManager.GameData.BestLevelTimes[_levelNumber] / 60);
@@ -115,5 +117,11 @@ public class MenuControls : MonoBehaviour
         //Time.fixedDeltaTime = Time.deltaTime;
         // Loads the first scene, which is the main menu
         SceneManager.LoadScene(0);
+    }
+
+    public void Reset()
+    {
+        _dataPersistanceManager.NewGame();
+        _dataPersistanceManager.Save();
     }
 }

@@ -62,6 +62,25 @@ public class LevelUnlocker : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_dataPersistanceManager != null)
+        {
+            _levelsUnlocked = _dataPersistanceManager.GameData.LevelsUnlocked;
+        }
+        if (_levelsUnlocked == 0)
+        {
+            _levelButtonsGameObject[1].GetComponent<Button>().interactable = false;
+            _levelButtonsGameObject[2].GetComponent<Button>().interactable = false;
+            _levelButtonsGameObject[3].GetComponent<Button>().interactable = false;
+            _levelButtonsGameObject[4].GetComponent<Button>().interactable = false;
+            _levelButtonsGameObject[5].GetComponent<Button>().interactable = false;
+            _levelButtonsGameObject[6].GetComponent<Button>().interactable = false;
+            _levelButtonsGameObject[7].GetComponent<Button>().interactable = false;
+            _levelButtonsGameObject[8].GetComponent<Button>().interactable = false;
+        }
+    }
+
     public void CheckActiveLevels(int Index)
     {
         if (Index >= 0 && Index < _levelButtonsGameObject.Count)

@@ -503,28 +503,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "6fd3dd65-c43c-456b-b7db-ddb1d2502e0a",
-                    "path": "<Keyboard>/0",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Menu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8c1a77fe-17e1-4dd9-858b-feca7c67a165",
-                    "path": "<Keyboard>/9",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Level",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "2D Vector",
                     "id": "a29ba13d-e0d1-4c22-b352-acc60bbfb5b8",
                     "path": "2DVector",
@@ -578,17 +556,6 @@
                     "action": "BackpackControl",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "4fb6e266-86fe-4197-b278-6333c2b7a2c1",
-                    "path": "<Keyboard>/0",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Reset",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
