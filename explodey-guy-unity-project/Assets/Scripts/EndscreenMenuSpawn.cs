@@ -73,6 +73,7 @@ public class EndscreenMenuSpawn : MonoBehaviour
     {
         _timerAnimator.Play("Corner");
         _playerMovement.ResetPosition();
+        _playerMovement.Save();
         _playerMovement.Die();
         //_playerMovement.Pause();
         Time.timeScale = 1;
