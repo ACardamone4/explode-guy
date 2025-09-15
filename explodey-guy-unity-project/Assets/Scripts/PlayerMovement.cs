@@ -586,6 +586,14 @@ public class PlayerMovement : MonoBehaviour
         Invoke("Respawning", .5f);
     }
 
+    public void BossDeath()
+    {
+        _dying = true;
+        _fuseParticlesGameobject.SetActive(false);
+        _pAnim.SetBool("Die", true);
+        audioManager.Death();
+    }
+
     public void Respawning()
     {
         StopAttack();
