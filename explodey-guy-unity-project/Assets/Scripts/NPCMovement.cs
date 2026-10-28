@@ -31,7 +31,7 @@ public class NPCMovement : MonoBehaviour
     {
         if (_forward)
         {
-            _rigidBody.velocity = new Vector2(_movementSpeed, _rigidBody.velocity.y);
+            _rigidBody.linearVelocity = new Vector2(_movementSpeed, _rigidBody.linearVelocity.y);
             gameObject.transform.localScale = new Vector2(1, 1);
             _moveDirection = 1;
             _moving = true;
@@ -39,18 +39,18 @@ public class NPCMovement : MonoBehaviour
         }
         if (_backward)
         {
-            _rigidBody.velocity = new Vector2(_movementSpeed * -1, _rigidBody.velocity.y);
+            _rigidBody.linearVelocity = new Vector2(_movementSpeed * -1, _rigidBody.linearVelocity.y);
             gameObject.transform.localScale = new Vector2(-1, 1);
             _moveDirection = -1;
             _moving = true;
             _animator.Play(_color + "_NPC_Walking_" + _equipment);
         }
 
-        if (_rigidBody.velocity.y < -1 && _color == "Yellow")
+        if (_rigidBody.linearVelocity.y < -1 && _color == "Yellow")
         {
             _animator.Play(_color + "_NPC_Fall_" + _equipment);
         } 
-        else if (_rigidBody.velocity.y >= 0 && _moving == false)
+        else if (_rigidBody.linearVelocity.y >= 0 && _moving == false)
         {
 
             _animator.Play(_color + "_NPC_Idle_" + _equipment);
@@ -67,7 +67,7 @@ public class NPCMovement : MonoBehaviour
 
     public void Stop()
     {
-        _rigidBody.velocity = new Vector2(0, 0);
+        _rigidBody.linearVelocity = new Vector2(0, 0);
         _forward = false;
         _backward = false;
         _moving = false;
@@ -76,14 +76,14 @@ public class NPCMovement : MonoBehaviour
 
     public void Jump()
     {
-        _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, _jumpPower);
+        _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, _jumpPower);
         _animator.Play(_color + "_NPC_Fall_" + _equipment);
     }
     public void Explode()
     {
         GameObject AttackInstance = Instantiate(_explosion, _self.position, _self.rotation);
         _rigidBody.freezeRotation = false;
-        _rigidBody.velocity = new Vector2(_moveDirection * _explosionPower, _explosionPower);
+        _rigidBody.linearVelocity = new Vector2(_moveDirection * _explosionPower, _explosionPower);
         _rigidBody.AddTorque(_rotationAmount * _moveDirection);
         this._collider.sharedMaterial = _bounceMaterial;
         this._rigidBody.sharedMaterial = _baseMaterial;

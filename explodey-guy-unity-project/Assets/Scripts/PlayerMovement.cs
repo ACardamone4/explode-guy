@@ -177,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_grounded && !_attacking)
         {
-            _rigidbody.velocity = new Vector2(0, 0);
+            _rigidbody.linearVelocity = new Vector2(0, 0);
             if (_horizontal == 0)
             {
                 _pAnim.SetBool("Walking", false);
@@ -189,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!_attacking)
         {
-            _rigidbody.velocity = new Vector2(_horizontal * _speed, _rigidbody.velocity.y);
+            _rigidbody.linearVelocity = new Vector2(_horizontal * _speed, _rigidbody.linearVelocity.y);
             if (_horizontal > 0)
             {
                 _horizontal = 1;
@@ -212,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
                 _vertical = -1;
             }
 
-            if (_rigidbody.velocity.y < 0)
+            if (_rigidbody.linearVelocity.y < 0)
             {
                 _pAnim.SetBool("Falling", true);
             }
@@ -236,7 +236,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_dying == true)
         {
-            _rigidbody.velocity = new Vector2(0, 0);
+            _rigidbody.linearVelocity = new Vector2(0, 0);
             _rigidbody.rotation = (0);
             _rigidbody.freezeRotation = true;
             _arrow.SetActive(false);
@@ -334,16 +334,16 @@ public class PlayerMovement : MonoBehaviour
         if (_horizontal != 0 && _vertical == 0)
         {
             print("side");
-            _rigidbody.velocity = new Vector2(_explosionPower * 1.5f * _horizontal, _vertical * _explosionPower);
+            _rigidbody.linearVelocity = new Vector2(_explosionPower * 1.5f * _horizontal, _vertical * _explosionPower);
         }
         else if (_horizontal != 0 || _vertical != 0)
         {
-            _rigidbody.velocity = new Vector2(_horizontal * _explosionPower, _vertical * _explosionPower);
+            _rigidbody.linearVelocity = new Vector2(_horizontal * _explosionPower, _vertical * _explosionPower);
         } 
         else if (_horizontal == 0 && _vertical == 0)
         {
             print("nothin");
-            _rigidbody.velocity = new Vector2(_explosionPower * 1 * _lastHorizontal, _vertical * _explosionPower);
+            _rigidbody.linearVelocity = new Vector2(_explosionPower * 1 * _lastHorizontal, _vertical * _explosionPower);
         }
             _rigidbody.AddTorque(9999);
         this._collider.sharedMaterial = _bounceMaterial;
@@ -376,7 +376,7 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody.rotation = (0);
         _rigidbody.freezeRotation = true;
         _attacking = false;
-        _rigidbody.velocity = new Vector2(0, 0);
+        _rigidbody.linearVelocity = new Vector2(0, 0);
         audioManager.PauseExplosion();
     }
 
@@ -499,16 +499,34 @@ public class PlayerMovement : MonoBehaviour
         }
         if (collision.gameObject.tag == "Ground")
         {
-            if (_attacking)
+            if (_attacking && _bouncyParticles.activeSelf == false)
             {
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x / 1.1f, _rigidbody.velocity.y / 1.1f);
+                _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x / 1.1f, _rigidbody.linearVelocity.y / 1.1f);
             }
         }
 
-        if (collision.gameObject.tag == "Bouncy" && _attacking)
+        if (collision.gameObject.tag == "Bouncy" && _attacking && _bouncyParticles.activeSelf == false)
         {
             print("bouncy");
-            _rigidbody.velocity = new Vector2(_explosionPower * _horizontal * 1.1f, _explosionPower * _vertical * 1.1f);
+            _rigidbody.linearVelocity *= 1.5f; /*new Vector2(_explosionPower * 1.1f, _explosionPower * 1.1f);*/
+            /*
+            if (_horizontal != 0 && _vertical != 0)
+            {
+                _rigidbody.linearVelocity = new Vector2(_explosionPower * _horizontal * 1.1f, _explosionPower * _vertical * 1.1f);
+            }
+            else if (_horizontal == 0 && _vertical != 0)
+            {
+                _rigidbody.linearVelocity = new Vector2(_explosionPower * 1.1f, _explosionPower * _vertical * 1.1f);
+            }
+            else if (_horizontal != 0 && _vertical == 0)
+            {
+                _rigidbody.linearVelocity = new Vector2(_explosionPower * _horizontal * 1.1f, _explosionPower * 1.1f);
+            }
+            else if (_horizontal == 0 && _vertical == 0)
+            {
+                _rigidbody.linearVelocity = new Vector2(_explosionPower * 1.1f, _explosionPower * 1.1f);
+            }
+            */
             _bouncyParticles.SetActive(true);
         }
 
@@ -519,7 +537,7 @@ public class PlayerMovement : MonoBehaviour
             AttackAction();
             Invoke("AttackDelay", .2f);
             Vector2 Direction = (transform.position - collision.gameObject.transform.position).normalized;
-            _rigidbody.velocity = new Vector2(Direction.x * _explosionPower * 2, Direction.y * _explosionPower * 2);
+            _rigidbody.linearVelocity = new Vector2(Direction.x * _explosionPower * 2, Direction.y * _explosionPower * 2);
             _bombParticles.SetActive(true);
             _canAttack = true;
         }

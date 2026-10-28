@@ -8,7 +8,7 @@ public class ElevateMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        _rigidbody.velocity = new Vector2(0, _scrollSpeed * -1);
+        _rigidbody.linearVelocity = new Vector2(0, _scrollSpeed * -1);
 
     }
 }

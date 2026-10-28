@@ -303,23 +303,23 @@ public class PlayerControls : MonoBehaviour
         _hasGrounded = false;
             if (Up == true && Side == true)
             {
-                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, _explosionPower);
+                PlayerRB.linearVelocity = new Vector2(_lastDirection * _explosionPower, _explosionPower);
             }
             else if (Up == true && Side == false)
             {
-                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, _explosionPower);
+                PlayerRB.linearVelocity = new Vector2(PlayerRB.linearVelocity.x, _explosionPower);
             }
             else if (Down == true && Side == true)
             {
-                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower, -_explosionPower * .95f);
+                PlayerRB.linearVelocity = new Vector2(_lastDirection * _explosionPower, -_explosionPower * .95f);
             }
             else if (Down == true && Side == false)
             {
-                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, -_explosionPower * .95f);
+                PlayerRB.linearVelocity = new Vector2(PlayerRB.linearVelocity.x, -_explosionPower * .95f);
             }
             else
             {
-                PlayerRB.velocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
+                PlayerRB.linearVelocity = new Vector2(_lastDirection * _explosionPower * 1.5f, 0);
             }
             PlayerRB.AddTorque(_rotationAmount/* * moveDirection*/);
         this._collider.sharedMaterial = _bounceMaterial;
@@ -351,7 +351,7 @@ public class PlayerControls : MonoBehaviour
         if (_attacking)
         {
             _attacking = false;
-            PlayerRB.velocity = new Vector2(0, 0);
+            PlayerRB.linearVelocity = new Vector2(0, 0);
         }
         _canMove = true;
         //TryAttack();
@@ -441,7 +441,7 @@ public class PlayerControls : MonoBehaviour
         {
             if (_attacking && _bouncing == false)
             {
-                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x / _slowDownSpeed, PlayerRB.velocity.y / _slowDownSpeed);
+                PlayerRB.linearVelocity = new Vector2(PlayerRB.linearVelocity.x / _slowDownSpeed, PlayerRB.linearVelocity.y / _slowDownSpeed);
             }
         }
 
@@ -462,7 +462,7 @@ public class PlayerControls : MonoBehaviour
             {
                 print("bouncy");
                 _bouncing = true;
-                PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
+                PlayerRB.linearVelocity = new Vector2(_explosionPower * _currentDirection * _bouncepadBoost, _explosionPower * _bouncepadBoost);
                 _bouncyParticles.SetActive(true);
             }
             //} else
@@ -480,11 +480,11 @@ public class PlayerControls : MonoBehaviour
                 {
                     bombPower += 1;
                 }
-                PlayerRB.velocity = new Vector2(Direction.x * _explosionPower * _bombBoost * bombPower * -1, _explosionPower * _bombBoost * bombPower * -1);
+                PlayerRB.linearVelocity = new Vector2(Direction.x * _explosionPower * _bombBoost * bombPower * -1, _explosionPower * _bombBoost * bombPower * -1);
             } else
             {
                 bombPower = 0;
-                PlayerRB.velocity = new Vector2(Direction.x * _explosionPower * _bombBoost * -1, _explosionPower * _bombBoost * -1);
+                PlayerRB.linearVelocity = new Vector2(Direction.x * _explosionPower * _bombBoost * -1, _explosionPower * _bombBoost * -1);
             }
 
                 //PlayerRB.velocity = new Vector2(_explosionPower * _currentDirection * _bombBoost, _explosionPower * _bombBoost * -1);
@@ -589,7 +589,7 @@ public class PlayerControls : MonoBehaviour
             {
                 //print("PlayerRB Should Be Moving");
                 //Makes the player able to move, and turns on the moving animation   
-                PlayerRB.velocity = new Vector2(PlayerSpeed * moveDirection, PlayerRB.velocity.y);
+                PlayerRB.linearVelocity = new Vector2(PlayerSpeed * moveDirection, PlayerRB.linearVelocity.y);
                 //Animator.SetBool("IsMoving", true);
             }
 
@@ -597,7 +597,7 @@ public class PlayerControls : MonoBehaviour
         
         if (_cutscene == true || _dying == true)
         {
-            PlayerRB.velocity = new Vector2(0, 0);
+            PlayerRB.linearVelocity = new Vector2(0, 0);
             PlayerRB.rotation = (0);
             PlayerRB.freezeRotation = true;
         }
@@ -704,7 +704,7 @@ public class PlayerControls : MonoBehaviour
         if (collision.gameObject.tag == "Stop")
         {
             StopAttack();
-            PlayerRB.velocity = new Vector2 (0,0);
+            PlayerRB.linearVelocity = new Vector2 (0,0);
             PlayerRB.rotation = (0);
         }
         //if (collision.gameObject.tag == "Cutscene")
@@ -826,15 +826,15 @@ public class PlayerControls : MonoBehaviour
             //_animator.SetBool("Jumping", false);
         }
 
-        _velocityX = PlayerRB.velocity.x;
-        _velocityY = PlayerRB.velocity.y;
+        _velocityX = PlayerRB.linearVelocity.x;
+        _velocityY = PlayerRB.linearVelocity.y;
 
         //if (PlayerRB.velocity.y <= 0)
         //{
         //    _animator.SetBool("Falling", true);
         //} 
 
-        if (PlayerRB.velocity.y < -2 || _moving == false)
+        if (PlayerRB.linearVelocity.y < -2 || _moving == false)
         {
             _animator.SetBool("Walking", false);
             _dust.Stop();
@@ -848,7 +848,7 @@ public class PlayerControls : MonoBehaviour
         }
         else if (PlayerShouldBeMoving == false)
         {
-            PlayerRB.velocity = new Vector2(0, PlayerRB.velocity.y);
+            PlayerRB.linearVelocity = new Vector2(0, PlayerRB.linearVelocity.y);
         }
         if (moveDirection > 0)
         {
