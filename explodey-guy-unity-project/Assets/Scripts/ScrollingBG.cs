@@ -9,7 +9,7 @@ public class ScrollingBG : MonoBehaviour
 
     void FixedUpdate()
     {
-        _rigidbody.velocity = new Vector2(_scrollSpeed * -1, 0);
+        _rigidbody.linearVelocity = new Vector2(_scrollSpeed * -1, 0);
 
     }
 

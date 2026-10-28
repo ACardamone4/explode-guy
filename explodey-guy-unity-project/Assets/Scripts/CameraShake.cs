@@ -1,11 +1,10 @@
-using Cinemachine;
-using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
 
-    [SerializeField] private CinemachineVirtualCamera _cam;
+    [SerializeField] private CinemachineCamera _cam;
     [SerializeField] private GameObject _playerGameobject;
     [SerializeField] private float _intensity;
     [SerializeField] private float _lightIntensity;
@@ -13,40 +12,41 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float _shakeDurationMax;
     [SerializeField] private bool _shaking;
 
-
     public void Awake()
     {
         _playerGameobject = GameObject.Find("Player");
-        _cam = GetComponent<CinemachineVirtualCamera>();
+        _cam = GetComponent<CinemachineCamera>();
         _cam.Follow = _playerGameobject.transform;
         _cam.LookAt = _playerGameobject.transform;
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetComponent<CinemachineBasicMultiChannelPerlin>();
+
+        //CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        //cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        cinemachineBasicMultiChannelPerlin.AmplitudeGain = 0;
     }
 
     public void Shake()
     {
         _shakeDuration = _shakeDurationMax;
         _shaking = true;
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = _intensity;
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetComponent<CinemachineBasicMultiChannelPerlin>();
+        cinemachineBasicMultiChannelPerlin.AmplitudeGain = _intensity;
     }
     
     public void StopShake()
     {
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetComponent<CinemachineBasicMultiChannelPerlin>();
 
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        cinemachineBasicMultiChannelPerlin.AmplitudeGain = 0;
     }
 
     public void LightShake()
     {
         _shakeDuration = _shakeDurationMax;
         _shaking = true;
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = _cam.GetComponent<CinemachineBasicMultiChannelPerlin>();
 
-        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = _lightIntensity;
+        cinemachineBasicMultiChannelPerlin.AmplitudeGain = _lightIntensity;
     }
 
     private void Update()
