@@ -1,10 +1,20 @@
 {
+    "version": 1,
     "name": "PlayerController",
     "maps": [
         {
             "name": "Player",
             "id": "d12f039b-1dd0-46d4-b00e-3eb8581cc4ee",
             "actions": [
+                {
+                    "name": "Aim",
+                    "type": "Value",
+                    "id": "a7cd2eca-e12d-4bca-a12f-c57eb3e84c08",
+                    "expectedControlType": "Stick",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
                 {
                     "name": "Move",
                     "type": "Value",
@@ -18,7 +28,7 @@
                     "name": "Pause",
                     "type": "Button",
                     "id": "25410335-162f-4841-a244-53fc9b3f410a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -99,7 +109,7 @@
                     "name": "Reset",
                     "type": "Button",
                     "id": "1c13f713-5f8c-47c5-bedb-61b8c697b544",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -578,6 +588,116 @@
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "60ca7cc7-80b1-4354-a2fb-10a3eaa5fa60",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "1956e263-eec3-45f3-b5c7-bf63c4457db9",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "3b82c278-aac1-4d7b-a9f3-94d51d173c5d",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "a93e6c9c-5ce1-423a-b418-46ad53ab1fbe",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e13b8317-d2c0-4c2c-9972-7b2fb5d0be6d",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Controller",
+                    "id": "3f29a17f-7c81-4598-85d5-2281e1acda4b",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "cc68403d-71e4-4b24-9728-34df2c0ee2f2",
+                    "path": "<Gamepad>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "a623aff4-c86a-4cc1-95f9-cb90cd68da40",
+                    "path": "<Gamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "5c259aa5-8a8f-4bd4-a14f-c571160d7456",
+                    "path": "<Gamepad>/rightStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "36ca7c0a-1077-4744-bb76-0564b3e6fcc9",
+                    "path": "<Gamepad>/rightStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
