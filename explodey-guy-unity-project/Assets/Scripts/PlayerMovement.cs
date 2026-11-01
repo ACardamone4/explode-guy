@@ -7,17 +7,21 @@ using UnityEngine.Rendering.Universal;
 public class PlayerMovement : MonoBehaviour
 {
     private GameObject _self;
-    private float _horizontal;
+    [SerializeField] private float _horizontal;
+    [SerializeField] private float _horizontalAim;
+    [SerializeField] private float _vertical;
+    [SerializeField] private float _verticalAim;
     private float _backpackControl;
     [SerializeField] private float _backpackFloat;
-    private float _vertical;
     [SerializeField] private float _speed;
     private float _baseSpeed;
     [SerializeField] private float _explosionPower;
+    [SerializeField] private float _maxSpeed;
     private float _lastHorizontal;
     private bool _grounded;
-    private bool _attacking;
-    private bool _canAttack;
+    [SerializeField] private bool _attacking;
+    private bool _airslide;
+    [SerializeField] private bool _canAttack;
     private bool _attackDelayActive;
     private bool _paused;
     private bool _timeStopWaiting;
@@ -28,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private AudioManager audioManager;
     private GameObject audioManagerObject;
+    private GameObject arrowHolder;
     [SerializeField] private GameObject _explosion;
     private GameObject _fuseParticlesGameobject;
     private ParticleSystem _fuseParticles;
@@ -134,13 +139,16 @@ public class PlayerMovement : MonoBehaviour
     public void FindEverything()
     {
         NormalSpeed();
+        //GameObject arrowHolderObject = GameObject.Find("ArrowHolder");
+        //arrowHolder = arrowHolderObject.GetComponent<Transform>();
+        arrowHolder = GameObject.Find("ArrowHolder");
         _pauseMenu = GameObject.Find("Pause Menu");
         if (_pauseMenu != null)
         {
             _pauseFirstButton = GameObject.Find("Unpause");
             _pauseMenu.SetActive(false);
         }
-        _checkpointManager = FindObjectOfType<CheckpointManager>();
+        _checkpointManager = FindAnyObjectByType<CheckpointManager>();
         if (_checkpointManager != null)
         {
             transform.position = _checkpointManager.LastCheckPointPos;
@@ -175,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        if (_grounded && !_attacking)
+        if (_grounded && !_attacking && !_airslide)
         {
             _rigidbody.linearVelocity = new Vector2(0, 0);
             if (_horizontal == 0)
@@ -187,9 +195,19 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (!_attacking)
+        if (!_attacking && !_airslide)
         {
             _rigidbody.linearVelocity = new Vector2(_horizontal * _speed, _rigidbody.linearVelocity.y);
+            _speed = _baseSpeed;
+            //_rigidbody.AddForce(new Vector2(_horizontal * _speed * Time.deltaTime, _rigidbody.linearVelocity.y));
+            //if (_rigidbody.linearVelocity.magnitude > _maxSpeed)
+            //{
+              //  _rigidbody.linearVelocity = _rigidbody.linearVelocity.normalized * _maxSpeed;
+            //}
+            //if (_grounded)
+            //{
+            //    _rigidbody.linearDamping = 1;
+            //}
             if (_horizontal > 0)
             {
                 _horizontal = 1;
@@ -203,14 +221,7 @@ public class PlayerMovement : MonoBehaviour
                 gameObject.transform.localScale = new Vector2(-1, 1);
             }
 
-            if (_vertical > 0)
-            {
-                _vertical = 1;
-            } 
-            else if (_vertical < 0)
-            {
-                _vertical = -1;
-            }
+            
 
             if (_rigidbody.linearVelocity.y < 0)
             {
@@ -244,34 +255,86 @@ public class PlayerMovement : MonoBehaviour
             _tntBackpack.SetActive(false);
         }
 
-        if (_canAttack && !_dying && !_attacking)
+        if (_vertical > 0)
+        {
+            _vertical = 1;
+        }
+        else if (_vertical < 0)
+        {
+            _vertical = -1;
+        }
+
+        if (_horizontalAim > 0)
+        {
+            _horizontalAim = 1;
+        }
+        else if (_horizontalAim < 0)
+        {
+            _horizontalAim = -1;
+        }
+        if (_verticalAim > 0)
+        {
+            _verticalAim = 1;
+        }
+        else if (_verticalAim < 0)
+        {
+            _verticalAim = -1;
+        }
+
+        if (_canAttack && !_dying && !_attacking && !_airslide)
         {
             _arrow.SetActive(true);
             _explodeIndicatorAnims.Play("ExplodeIndicator_Pulse");
             _fuseParticlesGameobject.SetActive(true);
             CheckParticleColor();
             _arrowAnims.Play("Arrow_" + _backpack[_backpackInt]);
-            if (_horizontal == 0 && _vertical == 1)
+            /*
+            if (gameObject.transform.localScale.x == 1)
+            {
+                arrowHolder.gameObject.transform.localScale = new Vector2(1, 1);
+            } 
+            else if (gameObject.transform.localScale.x == -1)
+            {
+                arrowHolder.gameObject.transform.localScale = new Vector2(-1, 1);
+            }
+            */
+
+            if (_horizontalAim == 0 && _verticalAim == 1)
             {
                 _arrow.transform.position = _arrowPoints[0].transform.position;
                 _arrow.transform.rotation = _arrowPoints[0].transform.rotation;
             }
-            else if (_horizontal == 1 && _vertical == 1 || _horizontal == -1 && _vertical == 1)
+            else if (_horizontalAim == 1 && _verticalAim == 1)
             {
                 _arrow.transform.position = _arrowPoints[1].transform.position;
                 _arrow.transform.rotation = _arrowPoints[1].transform.rotation;
             }
-            else if (_horizontal == 1 && _vertical == 0 || _horizontal == 0 && _vertical == 0 || _horizontal == -1 && _vertical == 0)
+            else if (_horizontalAim == -1 && _verticalAim == 1)
+            {
+                _arrow.transform.position = _arrowPoints[5].transform.position;
+                _arrow.transform.rotation = _arrowPoints[5].transform.rotation;
+            }
+            else if (_horizontalAim == 1 && _verticalAim == 0 || _horizontalAim == 0 && _verticalAim == 0)
             {
                 _arrow.transform.position = _arrowPoints[2].transform.position;
                 _arrow.transform.rotation = _arrowPoints[2].transform.rotation;
             }
-            else if (_horizontal == 1 && _vertical == -1 || _horizontal == -1 && _vertical == -1)
+            else if (_horizontalAim == -1 && _verticalAim == 0)
+            {
+                _arrow.transform.position = _arrowPoints[6].transform.position;
+                _arrow.transform.rotation = _arrowPoints[6].transform.rotation;
+            }
+            else if (_horizontalAim == 1 && _verticalAim == -1)
             {
                 _arrow.transform.position = _arrowPoints[3].transform.position;
                 _arrow.transform.rotation = _arrowPoints[3].transform.rotation;
             }
-            else if (_horizontal == 0 && _vertical == -1)
+            else if (_horizontalAim == -1 && _verticalAim == -1)
+            {
+                _arrow.transform.position = _arrowPoints[7].transform.position;
+                _arrow.transform.rotation = _arrowPoints[7].transform.rotation;
+            }
+            else if (_horizontalAim == 0 && _verticalAim == -1)
             {
                 _arrow.transform.position = _arrowPoints[4].transform.position;
                 _arrow.transform.rotation = _arrowPoints[4].transform.rotation;
@@ -316,34 +379,34 @@ public class PlayerMovement : MonoBehaviour
         GameObject AttackInstance = Instantiate(_explosion, this.transform.position, this.transform.rotation);
         _rigidbody.freezeRotation = false;
         _fuseParticlesGameobject.SetActive(false);
-        if (_horizontal > 0)
+        if (_horizontalAim > 0)
         {
-            _horizontal = 1;
-        } else if (_horizontal < 0)
+            _horizontalAim = 1;
+        } else if (_horizontalAim < 0)
         {
-            _horizontal = -1;
+            _horizontalAim = -1;
         }
-        if (_vertical > 0)
+        if (_verticalAim > 0)
         {
-            _vertical = 1;
+            _verticalAim = 1;
         }
-        else if (_vertical < 0)
+        else if (_verticalAim < 0)
         {
-            _vertical = -1;
+            _verticalAim = -1;
         }
-        if (_horizontal != 0 && _vertical == 0)
+        if (_horizontalAim != 0 && _verticalAim == 0)
         {
             print("side");
-            _rigidbody.linearVelocity = new Vector2(_explosionPower * 1.5f * _horizontal, _vertical * _explosionPower);
+            _rigidbody.linearVelocity = new Vector2(_explosionPower * 1.5f * _horizontalAim, _verticalAim * _explosionPower);
         }
-        else if (_horizontal != 0 || _vertical != 0)
+        else if (_horizontalAim != 0 || _verticalAim != 0)
         {
-            _rigidbody.linearVelocity = new Vector2(_horizontal * _explosionPower, _vertical * _explosionPower);
+            _rigidbody.linearVelocity = new Vector2(_horizontalAim * _explosionPower, _verticalAim * _explosionPower);
         } 
-        else if (_horizontal == 0 && _vertical == 0)
+        else if (_horizontalAim == 0 && _verticalAim == 0)
         {
             print("nothin");
-            _rigidbody.linearVelocity = new Vector2(_explosionPower * 1 * _lastHorizontal, _vertical * _explosionPower);
+            _rigidbody.linearVelocity = new Vector2(_explosionPower * 1 * _lastHorizontal, _explosionPower);
         }
             _rigidbody.AddTorque(9999);
         this._collider.sharedMaterial = _bounceMaterial;
@@ -366,18 +429,29 @@ public class PlayerMovement : MonoBehaviour
         _timeStopWaiting = false;
     }
 
-    void StopAttack()
+    public void StopAttack()
     {
         _pAnim.SetBool("ExplodeStop", true);
-        _speed = _baseSpeed;
+        //_speed = _baseSpeed;
+        _speed = _speed / 2;
         this._collider.sharedMaterial = _baseMaterial;
         _bombParticles.SetActive(false);
         _bouncyParticles.SetActive(false);
         _rigidbody.rotation = (0);
         _rigidbody.freezeRotation = true;
         _attacking = false;
-        _rigidbody.linearVelocity = new Vector2(0, 0);
+        //_rigidbody.linearVelocity = new Vector2(0, 0);
+        _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x / 2f, _rigidbody.linearVelocity.y / 2f);
         audioManager.PauseExplosion();
+        _airslide = true;
+        StartCoroutine(AirSlide());
+    }
+
+    IEnumerator AirSlide()
+    {
+        _airslide = true;
+        yield return new WaitForSecondsRealtime(.25f);
+        _airslide = false;
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -388,6 +462,12 @@ public class PlayerMovement : MonoBehaviour
         {
             _pAnim.SetBool("Walking", true);
         }
+    }
+
+    public void Aim(InputAction.CallbackContext context)
+    {
+        _horizontalAim = context.ReadValue<Vector2>().x;
+        _verticalAim = context.ReadValue<Vector2>().y;
     }
 
     public void BackpackSwap(InputAction.CallbackContext context)
@@ -447,7 +527,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void NormalSpeed()
     {
-        _speed = 20;
+        _speed = _baseSpeed;
         _rigidbody.gravityScale = 10;
         _pAnim.SetBool("ExplodeStop", false);
     }
@@ -644,6 +724,8 @@ public class PlayerMovement : MonoBehaviour
     {
         _dataPersistanceManager.GameData.PlayerPosX = 0;
         _dataPersistanceManager.GameData.PlayerPosY = 0;
+        StopAttack();
+
     }
 
     public void ResetData(InputAction.CallbackContext context)
