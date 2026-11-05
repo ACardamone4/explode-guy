@@ -288,7 +288,7 @@ public class PlayerMovement : MonoBehaviour
             _fuseParticlesGameobject.SetActive(true);
             CheckParticleColor();
             _arrowAnims.Play("Arrow_" + _backpack[_backpackInt]);
-            /*
+            
             if (gameObject.transform.localScale.x == 1)
             {
                 arrowHolder.gameObject.transform.localScale = new Vector2(1, 1);
@@ -297,47 +297,112 @@ public class PlayerMovement : MonoBehaviour
             {
                 arrowHolder.gameObject.transform.localScale = new Vector2(-1, 1);
             }
-            */
+            SpriteRenderer arrowSprite = _arrow.GetComponent<SpriteRenderer>();
 
             if (_horizontalAim == 0 && _verticalAim == 1)
             {
                 _arrow.transform.position = _arrowPoints[0].transform.position;
                 _arrow.transform.rotation = _arrowPoints[0].transform.rotation;
+                if (gameObject.transform.localScale.x == 1)
+                {
+                    arrowSprite.flipX = true;
+                }
+                else if (gameObject.transform.localScale.x == -1)
+                {
+                    arrowSprite.flipX = false;
+                }
             }
             else if (_horizontalAim == 1 && _verticalAim == 1)
             {
                 _arrow.transform.position = _arrowPoints[1].transform.position;
                 _arrow.transform.rotation = _arrowPoints[1].transform.rotation;
+                if (gameObject.transform.localScale.x == 1)
+                {
+                    arrowSprite.flipX = true;
+                }
+                else if (gameObject.transform.localScale.x == -1)
+                {
+                    arrowSprite.flipX = false;
+                }
             }
             else if (_horizontalAim == -1 && _verticalAim == 1)
             {
                 _arrow.transform.position = _arrowPoints[5].transform.position;
                 _arrow.transform.rotation = _arrowPoints[5].transform.rotation;
+                arrowSprite.flipX = true;
+                if (gameObject.transform.localScale.x == 1)
+                {
+                    arrowSprite.flipX = true;
+                }
+                else if (gameObject.transform.localScale.x == -1)
+                {
+                    arrowSprite.flipX = false;
+                }
             }
-            else if (_horizontalAim == 1 && _verticalAim == 0 || _horizontalAim == 0 && _verticalAim == 0)
+            else if (_horizontalAim == 1 && _verticalAim == 0 || _horizontalAim == 0 && _verticalAim == 0 && gameObject.transform.localScale.x == 1)
             {
                 _arrow.transform.position = _arrowPoints[2].transform.position;
                 _arrow.transform.rotation = _arrowPoints[2].transform.rotation;
+                if (gameObject.transform.localScale.x == 1)
+                {
+                    arrowSprite.flipX = true;
+                }
+                else if (gameObject.transform.localScale.x == -1)
+                {
+                    arrowSprite.flipX = false;
+                }
             }
-            else if (_horizontalAim == -1 && _verticalAim == 0)
+            else if (_horizontalAim == -1 && _verticalAim == 0 || _horizontalAim == 0 && _verticalAim == 0 && gameObject.transform.localScale.x == -1)
             {
                 _arrow.transform.position = _arrowPoints[6].transform.position;
                 _arrow.transform.rotation = _arrowPoints[6].transform.rotation;
+                if (gameObject.transform.localScale.x == 1)
+                {
+                    arrowSprite.flipX = true;
+                }
+                else if (gameObject.transform.localScale.x == -1)
+                {
+                    arrowSprite.flipX = false;
+                }
             }
             else if (_horizontalAim == 1 && _verticalAim == -1)
             {
                 _arrow.transform.position = _arrowPoints[3].transform.position;
                 _arrow.transform.rotation = _arrowPoints[3].transform.rotation;
+                if (gameObject.transform.localScale.x == 1)
+                {
+                    arrowSprite.flipX = true;
+                }
+                else if (gameObject.transform.localScale.x == -1)
+                {
+                    arrowSprite.flipX = false;
+                }
             }
             else if (_horizontalAim == -1 && _verticalAim == -1)
             {
                 _arrow.transform.position = _arrowPoints[7].transform.position;
                 _arrow.transform.rotation = _arrowPoints[7].transform.rotation;
+                if (gameObject.transform.localScale.x == 1)
+                {
+                    arrowSprite.flipX = true;
+                }
+                else if (gameObject.transform.localScale.x == -1)
+                {
+                    arrowSprite.flipX = false;
+                }
             }
             else if (_horizontalAim == 0 && _verticalAim == -1)
             {
                 _arrow.transform.position = _arrowPoints[4].transform.position;
                 _arrow.transform.rotation = _arrowPoints[4].transform.rotation;
+                if (gameObject.transform.localScale.x == 1)
+                {
+                    arrowSprite.flipX = true;
+                } 
+                else if (gameObject.transform.localScale.x == -1)
+                {
+                    arrowSprite.flipX = false;
+                }
             }
         }
     }
@@ -406,7 +471,7 @@ public class PlayerMovement : MonoBehaviour
         else if (_horizontalAim == 0 && _verticalAim == 0)
         {
             print("nothin");
-            _rigidbody.linearVelocity = new Vector2(_explosionPower * 1 * _lastHorizontal, _explosionPower);
+            _rigidbody.linearVelocity = new Vector2(_explosionPower * 1 * _lastHorizontal, 0);
         }
             _rigidbody.AddTorque(9999);
         this._collider.sharedMaterial = _bounceMaterial;
